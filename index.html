@@ -33,34 +33,46 @@
     box-shadow: 0 0 50px rgba(30,58,138,0.18);
   }
 
-  .top-bar { display: flex; align-items: center; padding: 8px 18px 4px; gap: 10px; }
+  .top-bar { display: flex; align-items: center; padding: 8px 14px 4px; gap: 8px; }
   .icon-btn {
     width: 36px; height: 36px; border-radius: 50%;
     background: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.9);
     cursor: pointer; display: flex; align-items: center; justify-content: center;
     font-size: 16px; color: #1e3a8a; backdrop-filter: blur(8px); flex-shrink: 0;
   }
-  .url-bar {
-    flex: 1; text-align: center; font-size: 13px; color: #1e3a8a; font-weight: 600;
-    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-    background: rgba(255,255,255,0.45); padding: 6px 12px; border-radius: 18px;
-    display: flex; align-items: center; justify-content: center; gap: 6px;
+  .search-wrap { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .search-box {
+    display: flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.85); border: 1px solid rgba(30,58,138,0.12);
+    border-radius: 16px; padding: 6px 12px;
   }
-  .conn-dot { width: 8px; height: 8px; border-radius: 50%; background: #94a3b8; flex-shrink: 0; transition: background .3s; }
+  .search-box input { flex: 1; border: none; background: transparent; outline: none; font-size: 13px; color: #1e3a8a; min-width: 0; }
+  .search-box input::placeholder { color: #94a3b8; }
+  .sync-pill { display: flex; align-items: center; gap: 5px; padding-left: 4px; }
+  .conn-dot { width: 7px; height: 7px; border-radius: 50%; background: #94a3b8; flex-shrink: 0; transition: background .3s; }
   .conn-dot.online { background: #10b981; box-shadow: 0 0 6px #10b981; }
   .conn-dot.syncing { background: #3b82f6; animation: pulse 1s infinite; }
   .conn-dot.offline { background: #94a3b8; }
   @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:.4;} }
-  .conn-text { font-size: 11px; color: #64748b; }
+  .conn-text { font-size: 10px; color: #64748b; white-space: nowrap; }
 
   .hero {
-    margin: 4px 16px 12px; padding: 16px 16px 14px;
+    margin: 4px 16px 10px; padding: 16px 16px 14px;
     background: linear-gradient(135deg, rgba(191,219,254,0.9), rgba(219,234,254,0.9));
     border-radius: 18px; position: relative; overflow: hidden;
   }
-  .hero::after { content: '✈️'; position: absolute; right: 12px; bottom: 4px; font-size: 38px; opacity: 0.55; transform: rotate(15deg); }
+  .hero::after { content: '✈️'; position: absolute; right: 12px; bottom: 4px; font-size: 38px; opacity: 0.5; transform: rotate(15deg); }
   .hero-title { font-size: 26px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
   .hero-sub { margin-top: 6px; font-size: 13px; color: #475569; }
+  .hero-fab {
+    position: absolute; top: 12px; right: 12px;
+    width: 42px; height: 42px; border-radius: 50%;
+    background: #2563eb; color: #fff; border: none; cursor: pointer;
+    font-size: 24px; line-height: 1; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 12px rgba(37,99,235,0.4); z-index: 3;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+  }
+  .hero-fab:active { transform: scale(0.92); }
 
   .content { flex: 1; min-height: 0; overflow-y: auto; padding: 0 16px 96px; -webkit-overflow-scrolling: touch; touch-action: pan-y; }
   .page { display: none; animation: fade .3s ease; }
@@ -72,30 +84,55 @@
   .page.active.anim-left  { animation: slideR .28s ease; }
 
   .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .stat-card { background: rgba(255,255,255,0.85); backdrop-filter: blur(8px); border-radius: 16px; padding: 16px 12px; text-align: center; box-shadow: 0 2px 10px rgba(30,58,138,0.05); }
+  .stat-card { background: rgba(255,255,255,0.85); backdrop-filter: blur(8px); border-radius: 16px; padding: 16px 12px; text-align: center; box-shadow: 0 2px 10px rgba(30,58,138,0.05); cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation; position: relative; }
+  .stat-card:active { transform: scale(0.97); }
   .stat-icon { font-size: 24px; margin-bottom: 4px; }
   .stat-value { font-size: 26px; font-weight: 800; color: #1e40af; }
   .stat-label { font-size: 12px; color: #64748b; margin-top: 2px; }
+  .stat-card .drill { position: absolute; right: 8px; bottom: 6px; font-size: 10px; color: #93c5fd; }
 
-  .section-title { font-size: 17px; font-weight: 700; margin: 18px 0 10px; display: flex; align-items: center; gap: 6px; justify-content: space-between; }
-  .link-btn { background: none; border: none; color: #2563eb; font-size: 13px; cursor: pointer; font-weight: 600; }
+  .section-title { font-size: 17px; font-weight: 700; margin: 18px 0 10px; display: flex; align-items: center; gap: 6px; justify-content: space-between; flex-wrap: wrap; }
+  .section-title .title-left { display: flex; align-items: center; gap: 6px; }
+  .section-actions { display: flex; gap: 10px; }
+  .link-btn { background: none; border: none; color: #2563eb; font-size: 13px; cursor: pointer; font-weight: 600; -webkit-tap-highlight-color: transparent; }
 
-  /* 历史折叠 */
+  /* 历史折叠 + 滑动行 */
   .history-group { margin-bottom: 10px; background: rgba(255,255,255,0.9); border-radius: 16px; overflow: hidden; box-shadow: 0 2px 10px rgba(30,58,138,0.05); }
   .history-head { display: flex; align-items: center; justify-content: space-between; padding: 13px 16px; cursor: pointer; }
   .history-head .ht { font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
   .history-head .arrow { transition: transform .25s; color: #94a3b8; font-size: 12px; }
   .history-group.collapsed .arrow { transform: rotate(-90deg); }
-  .history-body { max-height: 1200px; overflow: hidden; transition: max-height .3s ease; }
+  .history-body { max-height: 2000px; overflow: hidden; transition: max-height .3s ease; }
   .history-group.collapsed .history-body { max-height: 0; }
-  .history-item { padding: 11px 16px; border-top: 1px dashed rgba(30,58,138,0.08); display: flex; align-items: center; gap: 10px; }
-  .history-item .hi-flag { font-size: 20px; }
-  .history-item .hi-main { flex: 1; min-width: 0; }
-  .history-item .hi-title { font-size: 14px; font-weight: 600; }
-  .history-item .hi-meta { font-size: 11px; color: #94a3b8; margin-top: 1px; }
-  .history-item .hi-badge { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+
+  .swipe-row { position: relative; overflow: hidden; }
+  .swipe-row.selecting { background: rgba(37,99,235,0.06); }
+  .swipe-actions { position: absolute; top: 0; right: 0; height: 100%; display: flex; }
+  .swipe-actions button { border: none; color: #fff; font-size: 12px; font-weight: 700; padding: 0 14px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .swipe-actions .a-edit { background: #3b82f6; }
+  .swipe-actions .a-copy { background: #8b5cf6; }
+  .swipe-actions .a-export { background: #0ea5e9; }
+  .swipe-actions .a-archive { background: #f59e0b; }
+  .swipe-actions .a-del { background: #ef4444; }
+  .swipe-actions .a-revoke { background: #64748b; }
+  .swipe-front {
+    position: relative; z-index: 1; background: rgba(255,255,255,0.9);
+    display: flex; align-items: center; gap: 10px; padding: 11px 16px;
+    border-top: 1px dashed rgba(30,58,138,0.08);
+    transition: transform .2s ease; touch-action: pan-y;
+  }
+  .history-group .swipe-row:first-child .swipe-front { border-top: none; }
+  .swipe-front .hi-check { width: 20px; height: 20px; border-radius: 6px; border: 2px solid #93c5fd; flex-shrink: 0; display: none; align-items: center; justify-content: center; color: #fff; font-size: 13px; }
+  .swipe-row.selected .hi-check { background: #2563eb; border-color: #2563eb; display: flex; }
+  .swipe-front .hi-flag { font-size: 20px; }
+  .swipe-front .hi-main { flex: 1; min-width: 0; }
+  .swipe-front .hi-title { font-size: 14px; font-weight: 600; }
+  .swipe-front .hi-meta { font-size: 11px; color: #94a3b8; margin-top: 1px; }
+  .swipe-front .hi-badge { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 600; flex-shrink: 0; }
   .hi-badge.done { background: #d1fae5; color: #059669; }
-  .hi-badge.plan { background: #fef3c7; color: #d97706; }
+  .hi-badge.ongoing { background: #fef3c7; color: #d97706; }
+  .hi-badge.plan { background: #dbeafe; color: #2563eb; }
+  .hi-badge.shelved { background: #e2e8f0; color: #64748b; }
 
   /* 卡片 */
   .card { background: rgba(255,255,255,0.92); border-radius: 18px; padding: 14px; box-shadow: 0 2px 12px rgba(30,58,138,0.05); margin-bottom: 12px; }
@@ -104,9 +141,15 @@
   .trip-card { background: rgba(255,255,255,0.96); border-radius: 18px; padding: 14px 14px 14px 16px; margin-bottom: 12px; box-shadow: 0 2px 12px rgba(30,58,138,0.05); position: relative; overflow: hidden; }
   .trip-card::before { content: ''; position: absolute; left: 0; top: 12px; bottom: 12px; width: 4px; background: linear-gradient(180deg, #fbbf24, #f59e0b); border-radius: 0 4px 4px 0; }
   .trip-card.done::before { background: linear-gradient(180deg, #34d399, #10b981); }
+  .trip-card.ongoing::before { background: linear-gradient(180deg, #fbbf24, #f59e0b); }
+  .trip-card.plan::before { background: linear-gradient(180deg, #60a5fa, #3b82f6); }
+  .trip-card.shelved::before { background: linear-gradient(180deg, #cbd5e1, #94a3b8); }
   .trip-title { font-size: 17px; font-weight: 700; color: #1e3a8a; }
-  .trip-status { display: inline-block; padding: 2px 10px; background: #fef3c7; color: #d97706; font-size: 11px; border-radius: 10px; margin-top: 6px; font-weight: 600; }
-  .trip-card.done .trip-status { background: #d1fae5; color: #059669; }
+  .trip-status { display: inline-block; padding: 2px 10px; border-radius: 10px; font-size: 11px; margin-top: 6px; font-weight: 600; }
+  .trip-status.done { background: #d1fae5; color: #059669; }
+  .trip-status.ongoing { background: #fef3c7; color: #d97706; }
+  .trip-status.plan { background: #dbeafe; color: #2563eb; }
+  .trip-status.shelved { background: #e2e8f0; color: #64748b; }
   .trip-budget { font-size: 18px; font-weight: 800; color: #2563eb; margin-top: 6px; }
   .trip-meta { display: flex; align-items: center; gap: 14px; margin-top: 8px; font-size: 12px; color: #64748b; }
   .trip-route { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; align-items: center; }
@@ -188,39 +231,91 @@
   .add-btn { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; margin: 0 0 12px; padding: 12px; border: 1.5px dashed #93c5fd; border-radius: 14px; background: rgba(239,246,255,0.55); color: #2563eb; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
   .add-btn:active { background: #dbeafe; }
 
-  /* 编辑/新增 模态 */
-  .editor-mask { position: absolute; inset: 0; background: rgba(15,23,42,0.45); z-index: 200; display: none; align-items: flex-end; justify-content: center; }
-  .editor-sheet { width: 100%; max-height: 90%; background: #f8fafc; border-radius: 18px 18px 0 0; display: flex; flex-direction: column; animation: slideUp .25s ease; }
+  /* 通用底部弹出 sheet (editor / menu / detail / filter) */
+  .mask { position: absolute; inset: 0; background: rgba(15,23,42,0.45); z-index: 200; display: none; align-items: flex-end; justify-content: center; }
+  .mask.show { display: flex; }
+  .mask.center { align-items: center; }
+  .sheet { width: 100%; max-height: 90%; background: #f8fafc; border-radius: 18px 18px 0 0; display: flex; flex-direction: column; animation: slideUp .25s ease; }
+  .mask.center .sheet { max-width: 340px; max-height: 86%; border-radius: 18px; animation: pop .2s ease; }
   @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-  .editor-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid rgba(30,58,138,0.08); position: sticky; top: 0; background: #f8fafc; border-radius: 18px 18px 0 0; z-index: 1; }
-  .editor-title { font-size: 16px; font-weight: 800; color: #1e3a8a; }
-  .editor-x { border: none; background: none; font-size: 20px; color: #94a3b8; cursor: pointer; padding: 4px 8px; -webkit-tap-highlight-color: transparent; }
-  .editor-body { padding: 14px 16px; overflow-y: auto; }
-  .editor-group { display: flex; flex-direction: column; gap: 12px; }
-  .form-row { display: flex; flex-direction: column; gap: 5px; }
+  @keyframes pop { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+  .sheet-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid rgba(30,58,138,0.08); position: sticky; top: 0; background: #f8fafc; border-radius: 18px 18px 0 0; z-index: 1; }
+  .sheet-title { font-size: 16px; font-weight: 800; color: #1e3a8a; }
+  .sheet-x { border: none; background: none; font-size: 20px; color: #94a3b8; cursor: pointer; padding: 4px 8px; -webkit-tap-highlight-color: transparent; }
+  .sheet-body { padding: 14px 16px; overflow-y: auto; }
+  .sheet-actions { display: flex; gap: 10px; padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); border-top: 1px solid rgba(30,58,138,0.08); background: #f8fafc; }
+
+  /* 菜单列表 */
+  .menu-item { display: flex; align-items: center; gap: 12px; width: 100%; padding: 14px 4px; border: none; background: none; font-size: 15px; color: #1e3a8a; cursor: pointer; border-bottom: 1px solid rgba(30,58,138,0.06); text-align: left; -webkit-tap-highlight-color: transparent; }
+  .menu-item:active { background: #eef2ff; }
+  .menu-item .mi-icon { font-size: 20px; width: 26px; text-align: center; }
+  .menu-item .mi-sub { font-size: 11px; color: #94a3b8; margin-top: 1px; }
+
+  /* 表单 */
+  .form-row { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
   .form-row label { font-size: 12px; font-weight: 700; color: #475569; }
   .form-row input, .form-row textarea, .form-row select { font-size: 16px; padding: 10px 12px; border: 1px solid rgba(30,58,138,0.18); border-radius: 10px; background: #fff; color: #1e293b; font-family: inherit; width: 100%; box-sizing: border-box; -webkit-appearance: none; }
   .form-row textarea { min-height: 80px; resize: vertical; line-height: 1.5; }
   .form-row input:focus, .form-row textarea:focus, .form-row select:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.12); }
-  .form-hint { font-size: 11px; color: #94a3b8; margin-top: -3px; }
-  .editor-actions { display: flex; gap: 10px; padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); border-top: 1px solid rgba(30,58,138,0.08); background: #f8fafc; }
-  .btn-save, .btn-cancel, .btn-del { padding: 12px; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; border: none; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
-  .btn-save { background: #2563eb; color: #fff; flex: 2; }
-  .btn-save:active { background: #1d4ed8; }
+  .form-hint { font-size: 11px; color: #94a3b8; }
+  .chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { padding: 5px 12px; border-radius: 12px; background: #eff6ff; color: #1e40af; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid transparent; -webkit-tap-highlight-color: transparent; }
+  .chip.on { background: #2563eb; color: #fff; }
+  .btn-save, .btn-cancel, .btn-del, .btn-primary { padding: 12px; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; border: none; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .btn-save, .btn-primary { background: #2563eb; color: #fff; flex: 2; }
+  .btn-save:active, .btn-primary:active { background: #1d4ed8; }
   .btn-cancel { background: #e2e8f0; color: #475569; }
   .btn-del { background: #fee2e2; color: #dc2626; flex: 1; }
+
+  /* 详情卡 */
+  .detail-block { background: #fff; border-radius: 14px; padding: 12px 14px; margin-bottom: 10px; box-shadow: 0 1px 6px rgba(30,58,138,0.05); }
+  .detail-block h4 { font-size: 13px; color: #64748b; margin-bottom: 8px; font-weight: 700; }
+  .kv { display: flex; justify-content: space-between; font-size: 13px; padding: 5px 0; border-bottom: 1px dashed rgba(30,58,138,0.07); }
+  .kv:last-child { border-bottom: none; }
+  .kv .k { color: #475569; }
+  .kv .v { font-weight: 700; color: #1e3a8a; }
+  .bar-row { display: flex; align-items: center; gap: 8px; margin: 7px 0; }
+  .bar-row .bl { font-size: 12px; width: 42px; color: #475569; flex-shrink: 0; }
+  .bar-track { flex: 1; height: 14px; background: #eef2ff; border-radius: 7px; overflow: hidden; }
+  .bar-fill { height: 100%; background: linear-gradient(90deg,#60a5fa,#818cf8); border-radius: 7px; }
+  .bar-row .bv { font-size: 12px; font-weight: 700; width: 38px; text-align: right; color: #1e40af; }
+  .country-line { display: flex; align-items: flex-start; gap: 8px; font-size: 14px; padding: 8px 0; border-bottom: 1px dashed rgba(30,58,138,0.07); }
+  .country-line:last-child { border-bottom: none; }
+  .country-line .cl-sub { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+  .poster-img { width: 100%; border-radius: 12px; display: block; box-shadow: 0 4px 16px rgba(30,58,138,0.2); }
+
+  /* 批量操作条 */
+  .batch-bar {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 120;
+    background: rgba(30,58,138,0.96); color: #fff; padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+    display: none; align-items: center; gap: 10px; box-shadow: 0 -4px 16px rgba(30,58,138,0.3);
+  }
+  .batch-bar.show { display: flex; }
+  .batch-bar .bb-count { font-size: 13px; flex: 1; }
+  .batch-bar button { border: none; border-radius: 10px; padding: 9px 12px; font-size: 13px; font-weight: 700; cursor: pointer; color: #fff; background: rgba(255,255,255,0.18); -webkit-tap-highlight-color: transparent; }
+  .batch-bar button.bb-del { background: #ef4444; }
+
+  /* toast */
+  .toast { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); background: rgba(15,23,42,0.9); color: #fff; padding: 12px 20px; border-radius: 12px; font-size: 14px; z-index: 300; opacity: 0; transition: opacity .25s; pointer-events: none; max-width: 80%; text-align: center; }
+  .toast.show { opacity: 1; }
 </style>
 </head>
 <body>
 
 <div class="phone">
   <div class="top-bar">
-    <button class="icon-btn" onclick="history.back()">✕</button>
-    <div class="url-bar">
-      <span class="conn-dot offline" id="connDot"></span>
-      <span class="conn-text" id="connText">本地保存</span>
+    <button class="icon-btn" onclick="if(history.length>1)history.back();else switchTab('overview')">✕</button>
+    <div class="search-wrap">
+      <div class="search-box">
+        <span style="font-size:14px;color:#64748b;">🔍</span>
+        <input id="searchInput" placeholder="搜索行程 / 城市 / 国家 / 标签" oninput="onSearch(this.value)">
+      </div>
+      <div class="sync-pill">
+        <span class="conn-dot offline" id="connDot"></span>
+        <span class="conn-text" id="connText">本地保存</span>
+      </div>
     </div>
-    <button class="icon-btn" onclick="scrollTop()">☰</button>
+    <button class="icon-btn" onclick="openMenu()">☰</button>
   </div>
 
   <div class="page-dots" id="pageDots">
@@ -240,9 +335,24 @@
       <div class="hero">
         <div class="hero-title">🏠 旅行</div>
         <div class="hero-sub">珊珊，你的旅行世界一览 ☀️</div>
+        <button class="hero-fab" onclick="openEditor('trip')" title="新建行程">＋</button>
       </div>
       <div class="stats-grid" id="ovStats"></div>
-      <div class="section-title">📅 历史记录 <span class="link-btn" onclick="toggleAllHistory()">展开全部</span></div>
+
+      <!-- 想去目的地（愿望清单） -->
+      <div class="section-title">
+        <span class="title-left">💡 想去目的地</span>
+        <span class="section-actions"><span class="link-btn" onclick="toggleWishlist()">展开</span></span>
+      </div>
+      <div id="wishlistWrap" style="display:none;"></div>
+
+      <div class="section-title">
+        <span class="title-left">📅 历史记录</span>
+        <span class="section-actions">
+          <span class="link-btn" onclick="openFilter()">筛选</span>
+          <span class="link-btn" id="toggleAllBtn" onclick="toggleAllHistory()">展开全部</span>
+        </span>
+      </div>
       <div id="historyList"></div>
     </section>
 
@@ -259,7 +369,7 @@
     <section class="page" id="page-planning">
       <div class="hero">
         <div class="hero-title">📜 行程</div>
-        <div class="hero-sub">六段旅程，说走就走 ✈️</div>
+        <div class="hero-sub">所有旅程，统一管理 ✈️</div>
       </div>
       <button class="add-btn" onclick="openEditor('trip')">＋ 添加行程</button>
       <div id="tripList"></div>
@@ -329,73 +439,152 @@
     <button class="nav-item" data-page="reviews"><span class="nav-icon">💭</span><span class="nav-label">记录</span></button>
   </nav>
 
-  <!-- ===== 编辑/新增 模态 ===== -->
-  <div class="editor-mask" id="editorMask" onclick="if(event.target===this)closeEditor()">
-    <div class="editor-sheet">
-      <div class="editor-head">
-        <div class="editor-title" id="editorTitle">添加行程</div>
-        <button class="editor-x" onclick="closeEditor()">✕</button>
+  <!-- 批量操作条 -->
+  <div class="batch-bar" id="batchBar">
+    <span class="bb-count" id="bbCount">已选 0 项</span>
+    <button onclick="batchArchive()">归档</button>
+    <button onclick="batchExport()">导出</button>
+    <button class="bb-del" onclick="batchDelete()">删除</button>
+    <button onclick="exitSelectMode()">取消</button>
+  </div>
+
+  <!-- 编辑/新增 模态 -->
+  <div class="mask" id="editorMask" onclick="if(event.target===this)closeEditor()">
+    <div class="sheet">
+      <div class="sheet-head">
+        <div class="sheet-title" id="editorTitle">添加行程</div>
+        <button class="sheet-x" onclick="closeEditor()">✕</button>
       </div>
-      <div class="editor-body">
-        <div class="editor-group" id="grp-trip">
+      <div class="sheet-body">
+        <div id="grp-trip">
           <div class="form-row"><label>名称</label><input id="f-name" placeholder="如 日本·东京"></div>
           <div class="form-row"><label>国旗 emoji</label><input id="f-flag" placeholder="🏳️"></div>
           <div class="form-row"><label>国家</label><input id="f-country" placeholder="日本"></div>
           <div class="form-row"><label>日期 (YYYY-MM)</label><input id="f-date" placeholder="2026-08"></div>
           <div class="form-row"><label>晚数</label><input id="f-nights" type="number" inputmode="numeric" placeholder="7"></div>
-          <div class="form-row"><label>状态</label><select id="f-status"><option value="done">已完成</option><option value="plan">规划中</option></select></div>
+          <div class="form-row"><label>状态</label><select id="f-status">
+            <option value="plan">计划中</option>
+            <option value="ongoing">进行中</option>
+            <option value="done">已完成</option>
+            <option value="shelved">已搁置</option>
+          </select></div>
           <div class="form-row"><label>预算</label><input id="f-budget" placeholder="¥23,436"></div>
           <div class="form-row"><label>预算备注</label><input id="f-budgetNote" placeholder="节余 6,474"></div>
           <div class="form-row"><label>路线（用逗号分隔）</label><input id="f-route" placeholder="东京，富士山，大阪"><div class="form-hint">例：城市A，城市B，城市C</div></div>
+          <div class="form-row"><label>标签（用逗号分隔，如 海岛,潜水,美食）</label><input id="f-tags" placeholder="海岛，潜水"></div>
           <div class="form-row"><label>小结</label><textarea id="f-summary" placeholder="一句话记录这段旅程"></textarea></div>
         </div>
-        <div class="editor-group" id="grp-review" style="display:none">
+        <div id="grp-review" style="display:none">
           <div class="form-row"><label>标题</label><input id="f-title" placeholder="如 东京美食地图"></div>
           <div class="form-row"><label>标签</label><input id="f-tag" placeholder="🇯🇵 日本"></div>
           <div class="form-row"><label>日期 (YYYY-MM)</label><input id="f-rdate" placeholder="2026-08"></div>
           <div class="form-row"><label>正文</label><textarea id="f-body" placeholder="写点什么…"></textarea></div>
         </div>
       </div>
-      <div class="editor-actions">
+      <div class="sheet-actions">
         <button class="btn-del" id="editorDelete" style="display:none" onclick="deleteCurrent()">删除</button>
         <button class="btn-cancel" onclick="closeEditor()">取消</button>
         <button class="btn-save" onclick="saveEditor()">保存</button>
       </div>
     </div>
   </div>
+
+  <!-- 详情（点击历史条目） -->
+  <div class="mask" id="detailMask" onclick="if(event.target===this)closeDetail()">
+    <div class="sheet">
+      <div class="sheet-head">
+        <div class="sheet-title" id="detailTitle">详情</div>
+        <button class="sheet-x" onclick="closeDetail()">✕</button>
+      </div>
+      <div class="sheet-body" id="detailBody"></div>
+      <div class="sheet-actions" id="detailActions"></div>
+    </div>
+  </div>
+
+  <!-- 菜单 -->
+  <div class="mask" id="menuMask" onclick="if(event.target===this)closeMenu()">
+    <div class="sheet">
+      <div class="sheet-head">
+        <div class="sheet-title">菜单</div>
+        <button class="sheet-x" onclick="closeMenu()">✕</button>
+      </div>
+      <div class="sheet-body" style="padding-bottom:6px;">
+        <button class="menu-item" onclick="manualSync()"><span class="mi-icon">🔄</span><span>手动云端同步<div class="mi-sub">立即上传/拉取最新数据</div></span></button>
+        <button class="menu-item" onclick="generateReport()"><span class="mi-icon">🖼️</span><span>生成旅行年报<div class="mi-sub">海报图片，可保存分享</div></span></button>
+        <button class="menu-item" onclick="exportBackup()"><span class="mi-icon">💾</span><span>数据备份导出<div class="mi-sub">全部行程导出文件</div></span></button>
+        <button class="menu-item" onclick="openSettings()"><span class="mi-icon">⚙️</span><span>设置<div class="mi-sub">回收站 / 缓存</div></span></button>
+        <button class="menu-item" onclick="openHelp()"><span class="mi-icon">❓</span><span>帮助中心<div class="mi-sub">使用说明</div></span></button>
+      </div>
+      <div class="sheet-actions" style="border-top:none;"><button class="btn-cancel" style="flex:1" onclick="closeMenu()">关闭</button></div>
+    </div>
+  </div>
+
+  <!-- 筛选 -->
+  <div class="mask" id="filterMask" onclick="if(event.target===this)closeFilter()">
+    <div class="sheet">
+      <div class="sheet-head">
+        <div class="sheet-title">筛选行程</div>
+        <button class="sheet-x" onclick="closeFilter()">✕</button>
+      </div>
+      <div class="sheet-body">
+        <div class="form-row"><label>行程状态</label>
+          <div class="chip-row" id="fStatusChips">
+            <span class="chip" data-v="plan">计划中</span>
+            <span class="chip" data-v="ongoing">进行中</span>
+            <span class="chip" data-v="done">已完成</span>
+            <span class="chip" data-v="shelved">已搁置</span>
+          </div>
+        </div>
+        <div class="form-row"><label>时间范围</label>
+          <select id="fRange">
+            <option value="all">全部时间</option>
+            <option value="half">近半年</option>
+            <option value="year">本年度</option>
+          </select>
+        </div>
+        <div class="form-row"><label>关键字（城市 / 国家 / 标签）</label><input id="fKw" placeholder="留空=不限"></div>
+      </div>
+      <div class="sheet-actions">
+        <button class="btn-cancel" onclick="resetFilter()">重置</button>
+        <button class="btn-save" onclick="applyFilter()">应用</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 提示 -->
+  <div class="toast" id="toast"></div>
 </div>
 
 <script>
 /* =========================================================
    CONFIG —— 云端同步配置（留空则纯本地）
-   创建好 Supabase 免费项目后，把 URL 和 anon key 填进来即可启用跨设备同步
    ========================================================= */
 const SUPABASE_URL = 'https://vcyqzssykbxzylauphla.supabase.co';
 const SUPABASE_ANON = 'sb_publishable_TLuxfH6l0kCzPAyJqgz1iA_lKz1qfjm';
 const OWNER = 'shan';
 
 /* =========================================================
-   种子数据（首次打开写入 localStorage；之后所有读写走 store）
+   种子数据
    ========================================================= */
 const SEED = {
   trips: [
     { id:'egypt', name:'埃及·红海双潜', flag:'🇪🇬', country:'埃及', date:'2025-05', nights:14, status:'done',
-      budget:'¥23,436.80', budgetNote:'节余 6,474', route:['开罗','沙姆沙伊赫','达哈卜'],
+      budget:'¥23,436.80', budgetNote:'节余 6,474', route:['开罗','沙姆沙伊赫','达哈卜'], tags:['潜水','海岛'],
       summary:'红海潜水 + 金字塔，长线最划算的一段。' },
     { id:'ph', name:'菲律宾·跳岛', flag:'🇵🇭', country:'菲律宾', date:'2025-06', nights:12, status:'done',
-      budget:'¥16,605', budgetNote:'节余 1,517', route:['宿务','薄荷','墨宝','锡基霍尔'],
+      budget:'¥16,605', budgetNote:'节余 1,517', route:['宿务','薄荷','墨宝','锡基霍尔'], tags:['海岛','潜水'],
       summary:'热带跳岛 + 沙丁鱼风暴，性价比海岛。' },
     { id:'yunnan', name:'云南·大理+泸沽湖', flag:'🇨🇳', country:'中国', date:'2024-11', nights:7, status:'done',
-      budget:'¥9,025', budgetNote:'收支平衡', route:['重庆','大理','泸沽湖'],
+      budget:'¥9,025', budgetNote:'收支平衡', route:['重庆','大理','泸沽湖'], tags:['短途','自驾'],
       summary:'大理慢生活 + 泸沽湖，交通占比偏高。' },
     { id:'henan', name:'河南·洛阳赏秋', flag:'🇨🇳', country:'中国', date:'2025-11', nights:4, status:'done',
-      budget:'¥4,512', budgetNote:'超支 912', route:['郑州','中牟','洛阳'],
+      budget:'¥4,512', budgetNote:'超支 912', route:['郑州','中牟','洛阳'], tags:['美食','短途'],
       summary:'赏秋 + 美食，非必要项花得有点多。' },
     { id:'guangxi', name:'广西·河池+柳州', flag:'🇨🇳', country:'中国', date:'2024-08', nights:9, status:'done',
-      budget:'~¥10,800', budgetNote:'含估算', route:['徐闻','明仕','渠洋湖','河池','柳州','融水'],
+      budget:'~¥10,800', budgetNote:'含估算', route:['徐闻','明仕','渠洋湖','河池','柳州','融水'], tags:['自驾','短途'],
       summary:'自驾 + 喀斯特山水，性价比不错。' },
     { id:'maldives', name:'马尔代夫·跳岛水屋', flag:'🇲🇻', country:'马尔代夫', date:'2023-09', nights:14, status:'done',
-      budget:'¥50,739', budgetNote:'规划档', route:['Maafushi','Thinadhoo','Fulidhoo','威斯汀水屋'],
+      budget:'¥50,739', budgetNote:'规划档', route:['Maafushi','Thinadhoo','Fulidhoo','威斯汀水屋'], tags:['海岛'],
       summary:'水屋全餐档，人均日均最贵的一段。' }
   ],
   reviews: [
@@ -405,11 +594,18 @@ const SEED = {
     { id:'r4', title:'洛阳水席', tag:'🏯 河南', date:'2025-11', body:'水席尝个鲜就好，真正好吃的是街边汤馆。采耳和妆造是超支大头。' },
     { id:'r5', title:'明仕田园', tag:'🍃 广西', date:'2024-08', body:'明仕像小桂林，竹筏值得坐。河池小三峡人少景美，适合慢游。' },
     { id:'r6', title:'威斯汀水屋', tag:'🏝️ 马尔代夫', date:'2023-09', body:'水屋 AI 全餐真省心，但价格也真贵。跳岛公共船比快艇便宜很多。' }
-  ]
+  ],
+  wishlist: [
+    { id:'w1', name:'蓝梦岛', flag:'🇮🇩', country:'印尼', done:false },
+    { id:'w2', name:'科莫多', flag:'🇮🇩', country:'印尼', done:false },
+    { id:'w3', name:'斯米兰', flag:'🇹🇭', country:'泰国', done:false },
+    { id:'w4', name:'新西兰', flag:'🇳🇿', country:'新西兰', done:false }
+  ],
+  trash: []
 };
 
 /* =========================================================
-   STORE —— localStorage 持久化 + 自动保存 + Supabase 同步
+   STORE
    ========================================================= */
 const LS_KEY = 'travel_store_v1';
 let store = loadStore();
@@ -417,59 +613,48 @@ let store = loadStore();
 function loadStore(){
   try {
     const raw = localStorage.getItem(LS_KEY);
-    if (raw) return JSON.parse(raw);
+    if (raw){ const s = JSON.parse(raw); s.trash = s.trash || []; s.wishlist = s.wishlist || []; return s; }
   } catch(e){}
-  // 首次：写入种子
   const init = JSON.parse(JSON.stringify(SEED));
   try { localStorage.setItem(LS_KEY, JSON.stringify(init)); } catch(e){}
   return init;
 }
-function saveStore(){
-  try { localStorage.setItem(LS_KEY, JSON.stringify(store)); } catch(e){}
-  syncToCloud();
-}
+function saveStore(){ try { localStorage.setItem(LS_KEY, JSON.stringify(store)); } catch(e){} syncToCloud(); }
 
-/* Supabase 客户端（可选） */
-let supabaseClient = null;
-let cloudReady = false;
+/* Supabase */
+let supabaseClient = null, cloudReady = false;
 if (SUPABASE_URL && SUPABASE_ANON && window.supabase && window.supabase.createClient){
-  try {
-    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-    cloudReady = true;
-  } catch(e){ cloudReady = false; }
+  try { supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON); cloudReady = true; } catch(e){ cloudReady = false; }
 }
-
 async function syncToCloud(){
-  if (!cloudReady || !supabaseClient) { updateConn('offline'); return; }
+  if (!cloudReady || !supabaseClient){ updateConn('offline'); return; }
   updateConn('syncing');
   try {
-    const payload = { id: OWNER, user_id: OWNER, type: 'full', title: 'store', date: todayStr(), done: true, data: store, updated_at: new Date().toISOString() };
+    const payload = { id: OWNER, user_id: OWNER, type:'full', title:'store', date: todayStr(), done:true, data: store, updated_at: new Date().toISOString() };
     const { error } = await supabaseClient.from('travel_records').upsert(payload);
     if (error) throw error;
     updateConn('online');
-  } catch(e){
-    updateConn('offline');
-  }
+  } catch(e){ updateConn('offline'); }
 }
-
 async function pullFromCloud(){
   if (!cloudReady || !supabaseClient) return;
   try {
     const { data, error } = await supabaseClient.from('travel_records').select('data').eq('user_id', OWNER).maybeSingle();
-    if (!error && data && data.data){
-      store = data.data;
-      try { localStorage.setItem(LS_KEY, JSON.stringify(store)); } catch(e){}
-      renderAll();
-    }
+    if (!error && data && data.data){ store = data.data; store.trash = store.trash || []; store.wishlist = store.wishlist || []; try { localStorage.setItem(LS_KEY, JSON.stringify(store)); } catch(e){} renderAll(); }
   } catch(e){}
 }
+async function manualSync(){
+  if (!cloudReady){ showToast('未连接云端，仅本地保存'); return; }
+  updateConn('syncing');
+  await pullFromCloud();
+  saveStore();
+  updateConn('online');
+  showToast('已同步云端 ✓');
+}
 
-/* =========================================================
-   连接状态标识
-   ========================================================= */
+/* 连接状态 */
 function updateConn(state){
-  const dot = document.getElementById('connDot');
-  const txt = document.getElementById('connText');
+  const dot = document.getElementById('connDot'), txt = document.getElementById('connText');
   if (!dot || !txt) return;
   dot.className = 'conn-dot ' + state;
   if (state === 'online') txt.textContent = '已同步云端';
@@ -480,247 +665,495 @@ window.addEventListener('online', () => { if (cloudReady) syncToCloud(); else up
 window.addEventListener('offline', () => updateConn('offline'));
 
 /* =========================================================
-   渲染
+   工具
    ========================================================= */
 function todayStr(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'); }
+function showToast(msg){
+  const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._t); t._t = setTimeout(()=>t.classList.remove('show'), 1800);
+}
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function moneyNum(s){ return parseFloat(String(s||'').replace(/[^\d.]/g,''))||0; }
+const STATUS_LABEL = { done:'已完成', ongoing:'进行中', plan:'计划中', shelved:'已搁置' };
 
+/* =========================================================
+   渲染
+   ========================================================= */
 function renderStats(){
   const trips = store.trips || [];
   const countries = new Set(trips.map(t=>t.country)).size;
+  const cities = trips.reduce((s,t)=>s+(t.route?t.route.length:0),0);
   const nights = trips.reduce((s,t)=>s+(t.nights||0),0);
-  const el = document.getElementById('ovStats');
-  el.innerHTML = [
-    statCard('🌍', countries, '去过的国家'),
-    statCard('🏙️', trips.reduce((s,t)=>s+(t.route?t.route.length:0),0), '到访的城市'),
-    statCard('📅', nights, '旅行总晚数'),
-    statCard('💰', '¥115k', '旅行总花费')
+  const total = trips.reduce((s,t)=>s+moneyNum(t.budget),0);
+  const costTxt = total>=1000 ? '¥'+(total/1000).toFixed(0)+'k' : '¥'+total;
+  document.getElementById('ovStats').innerHTML = [
+    statCard('🌍', countries, '去过的国家', 'country'),
+    statCard('🏙️', cities, '到访的城市', 'city'),
+    statCard('📅', nights, '旅行总晚数', 'nights'),
+    statCard('💰', costTxt, '旅行总花费', 'cost')
   ].join('');
 }
-function statCard(icon, val, label){
-  return '<div class="stat-card"><div class="stat-icon">'+icon+'</div><div class="stat-value">'+val+'</div><div class="stat-label">'+label+'</div></div>';
+function statCard(icon, val, label, type){
+  return '<div class="stat-card" onclick="openStatDetail(\''+type+'\')"><div class="stat-icon">'+icon+'</div><div class="stat-value">'+val+'</div><div class="stat-label">'+label+'</div><div class="drill">查看 ›</div></div>';
+}
+
+let searchTerm = '', filterObj = { status:[], range:'all', kw:'' };
+
+function matchFilter(t){
+  if (filterObj.status.length && filterObj.status.indexOf(t.status)<0) return false;
+  if (filterObj.range==='year' && t.date && t.date.slice(0,4)!==String(new Date().getFullYear())) return false;
+  if (filterObj.range==='half'){ const d=new Date(); const half=new Date(d.getFullYear(), d.getMonth()-5, 1); if (t.date && new Date(t.date+'-01')<half) return false; }
+  if (filterObj.kw){
+    const kw = filterObj.kw.toLowerCase();
+    const hay = ((t.name||'')+' '+(t.country||'')+' '+((t.route||[]).join(' '))+' '+((t.tags||[]).join(' '))).toLowerCase();
+    if (hay.indexOf(kw)<0) return false;
+  }
+  return true;
 }
 
 function renderHistory(){
   const groups = {};
-  (store.trips||[]).forEach(t=>{ (groups[t.date]=groups[t.date]||[]).push({flag:t.flag,title:t.name,meta:t.route?t.route.join(' · '):'',status:t.status}); });
-  (store.reviews||[]).forEach(r=>{ (groups[r.date]=groups[r.date]||[]).push({flag:'💭',title:r.title,meta:r.tag||'',status:'done'}); });
+  (store.trips||[]).forEach(t=>{ if (!matchFilter(t)) return; (groups[t.date]=groups[t.date]||[]).push({kind:'trip', flag:t.flag, title:t.name, meta:(t.route?t.route.join(' · '):''), status:t.status, id:t.id}); });
+  (store.reviews||[]).forEach(r=>{ if (filterObj.status.length||filterObj.range!=='all') return; const kw=filterObj.kw.toLowerCase(); if (kw && ((r.title+' '+r.tag).toLowerCase().indexOf(kw)<0)) return; (groups[r.date]=groups[r.date]||[]).push({kind:'review', flag:'💭', title:r.title, meta:r.tag||'', status:'done', id:r.id}); });
+  // 搜索
+  if (searchTerm){
+    const kw = searchTerm.toLowerCase();
+    for (const m in groups){ groups[m] = groups[m].filter(it => ((it.title+' '+it.meta+' '+(it.kind==='trip'?'':it.meta)).toLowerCase().indexOf(kw)>=0)); }
+    for (const m in groups){ if (!groups[m].length) delete groups[m]; }
+  }
   const months = Object.keys(groups).sort().reverse();
   const el = document.getElementById('historyList');
-  if (!months.length){ el.innerHTML = '<div class="card" style="text-align:center;color:#94a3b8;">暂无记录</div>'; return; }
+  if (!months.length){ el.innerHTML = '<div class="card" style="text-align:center;color:#94a3b8;">没有匹配的行程</div>'; return; }
   el.innerHTML = months.map(m=>{
     const items = groups[m].map(it=>{
-      const badge = it.status==='done' ? '<span class="hi-badge done">已完成</span>' : '<span class="hi-badge plan">规划中</span>';
-      return '<div class="history-item"><span class="hi-flag">'+it.flag+'</span><div class="hi-main"><div class="hi-title">'+it.title+'</div><div class="hi-meta">'+it.meta+'</div></div>'+badge+'</div>';
+      const badge = '<span class="hi-badge '+it.status+'">'+STATUS_LABEL[it.status]+'</span>';
+      const actions = it.kind==='trip'
+        ? '<div class="swipe-actions"><button class="a-edit" onclick="actEdit(\'trip\',\''+it.id+'\')">编辑</button><button class="a-copy" onclick="actCopy(\'trip\',\''+it.id+'\')">复制</button><button class="a-export" onclick="actExport(\'trip\',\''+it.id+'\')">导出</button><button class="a-archive" onclick="actArchive(\'trip\',\''+it.id+'\')">归档</button><button class="a-del" onclick="confirmDelete(\'trip\',\''+it.id+'\')">删除</button></div>'
+        : '<div class="swipe-actions"><button class="a-edit" onclick="actEdit(\'review\',\''+it.id+'\')">编辑</button><button class="a-del" onclick="confirmDelete(\'review\',\''+it.id+'\')">删除</button></div>';
+      const front = '<div class="swipe-front" onclick="frontClick(this)"><span class="hi-check">✓</span><span class="hi-flag">'+it.flag+'</span><div class="hi-main"><div class="hi-title">'+esc(it.title)+'</div><div class="hi-meta">'+esc(it.meta)+'</div></div>'+badge+'</div>';
+      return '<div class="swipe-row" data-kind="'+it.kind+'" data-id="'+it.id+'">'+actions+front+'</div>';
     }).join('');
     return '<div class="history-group collapsed" data-month="'+m+'"><div class="history-head" onclick="toggleHistory(\''+m+'\')"><div class="ht">📆 '+m+' <span style="color:#94a3b8;font-weight:400;font-size:12px;">('+groups[m].length+' 条)</span></div><span class="arrow">▼</span></div><div class="history-body">'+items+'</div></div>';
   }).join('');
 }
-function toggleHistory(m){
-  const g = document.querySelector('.history-group[data-month="'+m+'"]');
-  if (g) g.classList.toggle('collapsed');
-}
-let allExpanded = false;
+function toggleHistory(m){ const g=document.querySelector('.history-group[data-month="'+m+'"]'); if(g) g.classList.toggle('collapsed'); }
+let allExpanded=false;
 function toggleAllHistory(){
-  allExpanded = !allExpanded;
-  document.querySelectorAll('.history-group').forEach(g=>{ g.classList.toggle('collapsed', !allExpanded); });
-  const btn = document.querySelector('.section-title .link-btn');
-  if (btn) btn.textContent = allExpanded ? '折叠全部' : '展开全部';
+  allExpanded=!allExpanded;
+  document.querySelectorAll('.history-group').forEach(g=>g.classList.toggle('collapsed', !allExpanded));
+  document.getElementById('toggleAllBtn').textContent = allExpanded?'折叠全部':'展开全部';
 }
 
 function renderTrips(){
-  const el = document.getElementById('tripList');
-  el.innerHTML = (store.trips||[]).map(t=>{
-    const badge = t.status==='done' ? '<span class="trip-status">已完成</span>' : '<span class="trip-status">规划中</span>';
-    const tags = (t.route||[]).map(r=>'<span class="route-tag">'+r+'</span>').join('');
-    return '<div class="trip-card '+(t.status==='done'?'done':'')+'" onclick="openEditor(\'trip\',\''+t.id+'\')"><div class="trip-title">'+t.flag+' '+t.name+'</div>'+badge+'<div class="trip-budget">'+t.budget+' <span style="font-size:12px;color:#64748b;font-weight:500;">'+t.budgetNote+'</span></div><div class="trip-meta"><span>📅 '+t.date+'</span><span>🌙 '+(t.nights||0)+' 晚</span></div><div class="trip-route">'+tags+'</div><div style="margin-top:8px;font-size:13px;color:#475569;">'+t.summary+'</div></div>';
-  }).join('');
+  document.getElementById('tripList').innerHTML = (store.trips||[]).map(t=>{
+    const tags=(t.route||[]).map(r=>'<span class="route-tag">'+esc(r)+'</span>').join('');
+    const tag2=(t.tags||[]).map(r=>'<span class="route-tag" style="background:#f3e8ff;color:#7c3aed;">'+esc(r)+'</span>').join('');
+    return '<div class="trip-card '+(t.status||'done')+'" onclick="openDetail(\'trip\',\''+t.id+'\')"><div class="trip-title">'+t.flag+' '+esc(t.name)+'</div><span class="trip-status '+(t.status||'done')+'">'+STATUS_LABEL[t.status||'done']+'</span><div class="trip-budget">'+esc(t.budget)+' <span style="font-size:12px;color:#64748b;font-weight:500;">'+esc(t.budgetNote||'')+'</span></div><div class="trip-meta"><span>📅 '+esc(t.date)+'</span><span>🌙 '+(t.nights||0)+' 晚</span></div><div class="trip-route">'+tags+tag2+'</div><div style="margin-top:8px;font-size:13px;color:#475569;">'+esc(t.summary||'')+'</div></div>';
+  }).join('') || '<div class="card" style="text-align:center;color:#94a3b8;">暂无行程，点右上角 ＋ 新建</div>';
 }
 
 function renderFootprints(){
-  const el = document.getElementById('fpList');
-  const rows = (store.trips||[]).map(t=>(t.route||[]).map(c=>({flag:t.flag,city:c}))).flat();
-  el.innerHTML = rows.map(r=>'<div style="padding:12px 16px;border-bottom:1px dashed rgba(30,58,138,0.08);display:flex;align-items:center;gap:10px;font-size:14px;"><span style="font-size:20px;">'+r.flag+'</span>'+r.city+'</div>').join('') || '<div style="padding:20px;text-align:center;color:#94a3b8;">暂无足迹</div>';
+  const rows=(store.trips||[]).map(t=>(t.route||[]).map(c=>({flag:t.flag,city:c}))).flat();
+  document.getElementById('fpList').innerHTML = rows.map(r=>'<div style="padding:12px 16px;border-bottom:1px dashed rgba(30,58,138,0.08);display:flex;align-items:center;gap:10px;font-size:14px;"><span style="font-size:20px;">'+r.flag+'</span>'+esc(r.city)+'</div>').join('') || '<div style="padding:20px;text-align:center;color:#94a3b8;">暂无足迹</div>';
 }
 
 function renderAccounts(){
-  const trips = store.trips||[];
-  const total = trips.reduce((s,t)=> s + (parseFloat(String(t.budget).replace(/[^\d.]/g,''))||0), 0);
-  document.getElementById('accTotal').innerHTML = '<div class="total-row"><div class="total-cell"><div class="v">'+trips.length+'</div><div class="l">段旅程</div></div><div class="total-cell divider"><div class="v">'+trips.reduce((s,t)=>s+(t.nights||0),0)+'</div><div class="l">总晚数</div></div><div class="total-cell"><div class="v">≈¥'+(total/1000).toFixed(0)+'k</div><div class="l">总花费</div></div></div>';
-  document.getElementById('accList').innerHTML = trips.map(t=>'<div class="card" style="display:flex;justify-content:space-between;align-items:center;"><div><div style="font-size:15px;font-weight:700;">'+t.flag+' '+t.name+'</div><div style="font-size:11px;color:#94a3b8;margin-top:2px;">'+t.date+' · '+(t.nights||0)+' 晚</div></div><div style="font-size:18px;font-weight:800;color:#2563eb;">'+t.budget+'</div></div>').join('');
+  const trips=store.trips||[];
+  const total=trips.reduce((s,t)=>s+moneyNum(t.budget),0);
+  document.getElementById('accTotal').innerHTML='<div class="total-row"><div class="total-cell"><div class="v">'+trips.length+'</div><div class="l">段旅程</div></div><div class="total-cell divider"><div class="v">'+trips.reduce((s,t)=>s+(t.nights||0),0)+'</div><div class="l">总晚数</div></div><div class="total-cell"><div class="v">≈¥'+(total/1000).toFixed(0)+'k</div><div class="l">总花费</div></div></div>';
+  document.getElementById('accList').innerHTML=trips.map(t=>'<div class="card" style="display:flex;justify-content:space-between;align-items:center;"><div><div style="font-size:15px;font-weight:700;">'+t.flag+' '+esc(t.name)+'</div><div style="font-size:11px;color:#94a3b8;margin-top:2px;">'+t.date+' · '+(t.nights||0)+' 晚</div></div><div style="font-size:18px;font-weight:800;color:#2563eb;">'+esc(t.budget)+'</div></div>').join('');
 }
 
 function renderReviews(){
-  const el = document.getElementById('reviewList');
-  el.innerHTML = (store.reviews||[]).map(r=>'<div class="review-card" onclick="openEditor(\'review\',\''+r.id+'\')"><div class="review-title">'+r.title+'</div><div class="review-meta">'+r.date+' · <span class="review-tag">'+(r.tag||'')+'</span></div><div class="review-body">'+r.body+'</div></div>').join('') || '<div class="card" style="text-align:center;color:#94a3b8;">暂无记录</div>';
+  document.getElementById('reviewList').innerHTML=(store.reviews||[]).map(r=>'<div class="review-card" onclick="openDetail(\'review\',\''+r.id+'\')"><div class="review-title">'+esc(r.title)+'</div><div class="review-meta">'+r.date+' · <span class="review-tag">'+(r.tag||'')+'</span></div><div class="review-body">'+esc(r.body||'')+'</div></div>').join('') || '<div class="card" style="text-align:center;color:#94a3b8;">暂无记录</div>';
 }
 
-function renderAll(){
-  renderStats(); renderHistory(); renderTrips(); renderFootprints(); renderAccounts(); renderReviews();
-}
-
-/* =========================================================
-   导航 + 横滑（touch 方案，已验证）
-   ========================================================= */
-const content = document.getElementById('mainContent');
-const phone = document.querySelector('.phone');
-const PAGES = ['overview','footprints','planning','accounts','recommend','guides','english','reviews'];
-let currentIdx = 0;
-
-function syncDots(idx){
-  currentIdx = idx;
-  document.querySelectorAll('#pageDots .page-dot').forEach((d,i)=> d.classList.toggle('active', i===idx));
-  document.getElementById('fabLeft').classList.toggle('hidden', idx===0);
-  document.getElementById('fabRight').classList.toggle('hidden', idx===PAGES.length-1);
-}
-function switchTab(targetPage){
-  const navEl = document.getElementById('bottomNav');
-  const item = navEl && navEl.querySelector('.nav-item[data-page="'+targetPage+'"]');
-  const page = document.getElementById('page-' + targetPage);
-  if (!item || !page) return;
-  navEl.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.querySelectorAll('.page').forEach(p => { p.classList.remove('active','anim-left','anim-right'); });
-  const curIdx = currentIdx;
-  const newIdx = PAGES.indexOf(targetPage);
-  page.classList.add('active', newIdx > curIdx ? 'anim-right' : 'anim-left');
-  item.classList.add('active');
-  syncDots(newIdx);
-  content.scrollTop = 0;
-}
-function switchByIdx(newIdx){
-  if (newIdx < 0 || newIdx >= PAGES.length || newIdx === currentIdx) return;
-  switchTab(PAGES[newIdx]);
-}
-
-document.getElementById('bottomNav').addEventListener('click', e => {
-  const item = e.target.closest('.nav-item');
-  if (item) switchTab(item.dataset.page);
-});
-document.getElementById('fabLeft').addEventListener('click', () => switchByIdx(currentIdx-1));
-document.getElementById('fabRight').addEventListener('click', () => switchByIdx(currentIdx+1));
-document.getElementById('pageDots').addEventListener('click', e => {
-  const d = e.target.closest('.page-dot');
-  if (d) switchByIdx(parseInt(d.dataset.i, 10));
-});
-
-// 横滑：touchmove 水平主导时 preventDefault 接管
-const SWIPE_MIN = 40, SWIPE_RATIO = 1.1;
-let tStartX=0, tStartY=0, tTracking=false, tLocked=false;
-function activePage(){ return document.querySelector('.page.active'); }
-function resetTransform(){ const p = activePage(); if (p) p.style.transform = ''; }
-function onTS(e){
-  if (document.querySelector('.sub-page.active') || (document.getElementById('editorMask') && document.getElementById('editorMask').style.display === 'flex')) { tTracking=false; return; }
-  const t = e.touches[0]; tStartX=t.clientX; tStartY=t.clientY; tTracking=true; tLocked=false;
-}
-function onTM(e){
-  if (!tTracking) return;
-  const t = e.touches[0]; const dx=t.clientX-tStartX, dy=t.clientY-tStartY;
-  if (!tLocked && Math.abs(dx) > Math.abs(dy)) tLocked=true;
-  if (tLocked){ e.preventDefault(); const p=activePage(); if(p) p.style.transform='translateX('+(dx*0.35)+'px)'; }
-}
-function onTE(e){
-  if (!tTracking) return; tTracking=false; resetTransform();
-  if (!tLocked) return;
-  const ct=e.changedTouches[0]; const dx=ct.clientX-tStartX, dy=ct.clientY-tStartY;
-  if (Math.abs(dx) < SWIPE_MIN) return;
-  if (Math.abs(dx) < Math.abs(dy)*SWIPE_RATIO) return;
-  if (dx < 0) switchByIdx(currentIdx+1); else switchByIdx(currentIdx-1);
-}
-const hasTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
-if (hasTouch){
-  phone.addEventListener('touchstart', onTS, {passive:true});
-  phone.addEventListener('touchmove', onTM, {passive:false});
-  phone.addEventListener('touchend', onTE, {passive:true});
-  phone.addEventListener('touchcancel', ()=>{ tTracking=false; tLocked=false; resetTransform(); });
-} else {
-  let mDown=false,mX=0,mY=0;
-  phone.addEventListener('mousedown', e=>{ mDown=true; mX=e.clientX; mY=e.clientY; });
-  window.addEventListener('mouseup', e=>{
-    if(!mDown) return; mDown=false;
-    const dx=e.clientX-mX, dy=e.clientY-mY;
-    if (Math.abs(dx)<SWIPE_MIN || Math.abs(dx)<Math.abs(dy)*SWIPE_RATIO) return;
-    if (dx<0) switchByIdx(currentIdx+1); else switchByIdx(currentIdx-1);
+function renderWishlist(){
+  const w=store.wishlist||[];
+  const done=w.filter(x=>x.done).length;
+  let html='<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><span style="font-size:13px;color:#64748b;">已打卡 '+done+' / '+w.length+'</span><button class="link-btn" onclick="openWishEditor()">＋ 新增</button></div>';
+  if (!w.length) html+='<div style="text-align:center;color:#94a3b8;font-size:13px;">还没有想去的地方</div>';
+  w.forEach(x=>{
+    html+='<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px dashed rgba(30,58,138,0.07);"><span style="font-size:20px;">'+x.flag+'</span><div style="flex:1;font-size:14px;">'+esc(x.name)+' <span style="font-size:11px;color:#94a3b8;">'+esc(x.country||'')+'</span></div>'+(x.done?'<span style="font-size:11px;color:#059669;">✓ 已打卡</span>':'<button class="link-btn" onclick="markWish(\''+x.id+'\',true)">标记打卡</button>')+' <button class="link-btn" style="color:#dc2626;" onclick="delWish(\''+x.id+'\')">删</button></div>';
   });
+  html+='</div>';
+  document.getElementById('wishlistWrap').innerHTML=html;
 }
+function toggleWishlist(){ const w=document.getElementById('wishlistWrap'); const open=w.style.display==='none'; w.style.display=open?'block':'none'; document.querySelector('.section-title .link-btn[onclick="toggleWishlist()"]').textContent=open?'收起':'展开'; }
 
-(function showHintOnce(){
-  try {
-    if (localStorage.getItem('swipeHintShown')==='1') return;
-    document.getElementById('swipeHint').classList.add('show');
-    setTimeout(()=>document.getElementById('swipeHint').classList.remove('show'), 2800);
-    localStorage.setItem('swipeHintShown','1');
-  } catch(_){}
-})();
+function renderAll(){ renderStats(); renderHistory(); renderTrips(); renderFootprints(); renderAccounts(); renderReviews(); renderWishlist(); }
 
 /* =========================================================
-   编辑 / 新增 / 删除（手机可用）
+   统计下钻
    ========================================================= */
-function setVal(id, v){ const e = document.getElementById(id); if (e) e.value = (v == null ? '' : v); }
-function getVal(id){ const e = document.getElementById(id); return e ? e.value.trim() : ''; }
-function setSel(id, v){ const e = document.getElementById(id); if (e) e.value = (v == null ? '' : v); }
-
-let editingType = 'trip', editingId = null;
-function openEditor(type, id){
-  editingType = type; editingId = id || null;
-  document.getElementById('grp-trip').style.display = (type === 'trip') ? 'block' : 'none';
-  document.getElementById('grp-review').style.display = (type === 'review') ? 'block' : 'none';
-  document.getElementById('editorTitle').textContent = (id ? '编辑' : '添加') + (type === 'trip' ? '行程' : '记录');
-  document.getElementById('editorDelete').style.display = id ? 'block' : 'none';
-  if (type === 'trip'){
-    const t = id ? (store.trips.find(x => x.id === id) || {}) : {};
-    setVal('f-name', t.name); setVal('f-flag', t.flag); setVal('f-country', t.country);
-    setVal('f-date', t.date); setVal('f-nights', t.nights); setSel('f-status', t.status || 'done');
-    setVal('f-budget', t.budget); setVal('f-budgetNote', t.budgetNote);
-    setVal('f-route', (t.route || []).join('，')); setVal('f-summary', t.summary);
-  } else {
-    const r = id ? (store.reviews.find(x => x.id === id) || {}) : {};
-    setVal('f-title', r.title); setVal('f-tag', r.tag); setVal('f-rdate', r.date); setVal('f-body', r.body);
+function openStatDetail(type){
+  let title='', body='';
+  const trips=store.trips||[];
+  if (type==='country'){
+    title='🌍 去过的国家';
+    const map={}; trips.forEach(t=>{ map[t.country]=map[t.country]||{flag:t.flag,cities:[]}; (t.route||[]).forEach(c=>{ if(map[t.country].cities.indexOf(c)<0) map[t.country].cities.push(c); }); });
+    const entries=Object.keys(map).map(c=>({c, flag:map[c].flag, n:map[c].cities.length, cities:map[c].cities}));
+    body='<div class="detail-block"><h4>共 '+entries.length+' 个国家</h4>'+entries.map(e=>'<div class="country-line"><span style="font-size:20px;">'+e.flag+'</span><div><div style="font-weight:700;">'+esc(e.c)+' <span style="font-size:11px;color:#94a3b8;">'+e.n+' 城</span></div><div class="cl-sub">'+esc(e.cities.join('、'))+'</div></div></div>').join('')+'</div>';
+  } else if (type==='city'){
+    title='🏙️ 到访的城市';
+    const map={}; trips.forEach(t=>{ map[t.country]=map[t.country]||[]; (t.route||[]).forEach(c=>{ if(map[t.country].indexOf(c)<0) map[t.country].push(c); }); });
+    body='<div class="detail-block"><h4>共 '+trips.reduce((s,t)=>s+(t.route?t.route.length:0),0)+' 个城市</h4>'+Object.keys(map).map(c=>'<div class="country-line"><span style="font-size:18px;">📍</span><div><div style="font-weight:700;">'+esc(c)+'</div><div class="cl-sub">'+esc(map[c].join('、'))+'</div></div></div>').join('')+'</div>';
+  } else if (type==='nights'){
+    title='📅 旅行总晚数';
+    const yr={}; trips.forEach(t=>{ const y=(t.date||'----').slice(0,4); yr[y]=(yr[y]||0)+(t.nights||0); });
+    const ks=Object.keys(yr).filter(k=>k!=='----').sort(); const max=Math.max(1,...ks.map(k=>yr[k]));
+    body='<div class="detail-block"><h4>各年住宿天数</h4>'+ks.map(k=>{ const v=yr[k]; return '<div class="bar-row"><span class="bl">'+k+'</span><div class="bar-track"><div class="bar-fill" style="width:'+(v/max*100)+'%"></div></div><span class="bv">'+v+'</span></div>'; }).join('')+'</div>';
+  } else if (type==='cost'){
+    title='💰 旅行总花费';
+    const yr={}; trips.forEach(t=>{ const y=(t.date||'----').slice(0,4); yr[y]=(yr[y]||0)+moneyNum(t.budget); });
+    const ks=Object.keys(yr).filter(k=>k!=='----').sort(); const max=Math.max(1,...ks.map(k=>yr[k]));
+    body='<div class="detail-block"><h4>各年消费（按行程预算合计）</h4>'+ks.map(k=>{ const v=yr[k]; return '<div class="bar-row"><span class="bl">'+k+'</span><div class="bar-track"><div class="bar-fill" style="width:'+(v/max*100)+'%"></div></div><span class="bv">¥'+(v/1000).toFixed(0)+'k</span></div>'; }).join('')+'<div class="form-hint" style="margin-top:8px;">提示：目前按每段行程「预算」汇总，细分（住宿/交通/餐饮/游玩）可在每段行程中补充标签。</div></div>';
   }
-  document.getElementById('editorMask').style.display = 'flex';
+  document.getElementById('detailTitle').textContent=title;
+  document.getElementById('detailBody').innerHTML=body;
+  document.getElementById('detailActions').innerHTML='<button class="btn-primary" style="flex:1" onclick="closeDetail()">知道了</button>';
+  document.getElementById('detailMask').classList.add('show');
 }
-function closeEditor(){ document.getElementById('editorMask').style.display = 'none'; }
-function saveEditor(){
-  if (editingType === 'trip'){
-    const obj = {
-      id: editingId || ('trip_' + Date.now()),
-      name: getVal('f-name'), flag: getVal('f-flag') || '🏳️', country: getVal('f-country'),
-      date: getVal('f-date'), nights: parseInt(getVal('f-nights') || '0', 10) || 0,
-      status: getVal('f-status'), budget: getVal('f-budget'), budgetNote: getVal('f-budgetNote'),
-      route: getVal('f-route').split(/[，,、]/).map(s => s.trim()).filter(Boolean),
-      summary: getVal('f-summary')
-    };
-    if (editingId){ const i = store.trips.findIndex(x => x.id === editingId); if (i >= 0) store.trips[i] = obj; }
-    else store.trips.unshift(obj);
+function closeDetail(){ document.getElementById('detailMask').classList.remove('show'); }
+
+/* =========================================================
+   详情（点击历史/行程/记录条目）
+   ========================================================= */
+function openDetail(kind, id){
+  if (selectMode) return;
+  if (kind==='trip'){
+    const t=store.trips.find(x=>x.id===id); if(!t) return;
+    document.getElementById('detailTitle').textContent=t.flag+' '+t.name;
+    document.getElementById('detailBody').innerHTML=
+      '<div class="detail-block"><h4>概览</h4>'+
+      kv('状态', STATUS_LABEL[t.status||'done'])+
+      kv('国家', t.country||'-')+kv('日期', t.date||'-')+kv('晚数', (t.nights||0)+' 晚')+
+      kv('预算', t.budget||'-')+(t.budgetNote?kv('备注', t.budgetNote):'')+'</div>'+
+      '<div class="detail-block"><h4>路线</h4><div style="display:flex;flex-wrap:wrap;gap:6px;">'+((t.route||[]).map(r=>'<span class="route-tag">'+esc(r)+'</span>').join(''))+'</div></div>'+
+      (t.tags&&t.tags.length?'<div class="detail-block"><h4>标签</h4><div style="display:flex;flex-wrap:wrap;gap:6px;">'+t.tags.map(r=>'<span class="route-tag" style="background:#f3e8ff;color:#7c3aed;">'+esc(r)+'</span>').join('')+'</div></div>':'')+
+      (t.summary?'<div class="detail-block"><h4>小结</h4><div style="font-size:13px;color:#475569;line-height:1.6;">'+esc(t.summary)+'</div></div>':'');
+    document.getElementById('detailActions').innerHTML='<button class="btn-cancel" onclick="closeDetail()">关闭</button><button class="btn-save" onclick="closeDetail();openEditor(\'trip\',\''+id+'\')">编辑</button>';
   } else {
-    const obj = {
-      id: editingId || ('rev_' + Date.now()),
-      title: getVal('f-title'), tag: getVal('f-tag'), date: getVal('f-rdate'), body: getVal('f-body')
-    };
-    if (editingId){ const i = store.reviews.findIndex(x => x.id === editingId); if (i >= 0) store.reviews[i] = obj; }
-    else store.reviews.unshift(obj);
+    const r=store.reviews.find(x=>x.id===id); if(!r) return;
+    document.getElementById('detailTitle').textContent=r.title;
+    document.getElementById('detailBody').innerHTML='<div class="detail-block"><h4>信息</h4>'+kv('标签', r.tag||'-')+kv('日期', r.date||'-')+'</div><div class="detail-block"><h4>正文</h4><div style="font-size:13px;color:#475569;line-height:1.7;">'+esc(r.body||'')+'</div></div>';
+    document.getElementById('detailActions').innerHTML='<button class="btn-cancel" onclick="closeDetail()">关闭</button><button class="btn-save" onclick="closeDetail();openEditor(\'review\',\''+id+'\')">编辑</button>';
+  }
+  document.getElementById('detailMask').classList.add('show');
+}
+function kv(k,v){ return '<div class="kv"><span class="k">'+esc(k)+'</span><span class="v">'+esc(v)+'</span></div>'; }
+
+/* =========================================================
+   菜单 / 设置 / 帮助
+   ========================================================= */
+function openMenu(){ document.getElementById('menuMask').classList.add('show'); }
+function closeMenu(){ document.getElementById('menuMask').classList.remove('show'); }
+function openSettings(){
+  const n=store.trash.length;
+  document.getElementById('detailTitle').textContent='⚙️ 设置';
+  document.getElementById('detailBody').innerHTML='<div class="detail-block"><h4>回收站（'+n+' 项）</h4>'+(n?store.trash.map(x=>'<div class="kv"><span class="k">'+esc(x.name||x.title)+'</span><button class="link-btn" onclick="restoreTrash(\''+x._tid+'\')">恢复</button></div>').join(''):'<div style="font-size:13px;color:#94a3b8;">回收站是空的</div>')+'</div><div class="detail-block"><h4>本地缓存</h4><div style="font-size:13px;color:#475569;line-height:1.6;">数据自动保存在本机，并在联网时同步到云端。清除缓存会删除本机副本（云端仍在）。</div><button class="link-btn" style="color:#dc2626;margin-top:8px;" onclick="clearCache()">清除本机缓存</button></div>';
+  document.getElementById('detailActions').innerHTML='<button class="btn-primary" style="flex:1" onclick="closeDetail()">关闭</button>';
+  closeMenu(); document.getElementById('detailMask').classList.add('show');
+}
+function restoreTrash(tid){
+  const i=store.trash.findIndex(x=>x._tid===tid); if(i<0) return;
+  const item=store.trash[i]; store.trash.splice(i,1);
+  if (item._kind==='trip'){ store.trips.push(item); } else { store.reviews.push(item); }
+  saveStore(); renderAll(); openSettings(); showToast('已恢复');
+}
+function clearCache(){ try{ localStorage.removeItem(LS_KEY); }catch(e){} showToast('本机缓存已清除'); }
+function openHelp(){
+  document.getElementById('detailTitle').textContent='❓ 帮助中心';
+  document.getElementById('detailBody').innerHTML='<div class="detail-block"><h4>怎么用</h4><div style="font-size:13px;color:#475569;line-height:1.8;">· 顶部搜索：按行程名 / 城市 / 国家 / 标签过滤<br>· 右上角 ☰：同步、年报、备份、设置<br>· 蓝色标题栏 ＋：新建行程<br>· 4 张卡片：点击查看下钻详情<br>· 历史条目：左滑出现 编辑/复制/导出/归档/删除；长按进入多选<br>· 左下「筛选」：按状态 / 时间 / 关键字过滤</div></div><div class="detail-block"><h4>同步说明</h4><div style="font-size:13px;color:#475569;line-height:1.7;">联网时改动会自动同步云端；也可在菜单手动同步。删除的行程进入回收站，可在设置里恢复。</div></div>';
+  document.getElementById('detailActions').innerHTML='<button class="btn-primary" style="flex:1" onclick="closeDetail()">知道了</button>';
+  closeMenu(); document.getElementById('detailMask').classList.add('show');
+}
+
+/* 备份导出 */
+function exportBackup(){
+  closeMenu();
+  const blob=new Blob([JSON.stringify(store,null,2)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download='旅行备份_'+todayStr()+'.json'; a.click();
+  showToast('已导出备份文件');
+}
+
+/* 年报海报 */
+function generateReport(){
+  closeMenu();
+  const trips=store.trips||[];
+  const countries=new Set(trips.map(t=>t.country)).size;
+  const cities=trips.reduce((s,t)=>s+(t.route?t.route.length:0),0);
+  const nights=trips.reduce((s,t)=>s+(t.nights||0),0);
+  const total=trips.reduce((s,t)=>s+moneyNum(t.budget),0);
+  const c=document.createElement('canvas'); c.width=640; c.height=960; const x=c.getContext('2d');
+  const g=x.createLinearGradient(0,0,0,960); g.addColorStop(0,'#1e3a8a'); g.addColorStop(1,'#3b82f6');
+  x.fillStyle=g; x.fillRect(0,0,640,960);
+  x.fillStyle='rgba(255,255,255,0.12)'; x.beginPath(); x.arc(540,120,160,0,7); x.fill();
+  x.fillStyle='#fff'; x.textAlign='center'; x.font='bold 40px sans-serif';
+  x.fillText('珊珊的旅行年报', 320, 120);
+  x.font='20px sans-serif'; x.fillStyle='rgba(255,255,255,0.85)';
+  x.fillText('截至 '+todayStr(), 320, 160);
+  x.font='bold 30px sans-serif'; x.fillStyle='#fff';
+  const stats=[['🌍 国家',countries],['🏙️ 城市',cities],['🌙 晚数',nights],['💰 花费','¥'+(total/1000).toFixed(0)+'k']];
+  stats.forEach((s,i)=>{ const col=i%2, row=Math.floor(i/2); const bx=80+col*260, by=230+row*120; x.font='bold 34px sans-serif'; x.textAlign='left'; x.fillText(String(s[1]), bx, by); x.font='16px sans-serif'; x.fillStyle='rgba(255,255,255,0.8)'; x.fillText(s[0], bx, by+26); x.fillStyle='#fff'; });
+  x.textAlign='left'; x.font='bold 22px sans-serif'; x.fillStyle='#fff'; x.fillText('去过的国家', 80, 540);
+  const map={}; trips.forEach(t=>{ map[t.country]=map[t.country]||t.flag; });
+  let yy=580; Object.keys(map).forEach(cn=>{ x.font='26px sans-serif'; x.fillText(map[cn]+' '+cn, 90, yy); yy+=40; if(yy>900) return; });
+  const img=c.toDataURL('image/png');
+  document.getElementById('detailTitle').textContent='🖼️ 旅行年报';
+  document.getElementById('detailBody').innerHTML='<img class="poster-img" src="'+img+'"><div class="form-hint" style="margin-top:8px;text-align:center;">长按图片可保存，或点下方按钮下载</div>';
+  document.getElementById('detailActions').innerHTML='<button class="btn-cancel" onclick="closeDetail()">关闭</button><a class="btn-save" style="text-decoration:none;text-align:center;display:flex;align-items:center;justify-content:center;" href="'+img+'" download="旅行年报_'+todayStr()+'.png">保存图片</a>';
+  document.getElementById('detailMask').classList.add('show');
+}
+
+/* =========================================================
+   行操作：编辑 / 复制 / 导出 / 归档 / 删除
+   ========================================================= */
+function actEdit(kind,id){ closeAllRows(); openEditor(kind,id); }
+function actCopy(kind,id){
+  closeAllRows();
+  if (kind==='trip'){ const t=store.trips.find(x=>x.id===id); if(t){ const c=JSON.parse(JSON.stringify(t)); c.id='trip_'+Date.now(); c.name=t.name+'（副本）'; c.status='plan'; store.trips.unshift(c); saveStore(); renderAll(); showToast('已复制为相似行程'); } }
+}
+function actArchive(kind,id){
+  closeAllRows();
+  if (kind==='trip'){ const t=store.trips.find(x=>x.id===id); if(t){ t._archived=true; saveStore(); renderAll(); showToast('已归档'); } }
+}
+function confirmDelete(kind,id){
+  closeAllRows();
+  const name = kind==='trip' ? (store.trips.find(x=>x.id===id)||{}).name : (store.reviews.find(x=>x.id===id)||{}).title;
+  if (!confirm('确定删除「'+name+'」吗？\n删除后可在 设置→回收站 恢复。')) return;
+  doDelete(kind,id);
+}
+function doDelete(kind,id){
+  if (kind==='trip'){ const i=store.trips.findIndex(x=>x.id===id); if(i>=0){ const it=store.trips.splice(i,1)[0]; it._kind='trip'; it._tid='tr_'+Date.now(); store.trash.push(it); } }
+  else { const i=store.reviews.findIndex(x=>x.id===id); if(i>=0){ const it=store.reviews.splice(i,1)[0]; it._kind='review'; it._tid='tr_'+Date.now(); store.trash.push(it); } }
+  saveStore(); renderAll(); showToast('已删除（可在回收站恢复）');
+}
+function actExport(kind,id){
+  closeAllRows();
+  if (kind!=='trip'){ showToast('仅行程支持导出图片'); return; }
+  const t=store.trips.find(x=>x.id===id); if(!t) return;
+  const c=document.createElement('canvas'); c.width=600; c.height=420; const x=c.getContext('2d');
+  x.fillStyle='#f8fafc'; x.fillRect(0,0,600,420);
+  x.fillStyle='#1e3a8a'; x.font='bold 28px sans-serif'; x.textAlign='left';
+  x.fillText((t.flag||'')+' '+(t.name||''), 30, 60);
+  x.font='16px sans-serif'; x.fillStyle='#475569';
+  x.fillText('国家：'+(t.country||'-')+'    日期：'+(t.date||'-')+'    '+(t.nights||0)+' 晚', 30, 100);
+  x.fillText('状态：'+(STATUS_LABEL[t.status||'done'])+'    预算：'+(t.budget||'-'), 30, 128);
+  x.font='15px sans-serif'; x.fillStyle='#1e40af';
+  x.fillText('路线：'+((t.route||[]).join(' · ')||'-'), 30, 168);
+  if (t.tags&&t.tags.length) x.fillText('标签：'+t.tags.join('、'), 30, 196);
+  x.fillStyle='#64748b'; x.font='14px sans-serif';
+  const sum=(t.summary||'').slice(0,60); x.fillText('小结：'+(sum||'-'), 30, 236);
+  x.strokeStyle='#cbd5e1'; x.strokeRect(15,15,570,390);
+  const img=c.toDataURL('image/png');
+  document.getElementById('detailTitle').textContent='导出行程';
+  document.getElementById('detailBody').innerHTML='<img class="poster-img" src="'+img+'"><div class="form-hint" style="margin-top:8px;text-align:center;">可保存图片分享给同行人</div>';
+  document.getElementById('detailActions').innerHTML='<button class="btn-cancel" onclick="closeDetail()">关闭</button><a class="btn-save" style="text-decoration:none;text-align:center;display:flex;align-items:center;justify-content:center;" href="'+img+'" download="行程_'+(t.name||'trip')+'.png">保存图片</a>';
+  document.getElementById('detailMask').classList.add('show');
+}
+
+/* =========================================================
+   编辑 / 新增
+   ========================================================= */
+function setVal(id,v){ const e=document.getElementById(id); if(e) e.value=(v==null?'':v); }
+function getVal(id){ const e=document.getElementById(id); return e?e.value.trim():''; }
+function setSel(id,v){ const e=document.getElementById(id); if(e) e.value=(v==null?'':v); }
+let editingType='trip', editingId=null;
+function openEditor(type,id){
+  editingType=type; editingId=id||null;
+  document.getElementById('grp-trip').style.display=(type==='trip')?'block':'none';
+  document.getElementById('grp-review').style.display=(type==='review')?'block':'none';
+  document.getElementById('editorTitle').textContent=(id?'编辑':'添加')+(type==='trip'?'行程':'记录');
+  document.getElementById('editorDelete').style.display=id?'block':'none';
+  if (type==='trip'){
+    const t=id?(store.trips.find(x=>x.id===id)||{}):{};
+    setVal('f-name',t.name); setVal('f-flag',t.flag); setVal('f-country',t.country);
+    setVal('f-date',t.date); setVal('f-nights',t.nights); setSel('f-status',t.status||'done');
+    setVal('f-budget',t.budget); setVal('f-budgetNote',t.budgetNote);
+    setVal('f-route',(t.route||[]).join('，')); setVal('f-tags',(t.tags||[]).join('，')); setVal('f-summary',t.summary);
+  } else {
+    const r=id?(store.reviews.find(x=>x.id===id)||{}):{};
+    setVal('f-title',r.title); setVal('f-tag',r.tag); setVal('f-rdate',r.date); setVal('f-body',r.body);
+  }
+  document.getElementById('editorMask').classList.add('show');
+}
+function closeEditor(){ document.getElementById('editorMask').classList.remove('show'); }
+function saveEditor(){
+  if (editingType==='trip'){
+    const obj={ id:editingId||('trip_'+Date.now()),
+      name:getVal('f-name'), flag:getVal('f-flag')||'🏳️', country:getVal('f-country'),
+      date:getVal('f-date'), nights:parseInt(getVal('f-nights')||'0',10)||0,
+      status:getVal('f-status'), budget:getVal('f-budget'), budgetNote:getVal('f-budgetNote'),
+      route:getVal('f-route').split(/[，,、]/).map(s=>s.trim()).filter(Boolean),
+      tags:getVal('f-tags').split(/[，,、]/).map(s=>s.trim()).filter(Boolean),
+      summary:getVal('f-summary') };
+    if (editingId){ const i=store.trips.findIndex(x=>x.id===editingId); if(i>=0) store.trips[i]=obj; } else store.trips.unshift(obj);
+  } else {
+    const obj={ id:editingId||('rev_'+Date.now()), title:getVal('f-title'), tag:getVal('f-tag'), date:getVal('f-rdate'), body:getVal('f-body') };
+    if (editingId){ const i=store.reviews.findIndex(x=>x.id===editingId); if(i>=0) store.reviews[i]=obj; } else store.reviews.unshift(obj);
   }
   saveStore(); renderAll(); closeEditor();
 }
 function deleteCurrent(){
   if (!editingId) return;
-  if (editingType === 'trip') store.trips = store.trips.filter(x => x.id !== editingId);
-  else store.reviews = store.reviews.filter(x => x.id !== editingId);
-  saveStore(); renderAll(); closeEditor();
+  const kind=editingType; closeEditor(); confirmDelete(kind, editingId);
 }
+
+/* =========================================================
+   愿望清单
+   ========================================================= */
+function markWish(id,done){ const w=store.wishlist.find(x=>x.id===id); if(w){ w.done=done; if(done){ showToast('已打卡，统计已更新'); } saveStore(); renderAll(); } }
+function delWish(id){ store.wishlist=store.wishlist.filter(x=>x.id!==id); saveStore(); renderAll(); }
+function openWishEditor(){
+  const name=prompt('想去的目的地名称：'); if(!name) return;
+  const flag=prompt('国旗 emoji（可留空）：')||'📍';
+  const country=prompt('国家/地区：')||'';
+  store.wishlist.push({ id:'w_'+Date.now(), name, flag, country, done:false });
+  saveStore(); renderAll();
+}
+
+/* =========================================================
+   搜索 / 筛选
+   ========================================================= */
+function onSearch(v){ searchTerm=v.trim(); renderHistory(); }
+function openFilter(){ document.getElementById('filterMask').classList.add('show'); }
+function closeFilter(){ document.getElementById('filterMask').classList.remove('show'); }
+document.getElementById('fStatusChips').addEventListener('click', e=>{ const c=e.target.closest('.chip'); if(c) c.classList.toggle('on'); });
+function applyFilter(){
+  filterObj.status=Array.from(document.querySelectorAll('#fStatusChips .chip.on')).map(c=>c.dataset.v);
+  filterObj.range=document.getElementById('fRange').value;
+  filterObj.kw=document.getElementById('fKw').value.trim();
+  closeFilter(); renderHistory(); showToast('已筛选');
+}
+function resetFilter(){ filterObj={status:[],range:'all',kw:''}; document.querySelectorAll('#fStatusChips .chip').forEach(c=>c.classList.remove('on')); document.getElementById('fRange').value='all'; document.getElementById('fKw').value=''; renderHistory(); showToast('已重置'); }
+
+/* =========================================================
+   历史行：滑动 / 点击 / 长按多选
+   ========================================================= */
+function closeAllRows(){ document.querySelectorAll('.swipe-row.open').forEach(r=>{ r.classList.remove('open'); r.querySelector('.swipe-front').style.transform=''; }); }
+function frontClick(row){ if(row.dataset.swiped==='1'){ row.dataset.swiped=''; return; } if(row.classList.contains('open')){ closeRow(row); return; } if(selectMode){ toggleSelect(row); return; } openDetail(row.dataset.kind, row.dataset.id); }
+function closeRow(row){ row.classList.remove('open'); row.querySelector('.swipe-front').style.transform=''; }
+
+let swState={active:null,startX:0,startY:0,moved:false,opened:false,longTimer:null};
+const historyList=document.getElementById('historyList');
+historyList.addEventListener('touchstart', rowTS, {passive:true});
+historyList.addEventListener('touchmove', rowTM, {passive:false});
+historyList.addEventListener('touchend', rowTE, {passive:true});
+historyList.addEventListener('touchcancel', ()=>{ clearTimeout(swState.longTimer); swState.active=null; swState.moved=false; });
+function rowFront(row){ return row.querySelector('.swipe-front'); }
+function rowActions(row){ return row.querySelector('.swipe-actions'); }
+function actionWidth(row){ return rowActions(row)?rowActions(row).offsetWidth:0; }
+function rowTS(e){
+  const row=e.target.closest('.swipe-row'); if(!row) return;
+  closeAllRowsExcept(row);
+  swState.active=row; swState.startX=e.touches[0].clientX; swState.startY=e.touches[0].clientY; swState.moved=false; swState.opened=row.classList.contains('open');
+  swState.longTimer=setTimeout(()=>{ if(swState.active===row && !swState.moved) enterSelectMode(row.dataset.kind, row.dataset.id); }, 550);
+}
+function closeAllRowsExcept(row){ document.querySelectorAll('.swipe-row.open').forEach(r=>{ if(r!==row){ r.classList.remove('open'); r.querySelector('.swipe-front').style.transform=''; } }); }
+function rowTM(e){
+  if(!swState.active) return;
+  const t=e.touches[0]; const dx=t.clientX-swState.startX, dy=t.clientY-swState.startY;
+  if(!swState.moved && Math.abs(dx)>6){ swState.moved=true; clearTimeout(swState.longTimer); }
+  if(Math.abs(dx)>Math.abs(dy) && Math.abs(dx)>6){ e.preventDefault(); const aw=actionWidth(swState.active); let tx=swState.opened?dx-aw:dx; tx=Math.max(-aw,Math.min(0,tx)); rowFront(swState.active).style.transform='translateX('+tx+'px)'; }
+}
+function rowTE(){
+  if(!swState.active) return;
+  clearTimeout(swState.longTimer);
+  const row=swState.active; swState.active=null;
+  if(!swState.moved) return;
+  row.dataset.swiped='1'; setTimeout(()=>{ row.dataset.swiped=''; }, 350);
+  const aw=actionWidth(row);
+  const tx=parseInt((rowFront(row).style.transform.match(/-?\d+/)||[0])[0],10)||0;
+  if(tx < -aw/2){ row.classList.add('open'); rowFront(row).style.transform='translateX('+(-aw)+'px)'; }
+  else { row.classList.remove('open'); rowFront(row).style.transform=''; }
+}
+
+/* 多选模式 */
+let selectMode=false, selectedIds=new Set();
+function enterSelectMode(kind,id){ if(selectMode) return; selectMode=true; selectedIds.clear(); document.getElementById('batchBar').classList.add('show'); closeAllRows(); const row=document.querySelector('.swipe-row[data-kind="'+kind+'"][data-id="'+id+'"]'); if(row) toggleSelect(row); showToast('多选模式：点击条目勾选'); }
+function toggleSelect(row){ const id=row.dataset.kind+':'+row.dataset.id; if(selectedIds.has(id)){ selectedIds.delete(id); row.classList.remove('selected'); } else { selectedIds.add(id); row.classList.add('selected'); } updateBatchCount(); }
+function updateBatchCount(){ document.getElementById('bbCount').textContent='已选 '+selectedIds.size+' 项'; }
+function exitSelectMode(){ selectMode=false; selectedIds.clear(); document.querySelectorAll('.swipe-row.selected').forEach(r=>r.classList.remove('selected')); document.getElementById('batchBar').classList.remove('show'); }
+function selectedTripIds(){ return Array.from(selectedIds).filter(s=>s.startsWith('trip:')).map(s=>s.slice(5)); }
+function batchArchive(){ const ids=selectedTripIds(); if(!ids.length){ showToast('请选择行程'); return; } ids.forEach(id=>{ const t=store.trips.find(x=>x.id===id); if(t) t._archived=true; }); saveStore(); renderAll(); exitSelectMode(); showToast('已归档 '+ids.length+' 项'); }
+function batchDelete(){ const ids=selectedTripIds().concat(Array.from(selectedIds).filter(s=>s.startsWith('review:')).map(s=>s.slice(7))); if(!ids.length){ showToast('请选择行程或记录'); return; } if(!confirm('确定删除选中的 '+ids.length+' 项？可在回收站恢复。')) return; ids.forEach(id=>{ let i=store.trips.findIndex(x=>x.id===id); if(i>=0){ const it=store.trips.splice(i,1)[0]; it._kind='trip'; it._tid='tr_'+Date.now(); store.trash.push(it); return; } i=store.reviews.findIndex(x=>x.id===id); if(i>=0){ const it=store.reviews.splice(i,1)[0]; it._kind='review'; it._tid='tr_'+Date.now(); store.trash.push(it); } }); saveStore(); renderAll(); exitSelectMode(); showToast('已删除 '+ids.length+' 项'); }
+function batchExport(){ showToast('已导出全部备份'); exportBackup(); exitSelectMode(); }
+
+/* =========================================================
+   导航 + 横滑
+   ========================================================= */
+const content=document.getElementById('mainContent');
+const phone=document.querySelector('.phone');
+const PAGES=['overview','footprints','planning','accounts','recommend','guides','english','reviews'];
+let currentIdx=0;
+function syncDots(idx){ currentIdx=idx; document.querySelectorAll('#pageDots .page-dot').forEach((d,i)=>d.classList.toggle('active',i===idx)); document.getElementById('fabLeft').classList.toggle('hidden',idx===0); document.getElementById('fabRight').classList.toggle('hidden',idx===PAGES.length-1); }
+function switchTab(targetPage){
+  const navEl=document.getElementById('bottomNav');
+  const item=navEl.querySelector('.nav-item[data-page="'+targetPage+'"]');
+  const page=document.getElementById('page-'+targetPage);
+  if(!item||!page) return;
+  navEl.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active','anim-left','anim-right'));
+  const newIdx=PAGES.indexOf(targetPage);
+  page.classList.add('active', newIdx>currentIdx?'anim-right':'anim-left');
+  item.classList.add('active'); syncDots(newIdx); content.scrollTop=0;
+  if(selectMode) exitSelectMode();
+}
+function switchByIdx(newIdx){ if(newIdx<0||newIdx>=PAGES.length||newIdx===currentIdx) return; switchTab(PAGES[newIdx]); }
+document.getElementById('bottomNav').addEventListener('click', e=>{ const item=e.target.closest('.nav-item'); if(item) switchTab(item.dataset.page); });
+document.getElementById('fabLeft').addEventListener('click', ()=>switchByIdx(currentIdx-1));
+document.getElementById('fabRight').addEventListener('click', ()=>switchByIdx(currentIdx+1));
+document.getElementById('pageDots').addEventListener('click', e=>{ const d=e.target.closest('.page-dot'); if(d) switchByIdx(parseInt(d.dataset.i,10)); });
+
+const SWIPE_MIN=40, SWIPE_RATIO=1.1;
+let tStartX=0,tStartY=0,tTracking=false,tLocked=false;
+function activePage(){ return document.querySelector('.page.active'); }
+function resetTransform(){ const p=activePage(); if(p) p.style.transform=''; }
+function onTS(e){
+  if (document.querySelector('.sub-page.active') || document.getElementById('editorMask').classList.contains('show') || document.getElementById('detailMask').classList.contains('show') || document.getElementById('menuMask').classList.contains('show') || document.getElementById('filterMask').classList.contains('show')) { tTracking=false; return; }
+  if (e.target.closest('.swipe-row')) { tTracking=false; return; }
+  if (e.target.closest('input,textarea,select,button,a')) { tTracking=false; return; }
+  const t=e.touches[0]; tStartX=t.clientX; tStartY=t.clientY; tTracking=true; tLocked=false;
+}
+function onTM(e){
+  if(!tTracking) return;
+  const t=e.touches[0]; const dx=t.clientX-tStartX, dy=t.clientY-tStartY;
+  if(!tLocked && Math.abs(dx)>Math.abs(dy)) tLocked=true;
+  if(tLocked){ e.preventDefault(); const p=activePage(); if(p) p.style.transform='translateX('+(dx*0.35)+'px)'; }
+}
+function onTE(e){
+  if(!tTracking) return; tTracking=false; resetTransform();
+  if(!tLocked) return;
+  const ct=e.changedTouches[0]; const dx=ct.clientX-tStartX, dy=ct.clientY-tStartY;
+  if(Math.abs(dx)<SWIPE_MIN) return;
+  if(Math.abs(dx)<Math.abs(dy)*SWIPE_RATIO) return;
+  if(dx<0) switchByIdx(currentIdx+1); else switchByIdx(currentIdx-1);
+}
+const hasTouch=('ontouchstart' in window)||navigator.maxTouchPoints>0;
+if(hasTouch){
+  phone.addEventListener('touchstart',onTS,{passive:true});
+  phone.addEventListener('touchmove',onTM,{passive:false});
+  phone.addEventListener('touchend',onTE,{passive:true});
+  phone.addEventListener('touchcancel',()=>{ tTracking=false; tLocked=false; resetTransform(); });
+} else {
+  let mDown=false,mX=0,mY=0;
+  phone.addEventListener('mousedown',e=>{ if(e.target.closest('.swipe-row,input,textarea,select,button,a')) return; mDown=true; mX=e.clientX; mY=e.clientY; });
+  window.addEventListener('mouseup',e=>{ if(!mDown) return; mDown=false; const dx=e.clientX-mX, dy=e.clientY-mY; if(Math.abs(dx)<SWIPE_MIN||Math.abs(dx)<Math.abs(dy)*SWIPE_RATIO) return; if(dx<0) switchByIdx(currentIdx+1); else switchByIdx(currentIdx-1); });
+}
+(function showHintOnce(){ try{ if(localStorage.getItem('swipeHintShown')==='1') return; document.getElementById('swipeHint').classList.add('show'); setTimeout(()=>document.getElementById('swipeHint').classList.remove('show'),2800); localStorage.setItem('swipeHintShown','1'); }catch(_){} })();
 
 /* =========================================================
    启动
    ========================================================= */
-function scrollTop(){ content.scrollTop = 0; }
 renderAll();
-updateConn(cloudReady ? 'online' : 'offline');
-if (cloudReady) pullFromCloud(); else updateConn('offline');
+updateConn(cloudReady?'online':'offline');
+if(cloudReady) pullFromCloud(); else updateConn('offline');
 </script>
 <script>
-  // PWA：仅在 https / localhost 下注册 Service Worker（file:// 直接打开时跳过，避免报错）
-  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
-    window.addEventListener('load', function () {
-      navigator.serviceWorker.register('./sw.js').catch(function () {});
-    });
+  if ('serviceWorker' in navigator && (location.protocol==='https:'||location.hostname==='localhost')) {
+    window.addEventListener('load', function(){ navigator.serviceWorker.register('./sw.js').catch(function(){}); });
   }
 </script>
 </body>
