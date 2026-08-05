@@ -992,16 +992,28 @@ function getYears(){
   return Array.from(yrs).sort().reverse();
 }
 function yearOf(year){
-  // 本年所有 trip 的预算合计（按 trip.budget 转数字）
+  // 汇总本年所有 trip 的金额（用于年度预算的"已规划/已花费"）
+  // 优先级：t.cost 细项（实际）> t.budget 字符串（计划）
+  // 日期容错：'2025-05' / '2025-5' / '2025/06' 都能解析
+  const yWant = String(year);
   let used = 0;
   const plans = [];
+  let matchedAll = 0;
   (store.trips||[]).forEach(t=>{
-    if ((t.date||'').slice(0,4)===year){
-      const n = moneyNum(t.budget);
-      if (n){ used += n; plans.push({name:t.name, flag:t.flag, v:n}); }
+    const td = String(t.date||'').trim();
+    const m = td.match(/^(\d{4})/);
+    if (!m || m[1] !== yWant) return;
+    matchedAll++;
+    let n = 0, isActual = false;
+    if (t.cost && typeof t.cost === 'object' && Object.keys(t.cost).length){
+      n = (t.cost.stay||0)+(t.cost.transport||0)+(t.cost.food||0)+(t.cost.play||0)+(t.cost.other||0);
+      isActual = n > 0;
     }
+    if (!n) n = moneyNum(t.budget);
+    if (n > 0) used += n;
+    plans.push({id:t.id, name:t.name, flag:t.flag, date:td, v:n, isActual});
   });
-  return {used, plans};
+  return {used, plans, matched:matchedAll};
 }
 function renderYearBudget(){
   const wrap = document.getElementById('accYearBudget');
@@ -1013,28 +1025,61 @@ function renderYearBudget(){
   }
   wrap.innerHTML = years.map(y=>{
     const b = budgets[y];
-    const {used, plans} = yearOf(y);
+    const {used, plans, matched} = yearOf(y);
     const total = +b.total || 0;
     const left = total - used;
     const over = left < 0;
     const pct = total ? Math.min(100, Math.round(used/total*100)) : 0;
     const pctShown = total ? pct : (used ? 100 : 0);
+    // trip pill 可点击跳转明细
+    const tripPills = plans.length
+      ? plans.map(p=>'<span class="yb-pill" style="cursor:pointer;" onclick="event.stopPropagation();openTripDetail(\''+p.id+'\',\'overview\')" title="'+(p.isActual?'实际花费（来自 cost 细项）':'计划预算（来自 budget 字段）')+'">'+p.flag+' '+esc(p.name)+' ¥'+(p.v/1000).toFixed(1)+'k '+(p.isActual?'<span style="opacity:0.7;">·实</span>':'<span style="opacity:0.7;">·预</span>')+'</span>').join('')
+      : (matched>0
+          ? '<span class="yb-empty">本年有 '+matched+' 段行程但未填金额，去行程详情补 budget / cost</span>'
+          : '<span class="yb-empty">本年暂无行程</span>');
     return '<div class="yb-card'+(over?' over':'')+'">'
       + '<div class="yb-hd"><div class="yb-year">'+y+' 年</div><div class="yb-acts">'
       +   '<span onclick="openYearBudget(\''+y+'\')">✏️ 编辑</span>'
       +   '<span class="yb-del" onclick="deleteYearBudget(\''+y+'\')">🗑️ 删除</span>'
       + '</div></div>'
       + '<div class="yb-row"><span>年度总预算</span><span class="yb-v">¥' + total.toLocaleString() + '</span></div>'
-      + '<div class="yb-row"><span>已规划（'+plans.length+' 段行程）</span><span class="yb-v">¥' + used.toLocaleString() + '</span></div>'
+      + '<div class="yb-row" style="cursor:pointer;" onclick="toggleYbDetail(\''+y+'\')" title="点击查看明细"><span>已规划（'+plans.length+' 段 · 自动关联）'+(matched>plans.length?' <span style="color:#f59e0b;">⚠</span>':'')+'</span><span class="yb-v">¥' + used.toLocaleString() + '</span></div>'
       + '<div class="yb-row"><span>'+(over?'已超支':'剩余')+'</span><span class="yb-v '+(over?'warn':'')+'">¥' + Math.abs(left).toLocaleString() + '</span></div>'
       + '<div class="yb-track"><div class="yb-fill" style="width:'+pctShown+'%"></div></div>'
       + '<div class="yb-foot">'
       +   '<span class="yb-pill">已用 '+pct+'%</span>'
       +   (b.note ? '<span class="yb-pill">'+esc(b.note)+'</span>' : '')
-      + (plans.length ? plans.map(p=>'<span class="yb-pill">'+p.flag+' '+esc(p.name)+' ¥'+(p.v/1000).toFixed(1)+'k</span>').join('') : '<span class="yb-empty">本年暂无行程预算</span>')
+      +   tripPills
+      + '</div>'
+      + '<div class="yb-detail" id="ybDetail-'+y+'" style="display:none;margin-top:10px;padding-top:10px;border-top:1px dashed #e0e7ff;">'
+      +   (plans.length
+          ? (plans.map(p=>{
+              const t = (store.trips||[]).find(x=>x.id===p.id) || {};
+              const cb = t.cost||{};
+              const lines = [];
+              if (cb.stay) lines.push('🏨 '+cb.stay.toLocaleString());
+              if (cb.transport) lines.push('🚗 '+cb.transport.toLocaleString());
+              if (cb.food) lines.push('🍜 '+cb.food.toLocaleString());
+              if (cb.play) lines.push('🎡 '+cb.play.toLocaleString());
+              if (cb.other) lines.push('📦 '+cb.other.toLocaleString());
+              return '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:13px;">'
+                +'<div><span style="font-size:16px;">'+p.flag+'</span> <b>'+esc(p.name)+'</b> <span style="color:#94a3b8;font-size:11px;">'+p.date+'</span></div>'
+                +'<div style="text-align:right;"><div style="font-weight:800;color:#1e40af;">¥'+p.v.toLocaleString()+'</div>'
+                + (lines.length?'<div style="color:#94a3b8;font-size:11px;">'+lines.join(' + ')+'</div>':'<div style="color:#94a3b8;font-size:11px;">按 budget 字段</div>')
+                +'</div></div>';
+            }).join('')
+            + '<div style="margin-top:6px;padding-top:6px;border-top:1px dashed #e0e7ff;display:flex;justify-content:space-between;font-size:12px;color:#64748b;">'
+            +   '<span>合计 · '+plans.length+' 段 · '+(plans.every(p=>p.isActual)?'全部实际花费':'含计划预算')+'</span>'
+            +   '<span style="font-weight:700;color:#1e40af;">¥'+used.toLocaleString()+'</span>'
+            + '</div>')
+          : '<div style="font-size:12px;color:#94a3b8;text-align:center;padding:8px 0;">'+(matched>0?'本年行程未填金额，去详情补':'本年还没有行程')+'</div>')
       + '</div>'
       + '</div>';
   }).join('');
+}
+function toggleYbDetail(y){
+  const el = document.getElementById('ybDetail-'+y);
+  if (el) el.style.display = el.style.display==='none' ? 'block' : 'none';
 }
 let ybEditingYear = null;
 function openYearBudget(year){
@@ -1698,7 +1743,7 @@ if(cloudReady) pullFromCloud(); else updateConn('offline');
 </script>
 <script>
   if ('serviceWorker' in navigator && (location.protocol==='https:'||location.hostname==='localhost')) {
-    window.addEventListener('load', function(){ navigator.serviceWorker.register('./sw.js?v=2').catch(function(){}); });
+    window.addEventListener('load', function(){ navigator.serviceWorker.register('./sw.js?v=3').catch(function(){}); });
   }
 </script>
 </body>
