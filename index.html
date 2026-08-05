@@ -91,6 +91,56 @@
   .stat-label { font-size: 12px; color: #64748b; margin-top: 2px; }
   .stat-card .drill { position: absolute; right: 8px; bottom: 6px; font-size: 10px; color: #93c5fd; }
 
+  /* 拓展卡片 横向 */
+  .extra-cards { display: flex; gap: 10px; overflow-x: auto; padding: 6px 2px 4px; margin-top: 10px; -webkit-overflow-scrolling: touch; }
+  .extra-cards::-webkit-scrollbar { display: none; }
+  .ex-card { flex: 0 0 auto; min-width: 116px; background: rgba(255,255,255,0.85); border-radius: 14px; padding: 12px 10px; text-align: center; box-shadow: 0 2px 10px rgba(30,58,138,0.05); cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation; position: relative; }
+  .ex-card:active { transform: scale(0.97); }
+  .ex-card .ex-icon { font-size: 20px; }
+  .ex-card .ex-value { font-size: 20px; font-weight: 800; color: #1e40af; margin-top: 2px; }
+  .ex-card .ex-label { font-size: 11px; color: #64748b; margin-top: 1px; }
+  .ex-card .ex-drill { font-size: 9px; color: #93c5fd; margin-top: 3px; }
+  /* 标签统计弹层 */
+  .tag-bar-row { display: flex; align-items: center; gap: 8px; margin: 6px 0; }
+  .tag-bar-row .tbl { font-size: 12px; width: 54px; color: #475569; flex-shrink: 0; }
+  .tag-bar-row .tbt { flex: 1; height: 16px; background: #eef2ff; border-radius: 8px; overflow: hidden; }
+  .tag-bar-row .tbf { height: 100%; background: linear-gradient(90deg,#a78bfa,#8b5cf6); border-radius: 8px; }
+  .tag-bar-row .tbv { font-size: 12px; font-weight: 700; width: 22px; text-align: right; color: #6d28d9; }
+
+  /* 行程聚合页 tabs */
+  .trip-tabs { display:flex; gap:4px; padding:8px 12px; background:#eef2ff; border-bottom:1px solid rgba(30,58,138,0.06); }
+  .trip-tabs .tt { flex:1; text-align:center; padding:8px 4px; font-size:13px; border-radius:10px; color:#64748b; cursor:pointer; -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
+  .trip-tabs .tt.on { background:#1e3a8a; color:#fff; font-weight:700; }
+  .trip-quick { display:flex; flex-wrap:wrap; gap:8px; padding:10px 12px; }
+  .quick-btn { flex:1; min-width:78px; padding:9px; border:1px solid rgba(30,58,138,0.15); border-radius:12px; background:#fff; font-size:13px; color:#1e40af; cursor:pointer; -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
+  .quick-btn:active { background:#e0e7ff; }
+  .guide-text { width:100%; min-height:90px; border:1px solid #cbd5e1; border-radius:12px; padding:10px; font-family:inherit; font-size:14px; resize:vertical; }
+  .checklist { margin-top:4px; }
+  .check-item { display:flex; align-items:center; gap:8px; padding:8px 0; border-bottom:1px dashed rgba(30,58,138,0.08); font-size:14px; cursor:pointer; }
+  .check-item .ci-ck { width:20px; height:20px; border-radius:6px; border:2px solid #1e3a8a; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:13px; color:#fff; }
+  .check-item.done .ci-ck { background:#1e3a8a; }
+  .check-item.done .ci-tx { text-decoration:line-through; color:#94a3b8; }
+  .check-item .ci-del { margin-left:auto; color:#dc2626; font-size:13px; }
+  .tpl-row { display:flex; flex-wrap:wrap; gap:8px; padding:4px 0; }
+  .tpl-chip { padding:7px 12px; border-radius:20px; background:#f3e8ff; color:#7c3aed; font-size:13px; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+  .budget-row { display:grid; grid-template-columns:1.2fr 0.7fr 0.8fr 1.1fr auto; gap:5px; align-items:center; padding:7px 0; border-bottom:1px dashed rgba(30,58,138,0.08); }
+  .budget-row select, .budget-row input { border:1px solid #cbd5e1; border-radius:8px; padding:6px 4px; font-size:12px; width:100%; min-width:0; }
+  .budget-row .bi-del { color:#dc2626; cursor:pointer; text-align:center; }
+  .bud-total { font-weight:800; color:#1e40af; }
+  .bud-warn { color:#dc2626; font-weight:700; }
+  .eng-row { display:flex; align-items:center; gap:8px; padding:9px 0; border-bottom:1px dashed rgba(30,58,138,0.08); }
+  .eng-row .er-zh { font-size:14px; font-weight:600; }
+  .eng-row .er-en { font-size:13px; color:#475569; }
+  .eng-row .er-play { margin-left:auto; cursor:pointer; font-size:18px; }
+  .eng-row .er-del { color:#dc2626; cursor:pointer; margin-left:8px; }
+  .lib-search { padding:10px 12px; }
+  .lib-search input { width:100%; padding:10px 12px; border:1px solid #cbd5e1; border-radius:12px; font-size:14px; }
+  .lib-cat { font-size:12px; color:#64748b; margin:10px 0 2px; padding-left:2px; }
+  /* 左滑更多操作按钮 */
+  .swipe-actions button.a-guide { background:#7c3aed; }
+  .swipe-actions button.a-budget { background:#0891b2; }
+  .swipe-actions button { padding:0 10px; font-size:12px; }
+
   .section-title { font-size: 17px; font-weight: 700; margin: 18px 0 10px; display: flex; align-items: center; gap: 6px; justify-content: space-between; flex-wrap: wrap; }
   .section-title .title-left { display: flex; align-items: center; gap: 6px; }
   .section-actions { display: flex; gap: 10px; }
@@ -339,6 +389,9 @@
       </div>
       <div class="stats-grid" id="ovStats"></div>
 
+      <!-- 拓展卡片（横向滑动） -->
+      <div class="extra-cards" id="ovExtra"></div>
+
       <!-- 想去目的地（愿望清单） -->
       <div class="section-title">
         <span class="title-left">💡 想去目的地</span>
@@ -399,18 +452,21 @@
     <section class="page" id="page-guides">
       <div class="hero">
         <div class="hero-title">📷 攻略</div>
-        <div class="hero-sub">随手记的实用 Tips 📝</div>
+        <div class="hero-sub">通用攻略素材库 · 一键应用到行程 📝</div>
       </div>
       <div class="intro-card intro-pink">📌 通用攻略：<br>· 潜水证提前在国内考，岛上贵且慢<br>· 海岛住宿选含早，省一顿钱<br>· 租摩托最自由，但一定戴头盔<br>· 汇率用实时 APP 比价，少换汇损</div>
+      <div id="guideLib"></div>
     </section>
 
     <!-- ===== 英语 ===== -->
     <section class="page" id="page-english">
       <div class="hero">
         <div class="hero-title">📚 英语</div>
-        <div class="hero-sub">出境必备几句 🗣️</div>
+        <div class="hero-sub">出境必备话术 · 🔊 真人发音 🗣️</div>
       </div>
-      <div class="intro-card intro-purple">🗣️ 常用：<br>· "Where is the beach?" 海滩怎么走？<br>· "How much for a dive?" 一潜多少钱？<br>· "No spicy, please." 请不要辣。<br>· "Can I have the bill?" 买单。</div>
+      <div class="intro-card intro-purple">🗣️ 通用话术库：点 🔊 听发音，点「＋行程」加入某趟旅行的专属英语本。行程专属短句在行程详情「英语」标签里编辑。</div>
+      <div class="lib-search"><input id="engSearch" placeholder="🔍 搜索短句（中文或英文）" oninput="renderEnglishLib()"></div>
+      <div id="englishLib"></div>
     </section>
 
     <!-- ===== 记录 ===== -->
@@ -472,6 +528,16 @@
           <div class="form-row"><label>预算备注</label><input id="f-budgetNote" placeholder="节余 6,474"></div>
           <div class="form-row"><label>路线（用逗号分隔）</label><input id="f-route" placeholder="东京，富士山，大阪"><div class="form-hint">例：城市A，城市B，城市C</div></div>
           <div class="form-row"><label>标签（用逗号分隔，如 海岛,潜水,美食）</label><input id="f-tags" placeholder="海岛，潜水"></div>
+          <div class="form-row"><label>同行人（用逗号分隔，如 阿杰,小林）</label><input id="f-companions" placeholder="阿杰，小林"><div class="form-hint">支持「和 XX 一起的旅行」筛选</div></div>
+          <div class="form-row"><label>花费拆分（选填，单位：元）</label>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+              <input id="f-cost-stay" type="number" inputmode="numeric" placeholder="住宿">
+              <input id="f-cost-transport" type="number" inputmode="numeric" placeholder="交通">
+              <input id="f-cost-food" type="number" inputmode="numeric" placeholder="餐饮">
+              <input id="f-cost-play" type="number" inputmode="numeric" placeholder="游玩">
+            </div>
+            <div class="form-hint">留空则按「预算」汇总；填了会在花费下钻里展示占比</div>
+          </div>
           <div class="form-row"><label>小结</label><textarea id="f-summary" placeholder="一句话记录这段旅程"></textarea></div>
         </div>
         <div id="grp-review" style="display:none">
@@ -498,6 +564,24 @@
       </div>
       <div class="sheet-body" id="detailBody"></div>
       <div class="sheet-actions" id="detailActions"></div>
+    </div>
+  </div>
+
+  <!-- 行程聚合页（攻略/预算/英语） -->
+  <div class="mask" id="tripMask" onclick="if(event.target===this)closeTrip()">
+    <div class="sheet" style="max-height:92vh;">
+      <div class="sheet-head">
+        <div class="sheet-title" id="tripTitle">行程</div>
+        <button class="sheet-x" onclick="closeTrip()">✕</button>
+      </div>
+      <div class="trip-tabs">
+        <div class="tt on" data-tab="overview" onclick="switchTripTab('overview')">概况</div>
+        <div class="tt" data-tab="guide" onclick="switchTripTab('guide')">攻略</div>
+        <div class="tt" data-tab="budget" onclick="switchTripTab('budget')">预算</div>
+        <div class="tt" data-tab="english" onclick="switchTripTab('english')">英语</div>
+      </div>
+      <div class="sheet-body" id="tripBody"></div>
+      <div class="sheet-actions" id="tripActions" style="border-top:none;"></div>
     </div>
   </div>
 
@@ -535,6 +619,12 @@
             <span class="chip" data-v="shelved">已搁置</span>
           </div>
         </div>
+        <div class="form-row"><label>出行标签</label>
+          <div class="chip-row" id="fTagChips"></div>
+        </div>
+        <div class="form-row"><label>同行人</label>
+          <div class="chip-row" id="fCompanionChips"></div>
+        </div>
         <div class="form-row"><label>时间范围</label>
           <select id="fRange">
             <option value="all">全部时间</option>
@@ -570,21 +660,33 @@ const SEED = {
   trips: [
     { id:'egypt', name:'埃及·红海双潜', flag:'🇪🇬', country:'埃及', date:'2025-05', nights:14, status:'done',
       budget:'¥23,436.80', budgetNote:'节余 6,474', route:['开罗','沙姆沙伊赫','达哈卜'], tags:['潜水','海岛'],
+      companions:['阿杰','小林'], cost:{stay:9000,transport:8000,food:4000,play:2436},
+      guide:{text:'', checklist:[{t:'潜水证提前在国内考',done:true},{t:'红海船宿预订',done:true},{t:'签证/机票确认',done:false}]},
+      budgetItems:[{cat:'机票交通',cur:'CNY',amt:9000,note:'开罗往返'},{cat:'酒店住宿',cur:'CNY',amt:9000,note:'沙姆度假村'},{cat:'餐饮',cur:'CNY',amt:4000,note:''},{cat:'景点体验',cur:'CNY',amt:5000,note:'潜水套餐'}],
+      english:[{zh:'一潜多少钱？',en:'How much for one dive?',fav:true},{zh:'海滩怎么走？',en:'Where is the beach?',fav:false}],
       summary:'红海潜水 + 金字塔，长线最划算的一段。' },
     { id:'ph', name:'菲律宾·跳岛', flag:'🇵🇭', country:'菲律宾', date:'2025-06', nights:12, status:'done',
       budget:'¥16,605', budgetNote:'节余 1,517', route:['宿务','薄荷','墨宝','锡基霍尔'], tags:['海岛','潜水'],
+      companions:['阿杰'], cost:{stay:6000,transport:5600,food:3000,play:2005},
+      guide:{text:'菲律宾跳岛贴士：宿务-薄荷坐船，墨宝看沙丁鱼风暴，锡基霍尔环岛租摩托。', checklist:[{t:'宿务-薄荷船票',done:true},{t:'沙丁鱼风暴潜店预约',done:false}]},
+      budgetItems:[{cat:'机票交通',cur:'CNY',amt:6000,note:''},{cat:'酒店住宿',cur:'CNY',amt:5000,note:''},{cat:'餐饮',cur:'CNY',amt:3000,note:''},{cat:'景点体验',cur:'CNY',amt:2600,note:'跳岛'}],
+      english:[{zh:'船几点出发？',en:'What time does the boat leave?',fav:false}],
       summary:'热带跳岛 + 沙丁鱼风暴，性价比海岛。' },
     { id:'yunnan', name:'云南·大理+泸沽湖', flag:'🇨🇳', country:'中国', date:'2024-11', nights:7, status:'done',
       budget:'¥9,025', budgetNote:'收支平衡', route:['重庆','大理','泸沽湖'], tags:['短途','自驾'],
+      companions:[], cost:{stay:3500,transport:3000,food:2000,play:525},
       summary:'大理慢生活 + 泸沽湖，交通占比偏高。' },
     { id:'henan', name:'河南·洛阳赏秋', flag:'🇨🇳', country:'中国', date:'2025-11', nights:4, status:'done',
       budget:'¥4,512', budgetNote:'超支 912', route:['郑州','中牟','洛阳'], tags:['美食','短途'],
+      companions:['闺蜜'], cost:{stay:1500,transport:1500,food:1012,play:500},
       summary:'赏秋 + 美食，非必要项花得有点多。' },
     { id:'guangxi', name:'广西·河池+柳州', flag:'🇨🇳', country:'中国', date:'2024-08', nights:9, status:'done',
       budget:'~¥10,800', budgetNote:'含估算', route:['徐闻','明仕','渠洋湖','河池','柳州','融水'], tags:['自驾','短途'],
+      companions:['家人'], cost:{stay:3500,transport:4500,food:2000,play:800},
       summary:'自驾 + 喀斯特山水，性价比不错。' },
     { id:'maldives', name:'马尔代夫·跳岛水屋', flag:'🇲🇻', country:'马尔代夫', date:'2023-09', nights:14, status:'done',
       budget:'¥50,739', budgetNote:'规划档', route:['Maafushi','Thinadhoo','Fulidhoo','威斯汀水屋'], tags:['海岛'],
+      companions:['阿杰'], cost:{stay:28000,transport:12000,food:7000,play:3739},
       summary:'水屋全餐档，人均日均最贵的一段。' }
   ],
   reviews: [
@@ -600,6 +702,19 @@ const SEED = {
     { id:'w2', name:'科莫多', flag:'🇮🇩', country:'印尼', done:false },
     { id:'w3', name:'斯米兰', flag:'🇹🇭', country:'泰国', done:false },
     { id:'w4', name:'新西兰', flag:'🇳🇿', country:'新西兰', done:false }
+  ],
+  englishLib: [
+    {cat:'机场出入境', zh:'护照请出示', en:'May I see your passport?'},
+    {cat:'机场出入境', zh:'我要转机', en:'I have a connecting flight.'},
+    {cat:'酒店入住', zh:'我有预订', en:'I have a reservation.'},
+    {cat:'酒店入住', zh:'wifi 密码是多少', en:'What is the wifi password?'},
+    {cat:'餐厅点餐', zh:'请给我菜单', en:'May I have the menu?'},
+    {cat:'餐厅点餐', zh:'不要辣', en:'No spicy, please.'},
+    {cat:'打车', zh:'去这里多少钱', en:'How much to go here?'},
+    {cat:'购物', zh:'可以便宜点吗', en:'Can you give me a discount?'},
+    {cat:'医疗急救', zh:'我需要医生', en:'I need a doctor.'},
+    {cat:'潜水出海', zh:'一潜多少钱', en:'How much for one dive?'},
+    {cat:'潜水出海', zh:'船几点出发', en:'What time does the boat leave?'}
   ],
   trash: []
 };
@@ -692,20 +807,37 @@ function renderStats(){
     statCard('📅', nights, '旅行总晚数', 'nights'),
     statCard('💰', costTxt, '旅行总花费', 'cost')
   ].join('');
+  renderExtraCards();
+}
+function exCard(icon,val,label,drill,onclick){ return '<div class="ex-card" onclick="'+onclick+'"><div class="ex-icon">'+icon+'</div><div class="ex-value">'+val+'</div><div class="ex-label">'+label+'</div><div class="ex-drill">'+drill+'</div></div>'; }
+function renderExtraCards(){
+  const trips=store.trips||[], wish=store.wishlist||[];
+  const wishDone=wish.filter(x=>x.done).length;
+  // 标签计数
+  const tagCount={}; trips.forEach(t=>(t.tags||[]).forEach(tg=>{ tagCount[tg]=(tagCount[tg]||0)+1; }));
+  const topTags=Object.keys(tagCount).sort((a,b)=>tagCount[b]-tagCount[a]);
+  const tagSummary=topTags.length?topTags.slice(0,2).join('/')+'…':'—';
+  document.getElementById('ovExtra').innerHTML=[
+    exCard('✈️', trips.length, '出行次数', '全部行程 ›', "switchTab('planning')"),
+    exCard('📌', wishDone+'/'+wish.length, '愿望清单', '想去目的地 ›', "toggleWishlist()"),
+    exCard('🧳', topTags.length, '出行标签', tagSummary+' ›', "openTagStats()")
+  ].join('');
 }
 function statCard(icon, val, label, type){
   return '<div class="stat-card" onclick="openStatDetail(\''+type+'\')"><div class="stat-icon">'+icon+'</div><div class="stat-value">'+val+'</div><div class="stat-label">'+label+'</div><div class="drill">查看 ›</div></div>';
 }
 
-let searchTerm = '', filterObj = { status:[], range:'all', kw:'' };
+let searchTerm = '', filterObj = { status:[], tags:[], companions:[], range:'all', kw:'' };
 
 function matchFilter(t){
   if (filterObj.status.length && filterObj.status.indexOf(t.status)<0) return false;
+  if (filterObj.tags.length && !(t.tags||[]).some(tg=>filterObj.tags.indexOf(tg)>=0)) return false;
+  if (filterObj.companions.length && !(t.companions||[]).some(c=>filterObj.companions.indexOf(c)>=0)) return false;
   if (filterObj.range==='year' && t.date && t.date.slice(0,4)!==String(new Date().getFullYear())) return false;
   if (filterObj.range==='half'){ const d=new Date(); const half=new Date(d.getFullYear(), d.getMonth()-5, 1); if (t.date && new Date(t.date+'-01')<half) return false; }
   if (filterObj.kw){
     const kw = filterObj.kw.toLowerCase();
-    const hay = ((t.name||'')+' '+(t.country||'')+' '+((t.route||[]).join(' '))+' '+((t.tags||[]).join(' '))).toLowerCase();
+    const hay = ((t.name||'')+' '+(t.country||'')+' '+((t.route||[]).join(' '))+' '+((t.tags||[]).join(' '))+' '+((t.companions||[]).join(' '))).toLowerCase();
     if (hay.indexOf(kw)<0) return false;
   }
   return true;
@@ -728,7 +860,7 @@ function renderHistory(){
     const items = groups[m].map(it=>{
       const badge = '<span class="hi-badge '+it.status+'">'+STATUS_LABEL[it.status]+'</span>';
       const actions = it.kind==='trip'
-        ? '<div class="swipe-actions"><button class="a-edit" onclick="actEdit(\'trip\',\''+it.id+'\')">编辑</button><button class="a-copy" onclick="actCopy(\'trip\',\''+it.id+'\')">复制</button><button class="a-export" onclick="actExport(\'trip\',\''+it.id+'\')">导出</button><button class="a-archive" onclick="actArchive(\'trip\',\''+it.id+'\')">归档</button><button class="a-del" onclick="confirmDelete(\'trip\',\''+it.id+'\')">删除</button></div>'
+        ? '<div class="swipe-actions"><button class="a-edit" onclick="actEdit(\'trip\',\''+it.id+'\')">编辑</button><button class="a-copy" onclick="actCopy(\'trip\',\''+it.id+'\')">复制</button><button class="a-guide" onclick="closeAllRows();openTripDetail(\''+it.id+'\',\'guide\')">攻略</button><button class="a-budget" onclick="closeAllRows();openTripDetail(\''+it.id+'\',\'budget\')">预算</button><button class="a-export" onclick="actExport(\'trip\',\''+it.id+'\')">导出</button><button class="a-archive" onclick="actArchive(\'trip\',\''+it.id+'\')">归档</button><button class="a-del" onclick="confirmDelete(\'trip\',\''+it.id+'\')">删除</button></div>'
         : '<div class="swipe-actions"><button class="a-edit" onclick="actEdit(\'review\',\''+it.id+'\')">编辑</button><button class="a-del" onclick="confirmDelete(\'review\',\''+it.id+'\')">删除</button></div>';
       const front = '<div class="swipe-front" onclick="frontClick(this)"><span class="hi-check">✓</span><span class="hi-flag">'+it.flag+'</span><div class="hi-main"><div class="hi-title">'+esc(it.title)+'</div><div class="hi-meta">'+esc(it.meta)+'</div></div>'+badge+'</div>';
       return '<div class="swipe-row" data-kind="'+it.kind+'" data-id="'+it.id+'">'+actions+front+'</div>';
@@ -762,6 +894,15 @@ function renderAccounts(){
   const total=trips.reduce((s,t)=>s+moneyNum(t.budget),0);
   document.getElementById('accTotal').innerHTML='<div class="total-row"><div class="total-cell"><div class="v">'+trips.length+'</div><div class="l">段旅程</div></div><div class="total-cell divider"><div class="v">'+trips.reduce((s,t)=>s+(t.nights||0),0)+'</div><div class="l">总晚数</div></div><div class="total-cell"><div class="v">≈¥'+(total/1000).toFixed(0)+'k</div><div class="l">总花费</div></div></div>';
   document.getElementById('accList').innerHTML=trips.map(t=>'<div class="card" style="display:flex;justify-content:space-between;align-items:center;"><div><div style="font-size:15px;font-weight:700;">'+t.flag+' '+esc(t.name)+'</div><div style="font-size:11px;color:#94a3b8;margin-top:2px;">'+t.date+' · '+(t.nights||0)+' 晚</div></div><div style="font-size:18px;font-weight:800;color:#2563eb;">'+esc(t.budget)+'</div></div>').join('');
+  // 分类汇总
+  const cat={stay:0,transport:0,food:0,play:0}; let hasCat=false;
+  trips.forEach(t=>{ if(t.cost){ hasCat=true; cat.stay+=t.cost.stay||0; cat.transport+=t.cost.transport||0; cat.food+=t.cost.food||0; cat.play+=t.cost.play||0; } });
+  if(hasCat){
+    const labels={stay:'🏨 住宿',transport:'🚗 交通',food:'🍜 餐饮',play:'🎡 游玩'};
+    const sum=cat.stay+cat.transport+cat.food+cat.play; const cmax=Math.max(1,cat.stay,cat.transport,cat.food,cat.play);
+    const catHtml='<div class="section-title">📊 消费分类</div><div class="card">'+Object.keys(labels).map(k=>{ const v=cat[k]; const pct=sum?Math.round(v/sum*100):0; return '<div class="bar-row"><span class="bl">'+labels[k]+'</span><div class="bar-track"><div class="bar-fill" style="width:'+(v/cmax*100)+'%"></div></div><span class="bv">'+pct+'%</span></div>'; }).join('')+'<div class="form-hint" style="margin-top:6px;">合计 ¥'+sum.toLocaleString()+'（仅含填写了细项的行程）</div></div>';
+    document.getElementById('accList').innerHTML=catHtml+document.getElementById('accList').innerHTML;
+  }
 }
 
 function renderReviews(){
@@ -781,7 +922,7 @@ function renderWishlist(){
 }
 function toggleWishlist(){ const w=document.getElementById('wishlistWrap'); const open=w.style.display==='none'; w.style.display=open?'block':'none'; document.querySelector('.section-title .link-btn[onclick="toggleWishlist()"]').textContent=open?'收起':'展开'; }
 
-function renderAll(){ renderStats(); renderHistory(); renderTrips(); renderFootprints(); renderAccounts(); renderReviews(); renderWishlist(); }
+function renderAll(){ renderStats(); renderHistory(); renderTrips(); renderFootprints(); renderAccounts(); renderReviews(); renderWishlist(); renderGuideLib(); renderEnglishLib(); }
 
 /* =========================================================
    统计下钻
@@ -807,7 +948,19 @@ function openStatDetail(type){
     title='💰 旅行总花费';
     const yr={}; trips.forEach(t=>{ const y=(t.date||'----').slice(0,4); yr[y]=(yr[y]||0)+moneyNum(t.budget); });
     const ks=Object.keys(yr).filter(k=>k!=='----').sort(); const max=Math.max(1,...ks.map(k=>yr[k]));
-    body='<div class="detail-block"><h4>各年消费（按行程预算合计）</h4>'+ks.map(k=>{ const v=yr[k]; return '<div class="bar-row"><span class="bl">'+k+'</span><div class="bar-track"><div class="bar-fill" style="width:'+(v/max*100)+'%"></div></div><span class="bv">¥'+(v/1000).toFixed(0)+'k</span></div>'; }).join('')+'<div class="form-hint" style="margin-top:8px;">提示：目前按每段行程「预算」汇总，细分（住宿/交通/餐饮/游玩）可在每段行程中补充标签。</div></div>';
+    let body='<div class="detail-block"><h4>各年消费（按行程预算合计）</h4>'+ks.map(k=>{ const v=yr[k]; return '<div class="bar-row"><span class="bl">'+k+'</span><div class="bar-track"><div class="bar-fill" style="width:'+(v/max*100)+'%"></div></div><span class="bv">¥'+(v/1000).toFixed(0)+'k</span></div>'; }).join('')+'</div>';
+    // 分类拆分（住宿/交通/餐饮/游玩）
+    const cat={stay:0,transport:0,food:0,play:0}; let hasCat=false;
+    trips.forEach(t=>{ if(t.cost){ hasCat=true; cat.stay+=t.cost.stay||0; cat.transport+=t.cost.transport||0; cat.food+=t.cost.food||0; cat.play+=t.cost.play||0; } });
+    if(hasCat){
+      const labels={stay:'🏨 住宿',transport:'🚗 交通',food:'🍜 餐饮',play:'🎡 游玩'};
+      const sum=cat.stay+cat.transport+cat.food+cat.play;
+      const cmax=Math.max(1,cat.stay,cat.transport,cat.food,cat.play);
+      body+='<div class="detail-block"><h4>消费分类拆分（已填细项的行程）</h4>'+Object.keys(labels).map(k=>{ const v=cat[k]; const pct=sum?Math.round(v/sum*100):0; return '<div class="bar-row"><span class="bl">'+labels[k]+'</span><div class="bar-track"><div class="bar-fill" style="width:'+(v/cmax*100)+'%"></div></div><span class="bv">'+pct+'%</span></div>'; }).join('')+'<div class="form-hint" style="margin-top:6px;">合计 ¥'+sum.toLocaleString()+'（仅含填写了细项的行程）</div></div>';
+    } else {
+      body+='<div class="form-hint" style="margin-top:8px;">提示：在每段行程里补充「花费拆分」，这里会展示住宿/交通/餐饮/游玩占比。</div>';
+    }
+    body+='<div class="form-hint" style="margin-top:8px;">点底部 Tab「💰 账目」查看每段花费明细。</div>';
   }
   document.getElementById('detailTitle').textContent=title;
   document.getElementById('detailBody').innerHTML=body;
@@ -816,24 +969,31 @@ function openStatDetail(type){
 }
 function closeDetail(){ document.getElementById('detailMask').classList.remove('show'); }
 
+/* 标签统计 */
+function openTagStats(){
+  const trips=store.trips||[];
+  const map={}; trips.forEach(t=>(t.tags||[]).forEach(tg=>{ map[tg]=(map[tg]||0)+1; }));
+  const entries=Object.keys(map).sort((a,b)=>map[b]-map[a]);
+  const max=Math.max(1,...entries.map(e=>map[e]));
+  let body='<div class="detail-block"><h4>出行标签占比（共 '+entries.length+' 类）</h4>'+(entries.length?entries.map(e=>'<div class="tag-bar-row"><span class="tbl">'+esc(e)+'</span><div class="tbt"><div class="tbf" style="width:'+(map[e]/max*100)+'%"></div></div><span class="tbv">'+map[e]+'</span></div>').join(''):'<div style="font-size:13px;color:#94a3b8;">还没有标签</div>')+'</div><div class="form-hint">点下方按钮，按某个标签筛选历史记录</div>';
+  document.getElementById('detailTitle').textContent='🧳 出行标签统计';
+  document.getElementById('detailBody').innerHTML=body;
+  document.getElementById('detailActions').innerHTML=(entries.length?'<button class="btn-cancel" onclick="closeDetail()">关闭</button><button class="btn-save" onclick="filterByTag(\''+esc(entries[0])+'\')">按「'+esc(entries[0])+'」筛选</button>':'<button class="btn-primary" style="flex:1" onclick="closeDetail()">知道了</button>');
+  document.getElementById('detailMask').classList.add('show');
+}
+function filterByTag(tag){
+  closeDetail();
+  filterObj={status:[],tags:[tag],companions:[],range:'all',kw:''};
+  switchTab('overview'); renderHistory(); showToast('已按「'+tag+'」筛选');
+}
+
 /* =========================================================
    详情（点击历史/行程/记录条目）
    ========================================================= */
 function openDetail(kind, id){
   if (selectMode) return;
-  if (kind==='trip'){
-    const t=store.trips.find(x=>x.id===id); if(!t) return;
-    document.getElementById('detailTitle').textContent=t.flag+' '+t.name;
-    document.getElementById('detailBody').innerHTML=
-      '<div class="detail-block"><h4>概览</h4>'+
-      kv('状态', STATUS_LABEL[t.status||'done'])+
-      kv('国家', t.country||'-')+kv('日期', t.date||'-')+kv('晚数', (t.nights||0)+' 晚')+
-      kv('预算', t.budget||'-')+(t.budgetNote?kv('备注', t.budgetNote):'')+'</div>'+
-      '<div class="detail-block"><h4>路线</h4><div style="display:flex;flex-wrap:wrap;gap:6px;">'+((t.route||[]).map(r=>'<span class="route-tag">'+esc(r)+'</span>').join(''))+'</div></div>'+
-      (t.tags&&t.tags.length?'<div class="detail-block"><h4>标签</h4><div style="display:flex;flex-wrap:wrap;gap:6px;">'+t.tags.map(r=>'<span class="route-tag" style="background:#f3e8ff;color:#7c3aed;">'+esc(r)+'</span>').join('')+'</div></div>':'')+
-      (t.summary?'<div class="detail-block"><h4>小结</h4><div style="font-size:13px;color:#475569;line-height:1.6;">'+esc(t.summary)+'</div></div>':'');
-    document.getElementById('detailActions').innerHTML='<button class="btn-cancel" onclick="closeDetail()">关闭</button><button class="btn-save" onclick="closeDetail();openEditor(\'trip\',\''+id+'\')">编辑</button>';
-  } else {
+  if (kind==='trip'){ openTripDetail(id); return; }
+  else {
     const r=store.reviews.find(x=>x.id===id); if(!r) return;
     document.getElementById('detailTitle').textContent=r.title;
     document.getElementById('detailBody').innerHTML='<div class="detail-block"><h4>信息</h4>'+kv('标签', r.tag||'-')+kv('日期', r.date||'-')+'</div><div class="detail-block"><h4>正文</h4><div style="font-size:13px;color:#475569;line-height:1.7;">'+esc(r.body||'')+'</div></div>';
@@ -842,6 +1002,141 @@ function openDetail(kind, id){
   document.getElementById('detailMask').classList.add('show');
 }
 function kv(k,v){ return '<div class="kv"><span class="k">'+esc(k)+'</span><span class="v">'+esc(v)+'</span></div>'; }
+
+/* =========================================================
+   行程聚合页：概况 / 攻略 / 预算 / 英语
+   ========================================================= */
+const RATES={CNY:1,USD:7.2,EUR:7.8,GBP:9.0,HKD:0.92,SGD:5.3,JPY:0.048,KRW:0.0053,THB:0.20,PHP:0.13,MVR:0.46,AUD:4.8};
+const CCY=['CNY','USD','EUR','GBP','HKD','SGD','JPY','KRW','THB','PHP','MVR','AUD'];
+const BUD_CATS=['机票交通','当地车船','酒店住宿','餐饮','景点体验','签证保险','购物','杂费'];
+const GUIDE_TPLS={
+  '海岛出境游':['护照/签证确认','机票行程单打印','潜水证/保险','防晒+泳衣','当地货币现金','浮潜装备'],
+  '城市短途':['酒店选地铁旁','交通卡/地铁票','必吃清单','天气查好','充电宝'],
+  '自驾':['驾照/翻译件','租车预订','导航离线包','停车攻略','应急工具'],
+  '潜水旅行':['潜水证','装备清单','潜店预约','船班确认','潜水电脑表']
+};
+const BUD_TPLS={
+  '海岛出境游':[{cat:'机票交通',amt:8000},{cat:'酒店住宿',amt:8000},{cat:'餐饮',amt:4000},{cat:'景点体验',amt:5000},{cat:'签证保险',amt:1000},{cat:'杂费',amt:1000}],
+  '城市短途':[{cat:'机票交通',amt:2000},{cat:'酒店住宿',amt:2000},{cat:'餐饮',amt:1500},{cat:'景点体验',amt:1000},{cat:'杂费',amt:500}],
+  '自驾':[{cat:'机票交通',amt:1500},{cat:'当地船船',amt:2000},{cat:'酒店住宿',amt:2000},{cat:'餐饮',amt:1500},{cat:'杂费',amt:500}],
+  '潜水旅行':[{cat:'机票交通',amt:7000},{cat:'酒店住宿',amt:6000},{cat:'景点体验',amt:6000},{cat:'餐饮',amt:3000},{cat:'签证保险',amt:1000}]
+};
+let tripCtxId=null;
+function openTripDetail(id,tab){ const t=store.trips.find(x=>x.id===id); if(!t) return; tripCtxId=id; switchTripTab(tab||'overview'); }
+function closeTrip(){ document.getElementById('tripMask').classList.remove('show'); }
+function switchTripTab(tab){
+  const t=store.trips.find(x=>x.id===tripCtxId); if(!t) return;
+  document.querySelectorAll('#tripMask .tt').forEach(x=>x.classList.toggle('on', x.dataset.tab===tab));
+  document.getElementById('tripTitle').textContent=t.flag+' '+t.name;
+  if(tab==='overview') renderTripOverview(t);
+  else if(tab==='guide') renderTripGuide(t);
+  else if(tab==='budget') renderTripBudget(t);
+  else if(tab==='english') renderTripEnglish(t);
+}
+function renderTripOverview(t){
+  let html='<div class="trip-quick">'+
+    '<button class="quick-btn" onclick="closeTrip();openEditor(\'trip\',\''+t.id+'\')">✏️ 编辑</button>'+
+    '<button class="quick-btn" onclick="actCopy(\'trip\',\''+t.id+'\')">📋 复制</button>'+
+    '<button class="quick-btn" onclick="actExport(\'trip\',\''+t.id+'\')">🖼️ 导出</button>'+
+    '<button class="quick-btn" onclick="actArchive(\'trip\',\''+t.id+'\')">📥 归档</button>'+
+    '<button class="quick-btn" onclick="confirmDelete(\'trip\',\''+t.id+'\')">🗑️ 删除</button>'+
+    '</div>';
+  html+='<div class="detail-block"><h4>概览</h4>'+kv('状态',STATUS_LABEL[t.status||'done'])+kv('国家',t.country||'-')+kv('日期',t.date||'-')+kv('晚数',(t.nights||0)+' 晚')+kv('预算',t.budget||'-')+(t.budgetNote?kv('备注',t.budgetNote):'')+'</div>';
+  html+='<div class="detail-block"><h4>路线</h4><div style="display:flex;flex-wrap:wrap;gap:6px;">'+((t.route||[]).map(r=>'<span class="route-tag">'+esc(r)+'</span>').join(''))+'</div></div>';
+  if(t.tags&&t.tags.length) html+='<div class="detail-block"><h4>标签</h4><div style="display:flex;flex-wrap:wrap;gap:6px;">'+t.tags.map(r=>'<span class="route-tag" style="background:#f3e8ff;color:#7c3aed;cursor:pointer;" onclick="filterByTag(\''+esc(r)+'\')">'+esc(r)+'</span>').join('')+'</div></div>';
+  if(t.companions&&t.companions.length) html+='<div class="detail-block"><h4>同行人</h4><div style="display:flex;flex-wrap:wrap;gap:6px;">'+t.companions.map(r=>'<span class="route-tag" style="background:#ecfeff;color:#0e7490;">'+esc(r)+'</span>').join('')+'</div></div>';
+  if(t.summary) html+='<div class="detail-block"><h4>小结</h4><div style="font-size:13px;color:#475569;line-height:1.6;">'+esc(t.summary)+'</div></div>';
+  document.getElementById('tripBody').innerHTML=html;
+  document.getElementById('tripActions').innerHTML='<button class="btn-cancel" style="flex:1" onclick="closeTrip()">关闭</button>';
+}
+function ensureGuide(t){ if(!t.guide) t.guide={text:'',checklist:[]}; if(!t.guide.checklist) t.guide.checklist=[]; return t.guide; }
+function renderTripGuide(t){
+  const g=ensureGuide(t);
+  let html='<div class="form-row"><label>攻略正文</label><textarea class="guide-text" id="g-text" placeholder="写点贴士、注意事项、链接…">'+esc(g.text||'')+'</textarea></div>';
+  html+='<div class="form-row"><label>打包 / 打卡清单</label><div class="checklist" id="g-check">'+((g.checklist||[]).map((it,idx)=>'<div class="check-item'+(it.done?' done':'')+'" onclick="toggleGuideItem(\''+t.id+'\','+idx+')"><span class="ci-ck">'+(it.done?'✓':'')+'</span><span class="ci-tx">'+esc(it.t)+'</span><span class="ci-del" onclick="event.stopPropagation();delGuideItem(\''+t.id+'\','+idx+')">✕</span></div>').join('')||'<div style="font-size:13px;color:#94a3b8;">还没有清单项，下面加一个</div>')+'</div><div style="display:flex;gap:8px;margin-top:6px;"><input id="g-new" placeholder="新清单项" style="flex:1;border:1px solid #cbd5e1;border-radius:8px;padding:8px;font-size:13px;"><button class="quick-btn" style="flex:0 0 auto;" onclick="addGuideItem(\''+t.id+'\')">＋</button></div></div>';
+  html+='<div class="form-row"><label>插入预设模板</label><div class="tpl-row">'+Object.keys(GUIDE_TPLS).map(k=>'<span class="tpl-chip" onclick="applyGuideTemplate(\''+t.id+'\',\''+esc(k)+'\')">'+esc(k)+'</span>').join('')+'</div></div>';
+  document.getElementById('tripBody').innerHTML=html;
+  document.getElementById('tripActions').innerHTML='<button class="btn-cancel" onclick="closeTrip()">关闭</button><button class="btn-save" onclick="saveGuide(\''+t.id+'\')">保存攻略</button>';
+}
+function addGuideItem(id){ const t=store.trips.find(x=>x.id===id); const v=document.getElementById('g-new').value.trim(); if(!v) return; ensureGuide(t).checklist.push({t:v,done:false}); saveGuide(id); }
+function toggleGuideItem(id,idx){ const t=store.trips.find(x=>x.id===id); ensureGuide(t).checklist[idx].done=!ensureGuide(t).checklist[idx].done; saveGuide(id); }
+function delGuideItem(id,idx){ const t=store.trips.find(x=>x.id===id); ensureGuide(t).checklist.splice(idx,1); saveGuide(id); }
+function applyGuideTemplate(id,name){ const t=store.trips.find(x=>x.id===id); const items=GUIDE_TPLS[name]||[]; const g=ensureGuide(t); items.forEach(it=>{ if(!g.checklist.some(c=>c.t===it)) g.checklist.push({t:it,done:false}); }); saveGuide(id); showToast('已插入「'+name+'」模板'); }
+function saveGuide(id){ const t=store.trips.find(x=>x.id===id); if(!t) return; ensureGuide(t).text=document.getElementById('g-text').value; saveStore(); renderAll(); renderTripGuide(t); showToast('攻略已保存'); }
+function budCNY(it){ return (parseFloat(it.amt)||0)*(RATES[it.cur]||1); }
+function budRowHtml(id,idx,it){
+  return '<div class="budget-row" data-idx="'+idx+'">'+
+    '<select onchange="budField(\''+id+'\','+idx+',\'cat\',this.value)">'+(BUD_CATS.map(c=>'<option'+(c===it.cat?' selected':'')+'>'+c+'</option>').join(''))+'</select>'+
+    '<select onchange="budField(\''+id+'\','+idx+',\'cur\',this.value)">'+CCY.map(c=>'<option'+(c===it.cur?' selected':'')+'>'+c+'</option>').join('')+'</select>'+
+    '<input type="number" inputmode="numeric" value="'+it.amt+'" onchange="budField(\''+id+'\','+idx+',\'amt\',this.value)">'+
+    '<input value="'+esc(it.note||'')+'" onchange="budField(\''+id+'\','+idx+',\'note\',this.value)">'+
+    '<span class="bi-del" onclick="delBudgetItem(\''+id+'\','+idx+')">✕</span></div>';
+}
+function renderTripBudget(t){
+  const items=t.budgetItems||[];
+  let html='<div class="form-row"><label>预算条目（多币种自动折算人民币）</label>';
+  html+='<div class="budget-row" style="font-size:11px;color:#94a3b8;"><span>分类</span><span>币种</span><span>金额</span><span>备注</span><span></span></div>';
+  html+='<div id="b-list">'+items.map((it,idx)=>budRowHtml(t.id,idx,it)).join('')+'</div>';
+  html+='<button class="quick-btn" style="margin-top:6px;" onclick="addBudgetItem(\''+t.id+'\')">＋ 添加预算条目</button></div>';
+  html+='<div class="form-row"><label>套用预算模板</label><div class="tpl-row">'+Object.keys(BUD_TPLS).map(k=>'<span class="tpl-chip" onclick="applyBudgetTemplate(\''+t.id+'\',\''+esc(k)+'\')">'+esc(k)+'</span>').join('')+'</div></div>';
+  const planned=items.reduce((s,it)=>s+budCNY(it),0);
+  let actual=0, hasActual=false;
+  if(t.cost){ actual=t.cost.stay+t.cost.transport+t.cost.food+t.cost.play; hasActual=true; }
+  else { actual=moneyNum(t.budget); if(actual>0) hasActual=true; }
+  html+='<div class="detail-block"><h4>预算汇总</h4>'+
+    '<div class="kv"><span class="k">计划总预算</span><span class="v bud-total">¥'+Math.round(planned).toLocaleString()+'</span></div>'+
+    (hasActual?'<div class="kv"><span class="k">实际 / 已记录</span><span class="v '+(actual>planned?'bud-warn':'')+'">¥'+Math.round(actual).toLocaleString()+'</span></div>':'')+
+    (hasActual?('<div class="kv"><span class="k">差额</span><span class="v '+(actual>planned?'bud-warn':'')+'">'+(actual>planned?('超支 ¥'+Math.round(actual-planned).toLocaleString()):('结余 ¥'+Math.round(planned-actual).toLocaleString()))+'</span></div>'):'<div class="form-hint">在行程编辑里填「花费拆分」可对比实际</div>')+
+    '</div>';
+  document.getElementById('tripBody').innerHTML=html;
+  document.getElementById('tripActions').innerHTML='<button class="btn-cancel" onclick="closeTrip()">关闭</button><button class="btn-save" onclick="saveBudget(\''+t.id+'\')">保存预算</button>';
+}
+function addBudgetItem(id){ const t=store.trips.find(x=>x.id===id); t.budgetItems=t.budgetItems||[]; t.budgetItems.push({cat:'机票交通',cur:'CNY',amt:0,note:''}); saveBudget(id); }
+function budField(id,idx,field,val){ const t=store.trips.find(x=>x.id===id); t.budgetItems[idx][field]=(field==='amt'?parseFloat(val)||0:val); saveBudget(id); }
+function delBudgetItem(id,idx){ const t=store.trips.find(x=>x.id===id); t.budgetItems.splice(idx,1); saveBudget(id); }
+function applyBudgetTemplate(id,name){ const t=store.trips.find(x=>x.id===id); t.budgetItems=t.budgetItems||[]; (BUD_TPLS[name]||[]).forEach(b=>{ if(!t.budgetItems.some(x=>x.cat===b.cat)) t.budgetItems.push({cat:b.cat,cur:'CNY',amt:b.amt,note:''}); }); saveBudget(id); showToast('已套用「'+name+'」模板'); }
+function saveBudget(id){ const t=store.trips.find(x=>x.id===id); if(!t) return; saveStore(); renderAll(); renderTripBudget(t); showToast('预算已保存'); }
+function renderTripEnglish(t){
+  const arr=t.english||[];
+  let html='<div class="form-row"><label>本行程专属英语短句</label>'+
+    '<div id="e-list">'+arr.map((it,idx)=>'<div class="eng-row"><div><div class="er-zh">'+esc(it.zh)+'</div><div class="er-en">'+esc(it.en)+'</div></div><span class="er-play" onclick="playEnglish(\''+esc(it.en)+'\')">🔊</span><span class="er-del" onclick="delEnglish(\''+t.id+'\','+idx+')">✕</span></div>').join('')+'</div>'+
+    '<div style="display:flex;gap:8px;margin-top:8px;"><input id="e-zh" placeholder="中文" style="flex:1;border:1px solid #cbd5e1;border-radius:8px;padding:8px;font-size:13px;"><input id="e-en" placeholder="English" style="flex:1;border:1px solid #cbd5e1;border-radius:8px;padding:8px;font-size:13px;"><button class="quick-btn" onclick="addEnglish(\''+t.id+'\')">＋</button></div></div>';
+  html+='<div class="form-hint">通用话术库在底部【英语】Tab，可「＋行程」加入这里。</div>';
+  document.getElementById('tripBody').innerHTML=html;
+  document.getElementById('tripActions').innerHTML='<button class="btn-cancel" onclick="closeTrip()">关闭</button><button class="btn-save" onclick="closeTrip();showToast(\'已保存\')">完成</button>';
+}
+function addEnglish(id){ const t=store.trips.find(x=>x.id===id); const zh=document.getElementById('e-zh').value.trim(); const en=document.getElementById('e-en').value.trim(); if(!zh||!en) return; t.english=t.english||[]; t.english.push({zh,en,fav:false}); saveStore(); renderAll(); renderTripEnglish(t); }
+function delEnglish(id,idx){ const t=store.trips.find(x=>x.id===id); t.english.splice(idx,1); saveStore(); renderAll(); renderTripEnglish(t); }
+function playEnglish(text){ try{ const u=new SpeechSynthesisUtterance(text); u.lang='en-US'; if(window.speechSynthesis){ speechSynthesis.cancel(); speechSynthesis.speak(u); } else showToast('当前环境不支持语音'); }catch(e){ showToast('当前环境不支持语音'); } }
+function renderGuideLib(){
+  let html='<div class="section-title">📋 通用攻略模板</div>';
+  html+=Object.keys(GUIDE_TPLS).map(k=>'<div class="card"><div style="font-weight:700;margin-bottom:4px;">'+esc(k)+'</div><div style="display:flex;flex-wrap:wrap;gap:6px;">'+GUIDE_TPLS[k].map(it=>'<span class="route-tag">'+esc(it)+'</span>').join('')+'</div><button class="link-btn" style="margin-top:8px;" onclick="applyGuideToTrip(\''+esc(k)+'\')">应用到行程</button></div>').join('');
+  html+='<div class="form-hint">模板会作为打卡清单插入所选行程的「攻略」里。</div>';
+  document.getElementById('guideLib').innerHTML=html;
+}
+function applyGuideToTrip(name){
+  const trips=store.trips||[]; if(!trips.length){ showToast('还没有行程'); return; }
+  const ans=prompt('请选择要应用「'+name+'」的行程：\n'+trips.map((t,i)=>(i+1)+'. '+t.name).join('\n')); if(!ans) return;
+  const idx=parseInt(ans,10)-1; if(isNaN(idx)||!trips[idx]){ showToast('选择无效'); return; }
+  const t=trips[idx]; const g=ensureGuide(t); (GUIDE_TPLS[name]||[]).forEach(it=>{ if(!g.checklist.some(c=>c.t===it)) g.checklist.push({t:it,done:false}); });
+  saveStore(); renderAll(); showToast('已应用到「'+t.name+'」');
+}
+function renderEnglishLib(){
+  const q=(document.getElementById('engSearch').value||'').toLowerCase();
+  const lib=store.englishLib||[];
+  const cats={}; lib.forEach(it=>{ if(q && (it.zh+it.en).toLowerCase().indexOf(q)<0) return; (cats[it.cat]=cats[it.cat]||[]).push(it); });
+  const keys=Object.keys(cats);
+  let html=keys.length?keys.map(c=>'<div class="lib-cat">'+esc(c)+'</div>'+cats[c].map(it=>'<div class="eng-row"><div><div class="er-zh">'+esc(it.zh)+'</div><div class="er-en">'+esc(it.en)+'</div></div><span class="er-play" onclick="playEnglish(\''+esc(it.en)+'\')">🔊</span><span class="er-del" style="color:#2563eb;cursor:pointer;margin-left:8px;" onclick="addLibToTrip(\''+esc(it.zh)+'\',\''+esc(it.en)+'\')">＋行程</span></div>').join('')).join(''):'<div style="text-align:center;color:#94a3b8;padding:20px;">没有匹配的短句</div>';
+  html+='<div class="form-hint">点 🔊 听发音；点「＋行程」加入某趟旅行的专属英语本。</div>';
+  document.getElementById('englishLib').innerHTML=html;
+}
+function addLibToTrip(zh,en){
+  const trips=store.trips||[]; if(!trips.length){ showToast('还没有行程'); return; }
+  const ans=prompt('加入哪趟旅行的英语本？\n'+trips.map((t,i)=>(i+1)+'. '+t.name).join('\n')); if(!ans) return;
+  const idx=parseInt(ans,10)-1; if(isNaN(idx)||!trips[idx]){ showToast('选择无效'); return; }
+  const t=trips[idx]; t.english=t.english||[]; if(!t.english.some(x=>x.en===en)) t.english.push({zh,en,fav:false});
+  saveStore(); renderAll(); showToast('已加入「'+t.name+'」');
+}
 
 /* =========================================================
    菜单 / 设置 / 帮助
@@ -913,7 +1208,7 @@ function generateReport(){
 function actEdit(kind,id){ closeAllRows(); openEditor(kind,id); }
 function actCopy(kind,id){
   closeAllRows();
-  if (kind==='trip'){ const t=store.trips.find(x=>x.id===id); if(t){ const c=JSON.parse(JSON.stringify(t)); c.id='trip_'+Date.now(); c.name=t.name+'（副本）'; c.status='plan'; store.trips.unshift(c); saveStore(); renderAll(); showToast('已复制为相似行程'); } }
+  if (kind==='trip'){ const t=store.trips.find(x=>x.id===id); if(t){ const c=JSON.parse(JSON.stringify(t)); c.id='trip_'+Date.now(); c.name=t.name+'（副本）'; c.status='plan'; c._archived=false; store.trips.unshift(c); saveStore(); renderAll(); showToast('已复制（含攻略/预算/英语）'); } }
 }
 function actArchive(kind,id){
   closeAllRows();
@@ -973,6 +1268,9 @@ function openEditor(type,id){
     setVal('f-date',t.date); setVal('f-nights',t.nights); setSel('f-status',t.status||'done');
     setVal('f-budget',t.budget); setVal('f-budgetNote',t.budgetNote);
     setVal('f-route',(t.route||[]).join('，')); setVal('f-tags',(t.tags||[]).join('，')); setVal('f-summary',t.summary);
+    setVal('f-companions',(t.companions||[]).join('，'));
+    setVal('f-cost-stay',t.cost?t.cost.stay:''); setVal('f-cost-transport',t.cost?t.cost.transport:'');
+    setVal('f-cost-food',t.cost?t.cost.food:''); setVal('f-cost-play',t.cost?t.cost.play:'');
   } else {
     const r=id?(store.reviews.find(x=>x.id===id)||{}):{};
     setVal('f-title',r.title); setVal('f-tag',r.tag); setVal('f-rdate',r.date); setVal('f-body',r.body);
@@ -988,6 +1286,8 @@ function saveEditor(){
       status:getVal('f-status'), budget:getVal('f-budget'), budgetNote:getVal('f-budgetNote'),
       route:getVal('f-route').split(/[，,、]/).map(s=>s.trim()).filter(Boolean),
       tags:getVal('f-tags').split(/[，,、]/).map(s=>s.trim()).filter(Boolean),
+      companions:getVal('f-companions').split(/[，,、]/).map(s=>s.trim()).filter(Boolean),
+      cost:(function(){ const s=parseFloat(getVal('f-cost-stay'))||0, t=parseFloat(getVal('f-cost-transport'))||0, f=parseFloat(getVal('f-cost-food'))||0, p=parseFloat(getVal('f-cost-play'))||0; return (s+t+f+p>0)?{stay:s,transport:t,food:f,play:p}:undefined; })(),
       summary:getVal('f-summary') };
     if (editingId){ const i=store.trips.findIndex(x=>x.id===editingId); if(i>=0) store.trips[i]=obj; } else store.trips.unshift(obj);
   } else {
@@ -1018,16 +1318,30 @@ function openWishEditor(){
    搜索 / 筛选
    ========================================================= */
 function onSearch(v){ searchTerm=v.trim(); renderHistory(); }
-function openFilter(){ document.getElementById('filterMask').classList.add('show'); }
+function openFilter(){
+  // 动态填充标签 / 同行人 chips
+  const allTags={}; (store.trips||[]).forEach(t=>(t.tags||[]).forEach(tg=>allTags[tg]=1));
+  const allCom={}; (store.trips||[]).forEach(t=>(t.companions||[]).forEach(c=>allCom[c]=1));
+  const tc=document.getElementById('fTagChips'); tc.innerHTML=Object.keys(allTags).map(t=>(filterObj.tags.indexOf(t)>=0?'<span class="chip on" data-v="'+esc(t)+'">'+esc(t)+'</span>':'<span class="chip" data-v="'+esc(t)+'">'+esc(t)+'</span>')).join('')||'<span style="font-size:12px;color:#94a3b8;">暂无标签</span>';
+  const cc=document.getElementById('fCompanionChips'); cc.innerHTML=Object.keys(allCom).map(c=>(filterObj.companions.indexOf(c)>=0?'<span class="chip on" data-v="'+esc(c)+'">'+esc(c)+'</span>':'<span class="chip" data-v="'+esc(c)+'">'+esc(c)+'</span>')).join('')||'<span style="font-size:12px;color:#94a3b8;">暂无同行人</span>';
+  // 还原已选状态 chips
+  document.querySelectorAll('#fStatusChips .chip').forEach(c=>c.classList.toggle('on', filterObj.status.indexOf(c.dataset.v)>=0));
+  document.getElementById('fRange').value=filterObj.range; document.getElementById('fKw').value=filterObj.kw;
+  document.getElementById('filterMask').classList.add('show');
+}
 function closeFilter(){ document.getElementById('filterMask').classList.remove('show'); }
 document.getElementById('fStatusChips').addEventListener('click', e=>{ const c=e.target.closest('.chip'); if(c) c.classList.toggle('on'); });
+document.getElementById('fTagChips').addEventListener('click', e=>{ const c=e.target.closest('.chip'); if(c) c.classList.toggle('on'); });
+document.getElementById('fCompanionChips').addEventListener('click', e=>{ const c=e.target.closest('.chip'); if(c) c.classList.toggle('on'); });
 function applyFilter(){
   filterObj.status=Array.from(document.querySelectorAll('#fStatusChips .chip.on')).map(c=>c.dataset.v);
+  filterObj.tags=Array.from(document.querySelectorAll('#fTagChips .chip.on')).map(c=>c.dataset.v);
+  filterObj.companions=Array.from(document.querySelectorAll('#fCompanionChips .chip.on')).map(c=>c.dataset.v);
   filterObj.range=document.getElementById('fRange').value;
   filterObj.kw=document.getElementById('fKw').value.trim();
   closeFilter(); renderHistory(); showToast('已筛选');
 }
-function resetFilter(){ filterObj={status:[],range:'all',kw:''}; document.querySelectorAll('#fStatusChips .chip').forEach(c=>c.classList.remove('on')); document.getElementById('fRange').value='all'; document.getElementById('fKw').value=''; renderHistory(); showToast('已重置'); }
+function resetFilter(){ filterObj={status:[],tags:[],companions:[],range:'all',kw:''}; document.querySelectorAll('#fStatusChips .chip, #fTagChips .chip, #fCompanionChips .chip').forEach(c=>c.classList.remove('on')); document.getElementById('fRange').value='all'; document.getElementById('fKw').value=''; renderHistory(); showToast('已重置'); }
 
 /* =========================================================
    历史行：滑动 / 点击 / 长按多选
