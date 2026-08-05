@@ -1,0 +1,1593 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>旅行工作台 · 飞鱼的旅行世界</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", sans-serif;
+    background: linear-gradient(135deg, #e0f2fe 0%, #dbeafe 50%, #e0e7ff 100%);
+    color: #1e3a8a;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  button { font-family: inherit; }
+  ::-webkit-scrollbar { display: none; }
+
+  /* Status bar */
+  .status-bar { display: flex; justify-content: space-between; align-items: center; padding: 8px 22px 2px; font-size: 14px; font-weight: 600; color: #1e3a8a; }
+  .status-icons { display: flex; gap: 5px; align-items: center; }
+  .battery { border: 1px solid #1e3a8a; border-radius: 4px; padding: 1px 4px; font-size: 10px; }
+
+  /* Phone container */
+  .phone {
+    max-width: 430px; margin: 0 auto; height: 100vh;
+    background: linear-gradient(180deg, #f0f9ff 0%, #eff6ff 100%);
+    display: flex; flex-direction: column; overflow: hidden; position: relative;
+    box-shadow: 0 0 50px rgba(30,58,138,0.18);
+  }
+
+  /* Top bar */
+  .top-bar { display: flex; align-items: center; padding: 8px 18px 4px; gap: 10px; }
+  .icon-btn {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.9);
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    font-size: 16px; color: #1e3a8a; backdrop-filter: blur(8px); flex-shrink: 0;
+  }
+  .url-bar {
+    flex: 1; text-align: center; font-size: 13px; color: #1e3a8a; font-weight: 600;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    background: rgba(255,255,255,0.45); padding: 6px 12px; border-radius: 18px;
+  }
+
+  /* Hero */
+  .hero {
+    margin: 4px 16px 12px; padding: 16px 16px 14px;
+    background: linear-gradient(135deg, rgba(191,219,254,0.9), rgba(219,234,254,0.9));
+    border-radius: 18px; position: relative; overflow: hidden;
+  }
+  .hero::after { content: '✈️'; position: absolute; right: 12px; bottom: 4px; font-size: 38px; opacity: 0.55; transform: rotate(15deg); }
+  .hero-title { font-size: 26px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+  .hero-sub { margin-top: 6px; font-size: 13px; color: #475569; }
+
+  /* Content */
+  .content { flex: 1; min-height: 0; overflow-y: auto; padding: 0 16px 96px; -webkit-overflow-scrolling: touch; touch-action: pan-y; }
+  .page { display: none; animation: fade .3s ease; }
+  .page.active { display: block; }
+  @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes slideL { from { opacity: 0; transform: translateX(28px); } to { opacity: 1; transform: translateX(0); } }
+  @keyframes slideR { from { opacity: 0; transform: translateX(-28px); } to { opacity: 1; transform: translateX(0); } }
+  .page.active.anim-right { animation: slideL .28s ease; }
+  .page.active.anim-left  { animation: slideR .28s ease; }
+
+  /* Overview */
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stat-card { background: rgba(255,255,255,0.85); backdrop-filter: blur(8px); border-radius: 16px; padding: 16px 12px; text-align: center; box-shadow: 0 2px 10px rgba(30,58,138,0.05); }
+  .stat-icon { font-size: 24px; margin-bottom: 4px; }
+  .stat-value { font-size: 26px; font-weight: 800; color: #1e40af; }
+  .stat-label { font-size: 12px; color: #64748b; margin-top: 2px; }
+
+  .future-plan { margin-top: 10px; background: linear-gradient(135deg, rgba(254,243,199,0.8), rgba(254,240,210,0.8)); border-radius: 16px; padding: 16px 12px; text-align: center; }
+  .future-icon { font-size: 28px; }
+  .future-value { font-size: 28px; font-weight: 800; color: #b45309; margin-top: 4px; }
+  .future-label { font-size: 12px; color: #92700b; }
+
+  .section-title { font-size: 17px; font-weight: 700; margin: 18px 0 10px; display: flex; align-items: center; gap: 6px; justify-content: space-between; }
+  .stars { margin: 14px 0 2px; font-size: 15px; display: flex; gap: 6px; opacity: 0.5; }
+  .recent-list { background: rgba(255,255,255,0.85); border-radius: 16px; padding: 4px 0; }
+  .recent-item { padding: 12px 16px; border-bottom: 1px dashed rgba(30,58,138,0.08); display: flex; align-items: center; justify-content: space-between; }
+  .recent-item:last-child { border-bottom: none; }
+  .recent-name { font-size: 15px; font-weight: 600; }
+  .recent-date { font-size: 12px; color: #94a3b8; }
+
+  /* Past trip cards on overview */
+  .ov-trips { display: flex; flex-direction: column; gap: 10px; }
+  .ov-trip { background: rgba(255,255,255,0.92); border-radius: 16px; padding: 12px 14px; display: flex; align-items: center; gap: 12px; box-shadow: 0 2px 10px rgba(30,58,138,0.05); cursor: pointer; }
+  .ov-trip-flag { font-size: 30px; }
+  .ov-trip-info { flex: 1; min-width: 0; }
+  .ov-trip-title { font-size: 14px; font-weight: 700; }
+  .ov-trip-meta { font-size: 11px; color: #64748b; margin-top: 2px; }
+  .ov-trip-money { font-size: 15px; font-weight: 800; }
+  .ov-trip-delta { font-size: 11px; margin-top: 2px; text-align: right; font-weight: 600; }
+  .delta-save { color: #059669; }
+  .delta-over { color: #dc2626; }
+
+  /* Bottom nav - 作为 .phone 的最后一级 flex 子元素，永远贴底 */
+  .bottom-nav {
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.96);
+    -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(30,58,138,0.08);
+    display: flex; justify-content: space-around; padding: 6px 0 calc(8px + env(safe-area-inset-bottom)); z-index: 50;
+  }
+  .nav-item {
+    flex: 1; text-align: center; cursor: pointer;
+    padding: 4px 0; min-height: 44px;
+    border: none; background: none; color: #94a3b8;
+    transition: color .15s;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+    font-family: inherit;
+  }
+  .nav-item.active { color: #2563eb; }
+  .nav-item .nav-icon { font-size: 19px; display: block; line-height: 1.1; pointer-events: none; }
+  .nav-item .nav-label { font-size: 10px; margin-top: 2px; font-weight: 500; pointer-events: none; }
+
+  /* Page indicator dots + 左右浮动按钮 */
+  .page-dots {
+    display: flex; gap: 5px; padding: 6px 0 4px; justify-content: center; align-items: center;
+  }
+  .page-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: rgba(30,58,138,0.18); transition: all .25s;
+  }
+  .page-dot.active { width: 18px; border-radius: 3px; background: #2563eb; }
+  .swipe-fab {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 30px; height: 30px; border-radius: 50%;
+    background: rgba(37,99,235,0.85); color: #fff; border: none;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 700; cursor: pointer; z-index: 40;
+    box-shadow: 0 3px 10px rgba(37,99,235,0.35);
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+    transition: opacity .2s, transform .2s;
+  }
+  .swipe-fab:active { transform: translateY(-50%) scale(0.9); }
+  .swipe-fab.left  { left: 6px; }
+  .swipe-fab.right { right: 6px; }
+  .swipe-fab.hidden { opacity: 0; pointer-events: none; }
+  .swipe-hint {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    background: rgba(30,58,138,0.92); color: #fff; padding: 14px 20px;
+    border-radius: 14px; font-size: 14px; font-weight: 600; z-index: 60;
+    box-shadow: 0 6px 20px rgba(30,58,138,0.4); pointer-events: none;
+    opacity: 0; transition: opacity .3s; text-align: center; line-height: 1.6;
+  }
+  .swipe-hint.show { opacity: 1; }
+
+
+  .dashed-btn { display: inline-flex; align-items: center; gap: 4px; padding: 6px 12px; border: 1.5px dashed #93c5fd; border-radius: 20px; background: transparent; color: #2563eb; font-size: 12px; cursor: pointer; font-weight: 600; }
+  .dashed-btn:hover { background: rgba(147,197,253,0.15); }
+
+  /* Card */
+  .card { background: rgba(255,255,255,0.92); border-radius: 18px; padding: 14px; box-shadow: 0 2px 12px rgba(30,58,138,0.05); margin-bottom: 12px; }
+  .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .card-title { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+
+  /* World map */
+  .world-map { width: 100%; height: 280px; background: #dbeafe; border-radius: 14px; position: relative; overflow: hidden; border: 1px solid #cfe3fb; }
+  .world-map svg { width: 100%; height: 100%; display: block; }
+  .map-controls { position: absolute; top: 12px; left: 12px; display: flex; flex-direction: column; gap: 4px; z-index: 5; }
+  .map-controls button { width: 28px; height: 28px; background: rgba(255,255,255,0.95); border: 1px solid #cfe3fb; border-radius: 8px; font-size: 16px; color: #1e40af; cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  .map-pin { position: absolute; width: 18px; height: 18px; background: #3b82f6; border-radius: 50% 50% 50% 0; transform: rotate(-45deg) translate(-50%, -50%); border: 2px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.25); z-index: 4; }
+  .map-pin.red { background: #ef4444; }
+  .map-pin.amber { background: #f59e0b; }
+  .map-pin.green { background: #10b981; }
+  .pin-label { position: absolute; transform: translate(-50%, -130%); background: rgba(255,255,255,0.92); padding: 2px 7px; border-radius: 10px; font-size: 10px; font-weight: 600; color: #1e40af; box-shadow: 0 2px 5px rgba(0,0,0,0.12); white-space: nowrap; z-index: 6; }
+
+  .city-list { background: rgba(255,255,255,0.9); border-radius: 16px; padding: 4px 0; }
+  .city-item { padding: 12px 16px; border-bottom: 1px dashed rgba(30,58,138,0.08); display: flex; align-items: center; gap: 10px; }
+  .city-item:last-child { border-bottom: none; }
+  .city-flag { font-size: 22px; }
+  .city-info { flex: 1; }
+  .city-name { font-size: 14px; font-weight: 600; }
+  .city-count { font-size: 11px; color: #94a3b8; margin-top: 1px; }
+
+  /* Trip card */
+  .trip-card { background: rgba(255,255,255,0.96); border-radius: 18px; padding: 14px 14px 14px 16px; margin-bottom: 12px; box-shadow: 0 2px 12px rgba(30,58,138,0.05); position: relative; overflow: hidden; cursor: pointer; }
+  .trip-card::before { content: ''; position: absolute; left: 0; top: 12px; bottom: 12px; width: 4px; background: linear-gradient(180deg, #fbbf24, #f59e0b); border-radius: 0 4px 4px 0; }
+  .trip-card.done::before { background: linear-gradient(180deg, #34d399, #10b981); }
+  .trip-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+  .trip-title { font-size: 17px; font-weight: 700; color: #1e3a8a; }
+  .trip-status { display: inline-block; padding: 2px 10px; background: #fef3c7; color: #d97706; font-size: 11px; border-radius: 10px; margin-top: 6px; font-weight: 600; }
+  .trip-card.done .trip-status { background: #d1fae5; color: #059669; }
+  .trip-actions { display: flex; gap: 6px; flex-shrink: 0; }
+  .act-btn { width: 28px; height: 28px; border-radius: 9px; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; cursor: pointer; border: none; }
+  .act-btn.edit { background: #fef3c7; color: #d97706; }
+  .act-btn.del { background: #fee2e2; color: #dc2626; }
+  .trip-budget { font-size: 18px; font-weight: 800; color: #2563eb; margin-top: 4px; }
+  .trip-budget.red { color: #dc2626; }
+  .trip-budget.green { color: #059669; }
+  .trip-meta { display: flex; align-items: center; gap: 14px; margin-top: 10px; font-size: 12px; color: #64748b; }
+  .trip-meta span { display: inline-flex; align-items: center; gap: 4px; }
+  .trip-countries { margin-top: 8px; font-size: 13px; color: #1e40af; font-weight: 600; }
+  .trip-route { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; align-items: center; }
+  .route-tag { padding: 4px 10px; background: #eff6ff; border-radius: 10px; font-size: 12px; color: #1e40af; font-weight: 600; }
+  .route-arrow { color: #94a3b8; font-size: 13px; }
+  .trip-highlights { margin-top: 10px; font-size: 13px; color: #475569; }
+  .trip-delta-row { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px dashed rgba(30,58,138,0.08); }
+  .trip-delta { font-size: 12px; color: #64748b; }
+  .trip-delta b { font-size: 14px; }
+  .mini-map { margin-top: 10px; height: 120px; border-radius: 12px; background: #dbeafe; position: relative; overflow: hidden; }
+  .mini-map svg { width: 100%; height: 100%; }
+
+  /* Accounts */
+  .total-card { background: linear-gradient(135deg, #60a5fa, #818cf8); border-radius: 18px; padding: 18px 14px; color: #fff; margin-bottom: 14px; text-align: center; position: relative; overflow: hidden; }
+  .total-card::before { content: ''; position: absolute; width: 130px; height: 130px; background: rgba(255,255,255,0.15); border-radius: 50%; top: -40px; right: -40px; }
+  .total-card::after { content: ''; position: absolute; width: 90px; height: 90px; background: rgba(255,255,255,0.1); border-radius: 50%; bottom: -25px; left: -25px; }
+  .total-row { display: flex; align-items: center; position: relative; z-index: 1; }
+  .total-cell { flex: 1; }
+  .total-cell .v { font-size: 23px; font-weight: 800; }
+  .total-cell .l { font-size: 11px; opacity: 0.9; margin-top: 2px; }
+  .total-cell.divider { border-left: 1px solid rgba(255,255,255,0.4); border-right: 1px solid rgba(255,255,255,0.4); padding: 4px 0; }
+  .total-daily { margin-top: 14px; position: relative; z-index: 1; }
+  .total-daily .v { font-size: 23px; font-weight: 800; }
+  .total-daily .l { font-size: 11px; opacity: 0.9; }
+  .category-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 4px; }
+  .cat-card { background: #fff; border-radius: 16px; padding: 14px 6px; text-align: center; box-shadow: 0 2px 8px rgba(30,58,138,0.05); }
+  .cat-icon { font-size: 24px; }
+  .cat-value { font-size: 14px; font-weight: 700; color: #1e40af; margin-top: 4px; }
+  .cat-label { font-size: 11px; color: #64748b; margin-top: 2px; }
+  .cat-bar { margin-top: 6px; height: 4px; background: #eff6ff; border-radius: 2px; overflow: hidden; }
+  .cat-bar-fill { height: 100%; background: linear-gradient(90deg, #60a5fa, #818cf8); border-radius: 2px; }
+  .link-row { display: flex; align-items: center; justify-content: space-between; margin: 14px 4px 4px; }
+  .link-row .t { font-size: 15px; font-weight: 700; }
+  .link-btn { background: none; border: none; color: #2563eb; font-size: 13px; cursor: pointer; font-weight: 600; }
+
+  /* Per-trip expense card on accounts page */
+  .trip-expense-list { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+  .te-card { background: rgba(255,255,255,0.96); border-radius: 16px; padding: 12px 14px; box-shadow: 0 2px 10px rgba(30,58,138,0.05); cursor: pointer; }
+  .te-top { display: flex; align-items: center; justify-content: space-between; }
+  .te-name { font-size: 15px; font-weight: 700; }
+  .te-dates { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+  .te-bar { margin-top: 10px; height: 8px; background: #eff6ff; border-radius: 4px; overflow: hidden; position: relative; }
+  .te-bar-fill { height: 100%; border-radius: 4px; }
+  .te-bar-fill.ok { background: linear-gradient(90deg, #34d399, #10b981); }
+  .te-bar-fill.over { background: linear-gradient(90deg, #f87171, #ef4444); }
+  .te-meta { display: flex; justify-content: space-between; font-size: 11px; color: #64748b; margin-top: 6px; }
+  .te-delta { font-weight: 700; }
+  .te-delta.ok { color: #059669; }
+  .te-delta.over { color: #dc2626; }
+
+  /* Recommend / Guide / Review intro */
+  .intro-card { padding: 14px 16px; border-radius: 16px; font-size: 13px; line-height: 1.7; margin-bottom: 12px; }
+  .intro-blue { background: linear-gradient(135deg, #dbeafe, #bfdbfe); color: #1e3a8a; }
+  .intro-pink { background: linear-gradient(135deg, #fce7f3, #fbcfe8); color: #9d174d; }
+  .intro-purple { background: linear-gradient(135deg, #f3e8ff, #fce7f3); color: #6b21a8; }
+  .intro-green { background: linear-gradient(135deg, #d1fae5, #a7f3d0); color: #065f46; }
+
+  .rec-card { background: rgba(255,255,255,0.96); border-radius: 18px; overflow: hidden; box-shadow: 0 2px 12px rgba(30,58,138,0.05); margin-bottom: 14px; }
+  .rec-image { height: 150px; background: linear-gradient(135deg, #fce7f3, #e0e7ff, #dbeafe); display: flex; align-items: center; justify-content: center; font-size: 64px; position: relative; overflow: hidden; }
+  .rec-image::before { content: ''; position: absolute; width: 200px; height: 200px; background: radial-gradient(circle, rgba(255,255,255,0.45), transparent); border-radius: 50%; top: -50px; left: -50px; }
+  .rec-body { padding: 14px; }
+  .rec-title { font-size: 17px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+  .rec-desc { font-size: 13px; color: #475569; margin-top: 6px; line-height: 1.7; }
+  .rec-tags { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .rec-tag { padding: 3px 10px; background: #fce7f3; color: #be185d; border-radius: 10px; font-size: 11px; font-weight: 600; }
+
+  .guide-card { background: rgba(255,255,255,0.96); border-radius: 18px; overflow: hidden; box-shadow: 0 2px 12px rgba(30,58,138,0.05); margin-bottom: 14px; }
+  .guide-image { height: 140px; background: linear-gradient(135deg, #fce7f3, #fed7aa, #fef3c7); display: flex; align-items: center; justify-content: center; font-size: 58px; position: relative; }
+  .xhs-badge { position: absolute; top: 12px; right: 12px; padding: 4px 10px; background: #ff2442; color: #fff; border-radius: 10px; font-size: 11px; font-weight: 600; }
+  .guide-body { padding: 14px; }
+  .guide-title { font-size: 15px; font-weight: 700; line-height: 1.5; color: #1e3a8a; }
+  .guide-meta { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; font-size: 12px; color: #64748b; }
+  .guide-stats { display: flex; gap: 14px; }
+  .guide-stats span { display: inline-flex; align-items: center; gap: 3px; }
+
+  /* English */
+  .scenario-tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 12px; }
+  .scenario-tab { padding: 8px 14px; border-radius: 20px; background: #fff; color: #475569; font-size: 13px; border: none; white-space: nowrap; cursor: pointer; font-weight: 600; flex-shrink: 0; }
+  .scenario-tab.active { background: #2563eb; color: #fff; }
+  .dialog-title { font-size: 15px; font-weight: 700; margin: 6px 0 12px; display: flex; align-items: center; gap: 6px; }
+  .dialog-card { background: rgba(255,255,255,0.96); border-radius: 18px; padding: 14px; box-shadow: 0 2px 12px rgba(30,58,138,0.05); }
+  .dialog-line { margin-bottom: 12px; }
+  .bubble { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 6px; }
+  .bubble.left { flex-direction: row; }
+  .bubble.right { flex-direction: row-reverse; text-align: right; }
+  .avatar { width: 30px; height: 30px; border-radius: 50%; background: #dbeafe; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+  .bubble.right .avatar { background: #fce7f3; }
+  .bubble-content { background: #f1f5f9; border-radius: 14px; padding: 10px 12px; font-size: 14px; line-height: 1.5; max-width: 76%; }
+  .bubble.right .bubble-content { background: #eff6ff; }
+  .bubble-content .en { color: #1e293b; }
+  .bubble-content .zh { color: #64748b; margin-top: 4px; font-size: 13px; }
+
+  /* Reviews */
+  .review-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  .filter-chip { padding: 6px 13px; border-radius: 18px; background: #fff; color: #475569; font-size: 12px; border: none; cursor: pointer; font-weight: 600; }
+  .filter-chip.active { background: #2563eb; color: #fff; }
+  .review-card { background: rgba(255,255,255,0.96); border-radius: 18px; padding: 14px; box-shadow: 0 2px 12px rgba(30,58,138,0.05); margin-bottom: 12px; position: relative; }
+  .review-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: #fda4af; border-radius: 0 3px 3px 0; }
+  .review-header { display: flex; align-items: center; gap: 10px; }
+  .review-avatar { width: 32px; height: 32px; border-radius: 50%; background: #fce7f3; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+  .review-title { font-size: 15px; font-weight: 700; }
+  .review-source { position: absolute; top: 12px; right: 12px; padding: 3px 8px; background: #fce7f3; color: #be185d; border-radius: 8px; font-size: 10px; font-weight: 600; }
+  .review-city { display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; font-size: 12px; color: #ef4444; font-weight: 600; }
+  .review-body { margin-top: 8px; font-size: 13px; color: #475569; line-height: 1.7; }
+
+  /* Expense table */
+  .expense-table-card { background: rgba(255,255,255,0.96); border-radius: 18px; padding: 4px; box-shadow: 0 2px 12px rgba(30,58,138,0.05); margin-bottom: 12px; overflow-x: auto; }
+  .expense-table { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 560px; }
+  .expense-table th, .expense-table td { padding: 11px 6px; text-align: center; border-bottom: 1px solid #f1f5f9; }
+  .expense-table th { background: #eff6ff; font-weight: 700; color: #1e40af; font-size: 11px; }
+  .expense-table .trip-name { text-align: left; color: #2563eb; font-weight: 700; padding-left: 12px; font-size: 12px; }
+  .expense-table tr.total-row td { background: #fff7ed; font-weight: 700; color: #b45309; }
+
+  /* Sub-page */
+  .sub-page { position: absolute; inset: 0; background: linear-gradient(180deg, #f0f9ff 0%, #eff6ff 100%); z-index: 100; display: none; flex-direction: column; }
+  .sub-page.active { display: flex; }
+
+  /* Day-by-day detail */
+  .day-list { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+  .day-card { background: rgba(255,255,255,0.96); border-radius: 14px; padding: 12px 14px; box-shadow: 0 2px 8px rgba(30,58,138,0.05); }
+  .day-head { display: flex; align-items: center; justify-content: space-between; }
+  .day-num { padding: 4px 10px; background: #dbeafe; color: #1e40af; border-radius: 10px; font-size: 11px; font-weight: 700; }
+  .day-city { font-size: 14px; font-weight: 700; }
+  .day-money { font-size: 13px; font-weight: 700; color: #2563eb; }
+  .day-items { margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(30,58,138,0.08); }
+  .day-item { display: flex; justify-content: space-between; align-items: flex-start; font-size: 12px; padding: 5px 0; gap: 10px; }
+  .day-item-c { flex: 1; color: #475569; line-height: 1.55; }
+  .day-item-c .cat { display: inline-block; padding: 1px 6px; background: #f1f5f9; color: #475569; border-radius: 6px; font-size: 10px; margin-right: 4px; }
+  .day-item-m { font-weight: 700; color: #1e3a8a; font-size: 12px; white-space: nowrap; }
+  .day-item-m.over { color: #dc2626; }
+  .day-item-m.save { color: #059669; }
+  .day-note { margin-top: 8px; font-size: 11px; color: #94a3b8; line-height: 1.5; padding: 6px 10px; background: #f8fafc; border-radius: 8px; }
+
+  /* Trip summary card on sub-page */
+  .trip-summary { background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: 16px; padding: 14px; margin-bottom: 12px; }
+  .trip-summary.egypt { background: linear-gradient(135deg, #fde68a, #fbbf24); }
+  .trip-summary.henan { background: linear-gradient(135deg, #fed7aa, #fdba74); }
+  .trip-summary.ph { background: linear-gradient(135deg, #bae6fd, #7dd3fc); }
+  .trip-summary.yunnan { background: linear-gradient(135deg, #fbcfe8, #f9a8d4); }
+  .trip-summary.maldives { background: linear-gradient(135deg, #fef9c3, #fde68a); }
+  .trip-summary.guangxi { background: linear-gradient(135deg, #bbf7d0, #86efac); }
+  .ts-top { display: flex; justify-content: space-between; align-items: center; }
+  .ts-title { font-size: 17px; font-weight: 800; color: #1e3a8a; }
+  .ts-price { font-size: 22px; font-weight: 800; color: #b45309; text-align: right; }
+  .ts-meta { font-size: 11px; color: #64748b; margin-top: 2px; text-align: right; }
+  .ts-stats { display: flex; justify-content: space-around; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.6); }
+  .ts-cell { text-align: center; }
+  .ts-cell .v { font-size: 18px; font-weight: 800; color: #1e3a8a; }
+  .ts-cell .l { font-size: 11px; color: #64748b; margin-top: 2px; }
+  .ts-route { margin-top: 10px; font-size: 12px; color: #1e40af; display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+  .ts-route .route-tag { padding: 3px 8px; background: rgba(255,255,255,0.7); border-radius: 8px; font-size: 11px; }
+  .ts-highlight { margin-top: 8px; font-size: 12px; color: #475569; line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="status-bar">
+    <span id="clock">16:26</span>
+    <div class="status-icons"><span>📶</span><span>📡</span><span class="battery">52</span></div>
+  </div>
+
+  <div class="top-bar">
+    <button class="icon-btn" onclick="history.back()">✕</button>
+    <div class="url-bar">travel.app</div>
+    <button class="icon-btn" onclick="scrollTop()">☰</button>
+  </div>
+
+  <!-- 8 个圆点指示当前 tab -->
+  <div class="page-dots" id="pageDots">
+    <span class="page-dot active" data-i="0"></span>
+    <span class="page-dot" data-i="1"></span>
+    <span class="page-dot" data-i="2"></span>
+    <span class="page-dot" data-i="3"></span>
+    <span class="page-dot" data-i="4"></span>
+    <span class="page-dot" data-i="5"></span>
+    <span class="page-dot" data-i="6"></span>
+    <span class="page-dot" data-i="7"></span>
+  </div>
+
+  <main class="content" id="mainContent">
+    <!-- ===== 总览 ===== -->
+    <section class="page active" id="page-overview">
+      <div class="hero">
+        <div class="hero-title">🏠 总览</div>
+        <div class="hero-sub">飞鱼，你的旅行世界一览 ☀️</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon">🌍</div><div class="stat-value">6</div><div class="stat-label">去过的国家</div></div>
+        <div class="stat-card"><div class="stat-icon">🏙️</div><div class="stat-value">21</div><div class="stat-label">到访的城市</div></div>
+        <div class="stat-card"><div class="stat-icon">📅</div><div class="stat-value">59</div><div class="stat-label">旅行总晚数</div></div>
+        <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-value">¥115k</div><div class="stat-label">旅行总花费</div></div>
+      </div>
+      <div class="future-plan">
+        <div class="future-icon">🎉</div>
+        <div class="future-value" style="color:#2563eb;">6 段</div>
+        <div class="future-label">已完成旅程 · 继续探索世界 ✈️</div>
+      </div>
+      <div class="stars">⭐ 🐚 ⭐ 🐚 ⭐</div>
+      <div class="section-title">📍 最近足迹</div>
+      <div class="recent-list">
+        <div class="recent-item"><span class="recent-name">🇲🇻 威斯汀水屋</span><span class="recent-date">2023-09</span></div>
+        <div class="recent-item"><span class="recent-name">🇲🇻 Fulidhoo 浮潜</span><span class="recent-date">2023-09</span></div>
+        <div class="recent-item"><span class="recent-name">🇲🇻 Thinadhoo</span><span class="recent-date">2023-09</span></div>
+        <div class="recent-item"><span class="recent-name">🇲🇻 Maafushi</span><span class="recent-date">2023-09</span></div>
+        <div class="recent-item"><span class="recent-name">🇨🇳 柳州 / 中渡古镇</span><span class="recent-date">2024-08</span></div>
+        <div class="recent-item"><span class="recent-name">🇨🇳 河池（吞榜天窗）</span><span class="recent-date">2024-08</span></div>
+        <div class="recent-item"><span class="recent-name">🇨🇳 渠洋湖 / 古龙山</span><span class="recent-date">2024-08</span></div>
+        <div class="recent-item"><span class="recent-name">🇨🇳 明仕田园</span><span class="recent-date">2024-08</span></div>
+        <div class="recent-item"><span class="recent-name">🇨🇳 大理</span><span class="recent-date">2024-11</span></div>
+        <div class="recent-item"><span class="recent-name">🇨🇳 泸沽湖</span><span class="recent-date">2024-11</span></div>
+      </div>
+
+      <div class="section-title">📦 已完成行程</div>
+      <div class="ov-trips">
+        <div class="ov-trip" onclick="openTripDetail('egypt')">
+          <div class="ov-trip-flag">🇪🇬</div>
+          <div class="ov-trip-info">
+            <div class="ov-trip-title">埃及 · 红海双潜</div>
+            <div class="ov-trip-meta">5/27-6/11 · 14 晚 · 2 人</div>
+          </div>
+          <div>
+            <div class="ov-trip-money">¥23,436.80</div>
+            <div class="ov-trip-delta delta-save">节余 ¥6,474.40</div>
+          </div>
+        </div>
+        <div class="ov-trip" onclick="openTripDetail('ph')">
+          <div class="ov-trip-flag">🇵🇭</div>
+          <div class="ov-trip-info">
+            <div class="ov-trip-title">菲律宾 · 宿务+薄荷跳岛</div>
+            <div class="ov-trip-meta">6/10-6/21 · 12 晚 · 2 人</div>
+          </div>
+          <div>
+            <div class="ov-trip-money">¥16,605.00</div>
+            <div class="ov-trip-delta delta-save">节余 ¥1,517</div>
+          </div>
+        </div>
+        <div class="ov-trip" onclick="openTripDetail('yunnan')">
+          <div class="ov-trip-flag">🇨🇳</div>
+          <div class="ov-trip-info">
+            <div class="ov-trip-title">云南 · 大理 + 泸沽湖</div>
+            <div class="ov-trip-meta">11/28-12/6 · 7 晚 · 2 人</div>
+          </div>
+          <div>
+            <div class="ov-trip-money">¥9,025.37</div>
+            <div class="ov-trip-delta delta-save">节余 ¥533</div>
+          </div>
+        </div>
+        <div class="ov-trip" onclick="openTripDetail('henan')">
+          <div class="ov-trip-flag">🇨🇳</div>
+          <div class="ov-trip-info">
+            <div class="ov-trip-title">河南 · 洛阳赏秋</div>
+            <div class="ov-trip-meta">11/27-12/1 · 4 晚 · 2 人</div>
+          </div>
+          <div>
+            <div class="ov-trip-money">¥4,511.88</div>
+            <div class="ov-trip-delta delta-over">超支 ¥912.88</div>
+          </div>
+        </div>
+        <div class="ov-trip" onclick="openTripDetail('maldives')">
+          <div class="ov-trip-flag">🇲🇻</div>
+          <div class="ov-trip-info">
+            <div class="ov-trip-title">马尔代夫 · 跳岛水屋</div>
+            <div class="ov-trip-meta">2023-09-07 ~ 21 · 14 晚 · 2 人</div>
+          </div>
+          <div>
+            <div class="ov-trip-money">¥50,739</div>
+            <div class="ov-trip-delta" style="color:#94a3b8;">规划预算 📋</div>
+          </div>
+        </div>
+        <div class="ov-trip" onclick="openTripDetail('guangxi')">
+          <div class="ov-trip-flag">🇨🇳</div>
+          <div class="ov-trip-info">
+            <div class="ov-trip-title">广西 · 河池→柳州→融水</div>
+            <div class="ov-trip-meta">2024-08-23 ~ 09-01 · 9 晚 · 2 人</div>
+          </div>
+          <div>
+            <div class="ov-trip-money">~¥10,800</div>
+            <div class="ov-trip-delta" style="color:#94a3b8;">部分估算 ✏️</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 足迹 ===== -->
+    <section class="page" id="page-footprints">
+      <div class="hero">
+        <div class="hero-title">🗺️ 足迹</div>
+        <div class="hero-sub">你已经踏足的每一个角落，都在这里闪耀 🌍</div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🗺️ 我的旅行足迹</div>
+          <button class="dashed-btn">+ 添加城市</button>
+        </div>
+        <div class="world-map" id="worldMap">
+          <div class="map-controls"><button>+</button><button>−</button></div>
+        </div>
+      </div>
+      <div class="stars">⭐ 🐚 ⭐ 🐚 ⭐</div>
+      <div class="section-title">📍 到访过的城市</div>
+      <div class="city-list">
+        <div class="city-item"><span class="city-flag">🇪🇬</span><div class="city-info"><div class="city-name">埃及</div><div class="city-count">3 城市 · 14 天 · 开罗·沙姆·达哈卜</div></div></div>
+        <div class="city-item"><span class="city-flag">🇵🇭</span><div class="city-info"><div class="city-name">菲律宾</div><div class="city-count">4 城市 · 12 天 · 宿务·薄荷·墨宝·锡基霍尔</div></div></div>
+        <div class="city-item"><span class="city-flag">🇲🇻</span><div class="city-info"><div class="city-name">马尔代夫</div><div class="city-count">4 城市 · 14 天 · 马富士·Thinadhoo·Fulidhoo·威斯汀水屋</div></div></div>
+        <div class="city-item"><span class="city-flag">🇨🇳</span><div class="city-info"><div class="city-name">中国</div><div class="city-count">13 城市 · 24 天 · 海口·郑州·中牟·洛阳·重庆·大理·泸沽湖·徐闻·明仕·渠洋湖·河池·柳州·融水</div></div></div>
+        <div class="city-item"><span class="city-flag">🇹🇭</span><div class="city-info"><div class="city-name">泰国 (中转)</div><div class="city-count">1 城市 · 曼谷 BKK</div></div></div>
+        <div class="city-item"><span class="city-flag">🇲🇾</span><div class="city-info"><div class="city-name">马来西亚 (中转)</div><div class="city-count">1 城市 · 吉隆坡 KUL</div></div></div>
+      </div>
+    </section>
+
+    <!-- ===== 行程 ===== -->
+    <section class="page" id="page-planning">
+      <div class="hero">
+        <div class="hero-title">📜 行程</div>
+        <div class="hero-sub">6 段旅行，串联起你的世界 🌍</div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🧳 历史行程</div>
+          <button class="dashed-btn">+ 新建计划</button>
+        </div>
+      </div>
+
+      <div class="trip-card done" onclick="openTripDetail('egypt')">
+        <div class="trip-header">
+          <div>
+            <div class="trip-title">埃及 · 开罗 → 沙姆 → 达哈卜</div>
+            <span class="trip-status">已完成 ✅</span>
+            <div class="trip-budget">¥23,436.80 <span style="font-size:11px;color:#64748b;font-weight:500;">/ ¥29,368 预算</span></div>
+          </div>
+          <div class="trip-actions">
+            <button class="act-btn edit">✏️</button>
+            <button class="act-btn del">🗑️</button>
+          </div>
+        </div>
+        <div class="trip-meta"><span>📅 2025-05-27 ~ 2025-06-11</span><span>🕐 14 晚</span><span>👥 2 人</span></div>
+        <div class="trip-countries">🌍 埃及 + 中国（出发/返回）</div>
+        <div class="trip-route">
+          <span class="route-tag">海口</span><span class="route-arrow">→</span>
+          <span class="route-tag">曼谷中转</span><span class="route-arrow">→</span>
+          <span class="route-tag">开罗</span><span class="route-arrow">→</span>
+          <span class="route-tag">沙姆沙伊赫</span><span class="route-arrow">→</span>
+          <span class="route-tag">达哈卜</span><span class="route-arrow">→</span>
+          <span class="route-tag">沙姆</span><span class="route-arrow">→</span>
+          <span class="route-tag">开罗</span><span class="route-arrow">→</span>
+          <span class="route-tag">海口</span>
+        </div>
+        <div class="trip-highlights">✨ 金字塔 + 红海潜水 + 沙姆度假 + 沙漠星空</div>
+        <div class="trip-delta-row">
+          <div class="trip-delta">人均/天 <b>¥837</b></div>
+          <div class="trip-delta" style="color:#059669;font-weight:800;">节余 ¥6,474.40 🎉</div>
+        </div>
+      </div>
+
+      <div class="trip-card done" onclick="openTripDetail('ph')">
+        <div class="trip-header">
+          <div>
+            <div class="trip-title">菲律宾 · 宿务+薄荷+墨宝+锡基霍尔</div>
+            <span class="trip-status">已完成 ✅</span>
+            <div class="trip-budget">¥16,605 <span style="font-size:11px;color:#64748b;font-weight:500;">/ ¥17,255 预算</span></div>
+          </div>
+          <div class="trip-actions">
+            <button class="act-btn edit">✏️</button>
+            <button class="act-btn del">🗑️</button>
+          </div>
+        </div>
+        <div class="trip-meta"><span>📅 2025-06-10 ~ 2025-06-21</span><span>🕐 12 晚</span><span>👥 2 人</span></div>
+        <div class="trip-countries">🌍 菲律宾 + 泰国/马来西亚中转</div>
+        <div class="trip-route">
+          <span class="route-tag">海口</span><span class="route-arrow">→</span>
+          <span class="route-tag">吉隆坡中转</span><span class="route-arrow">→</span>
+          <span class="route-tag">宿务</span><span class="route-arrow">→</span>
+          <span class="route-tag">薄荷岛</span><span class="route-arrow">→</span>
+          <span class="route-tag">墨宝 Moalboal</span><span class="route-arrow">→</span>
+          <span class="route-tag">锡基霍尔</span><span class="route-arrow">→</span>
+          <span class="route-tag">宿务</span><span class="route-arrow">→</span>
+          <span class="route-tag">海口</span>
+        </div>
+        <div class="trip-highlights">✨ Ocean Jet 跳岛 · 海鲜 · 看沙丁鱼风暴 · 教堂岛</div>
+        <div class="trip-delta-row">
+          <div class="trip-delta">人均/天 <b>¥692</b></div>
+          <div class="trip-delta" style="color:#059669;font-weight:800;">节余 ¥1,517 🎉</div>
+        </div>
+      </div>
+
+      <div class="trip-card done" onclick="openTripDetail('henan')">
+        <div class="trip-header">
+          <div>
+            <div class="trip-title">河南 · 郑州→中牟→洛阳</div>
+            <span class="trip-status">已完成 ✅</span>
+            <div class="trip-budget">¥4,511.88 <span style="font-size:11px;color:#64748b;font-weight:500;">/ ¥3,599 预算</span></div>
+          </div>
+          <div class="trip-actions">
+            <button class="act-btn edit">✏️</button>
+            <button class="act-btn del">🗑️</button>
+          </div>
+        </div>
+        <div class="trip-meta"><span>📅 2025-11-27 ~ 2025-12-01</span><span>🕐 4 晚</span><span>👥 2 人</span></div>
+        <div class="trip-countries">🌍 中国</div>
+        <div class="trip-route">
+          <span class="route-tag">海口</span><span class="route-arrow">→</span>
+          <span class="route-tag">郑州</span><span class="route-arrow">→</span>
+          <span class="route-tag">中牟</span><span class="route-arrow">→</span>
+          <span class="route-tag">洛阳</span><span class="route-arrow">→</span>
+          <span class="route-tag">郑州</span><span class="route-arrow">→</span>
+          <span class="route-tag">海口</span>
+        </div>
+        <div class="trip-highlights">✨ 洛阳古城 + 唐装妆造 + 龙门石窟 + 采耳</div>
+        <div class="trip-delta-row">
+          <div class="trip-delta">人均/天 <b>¥564</b></div>
+          <div class="trip-delta" style="color:#dc2626;font-weight:800;">超支 ¥912.88 ⚠️</div>
+        </div>
+      </div>
+
+      <div class="trip-card done" onclick="openTripDetail('yunnan')">
+        <div class="trip-header">
+          <div>
+            <div class="trip-title">云南 · 海口→重庆→大理→泸沽湖</div>
+            <span class="trip-status">已完成 ✅</span>
+            <div class="trip-budget">¥9,025.37 <span style="font-size:11px;color:#64748b;font-weight:500;">/ ¥9,558 预算</span></div>
+          </div>
+          <div class="trip-actions">
+            <button class="act-btn edit">✏️</button>
+            <button class="act-btn del">🗑️</button>
+          </div>
+        </div>
+        <div class="trip-meta"><span>📅 2024-11-28 ~ 2024-12-06</span><span>🕐 7 晚</span><span>👥 2 人</span></div>
+        <div class="trip-countries">🌍 中国</div>
+        <div class="trip-route">
+          <span class="route-tag">海口</span><span class="route-arrow">→</span>
+          <span class="route-tag">重庆</span><span class="route-arrow">→</span>
+          <span class="route-tag">大理</span><span class="route-arrow">→</span>
+          <span class="route-tag">泸沽湖</span><span class="route-arrow">→</span>
+          <span class="route-tag">昆明中转</span><span class="route-arrow">→</span>
+          <span class="route-tag">海口</span>
+        </div>
+        <div class="trip-highlights">✨ 重庆火锅 + 大理古城 + 苍山洱海 + 泸沽湖摩梭</div>
+        <div class="trip-delta-row">
+          <div class="trip-delta">人均/天 <b>¥645</b></div>
+          <div class="trip-delta" style="color:#059669;font-weight:800;">节余 ¥533 🎉</div>
+        </div>
+      </div>
+
+      <div class="trip-card done" onclick="openTripDetail('maldives')">
+        <div class="trip-header">
+          <div>
+            <div class="trip-title">马尔代夫 · Maafushi→Thinadhoo→Fulidhoo→威斯汀水屋</div>
+            <span class="trip-status">已完成 ✅</span>
+            <div class="trip-budget">¥50,739 <span style="font-size:11px;color:#64748b;font-weight:500;">/ 规划预算 · 实测请补充</span></div>
+          </div>
+          <div class="trip-actions">
+            <button class="act-btn edit">✏️</button>
+            <button class="act-btn del">🗑️</button>
+          </div>
+        </div>
+        <div class="trip-meta"><span>📅 2023-09-07 ~ 2023-09-21</span><span>🕐 14 晚</span><span>👥 2 人</span></div>
+        <div class="trip-countries">🌍 马尔代夫 + 广州/深圳中转</div>
+        <div class="trip-route">
+          <span class="route-tag">海口</span><span class="route-arrow">→</span>
+          <span class="route-tag">广州</span><span class="route-arrow">→</span>
+          <span class="route-tag">马累</span><span class="route-arrow">→</span>
+          <span class="route-tag">Maafushi 5晚</span><span class="route-arrow">→</span>
+          <span class="route-tag">Thinadhoo</span><span class="route-arrow">→</span>
+          <span class="route-tag">Fulidhoo</span><span class="route-arrow">→</span>
+          <span class="route-tag">威斯汀水屋 4晚</span><span class="route-arrow">→</span>
+          <span class="route-tag">马累</span><span class="route-arrow">→</span>
+          <span class="route-tag">深圳</span><span class="route-arrow">→</span>
+          <span class="route-tag">海口</span>
+        </div>
+        <div class="trip-highlights">✨ 跳岛浮潜 · 夜钓 · 沙丁鱼 · 沉船潜水 · 水屋发呆</div>
+        <div class="trip-delta-row">
+          <div class="trip-delta">人均/天 <b>¥1,812</b></div>
+          <div class="trip-delta" style="color:#2563eb;font-weight:800;">📋 规划预算 ¥50,739</div>
+        </div>
+      </div>
+
+      <div class="trip-card done" onclick="openTripDetail('guangxi')">
+        <div class="trip-header">
+          <div>
+            <div class="trip-title">广西 · 徐闻→明仕→古龙山→渠洋湖→河池→柳州→中渡→融水</div>
+            <span class="trip-status">已完成 ✅</span>
+            <div class="trip-budget">~¥10,800 <span style="font-size:11px;color:#64748b;font-weight:500;">/ 已记录 ¥5,932 + 估算餐饮油费</span></div>
+          </div>
+          <div class="trip-actions">
+            <button class="act-btn edit">✏️</button>
+            <button class="act-btn del">🗑️</button>
+          </div>
+        </div>
+        <div class="trip-meta"><span>📅 2024-08-23 ~ 2024-09-01</span><span>🕐 9 晚</span><span>👥 2 人</span></div>
+        <div class="trip-countries">🌍 中国 · 广西</div>
+        <div class="trip-route">
+          <span class="route-tag">海口</span><span class="route-arrow">→</span>
+          <span class="route-tag">徐闻</span><span class="route-arrow">→</span>
+          <span class="route-tag">明仕田园</span><span class="route-arrow">→</span>
+          <span class="route-tag">古龙山</span><span class="route-arrow">→</span>
+          <span class="route-tag">渠洋湖</span><span class="route-arrow">→</span>
+          <span class="route-tag">瑶王府</span><span class="route-arrow">→</span>
+          <span class="route-tag">河池小三峡</span><span class="route-arrow">→</span>
+          <span class="route-tag">柳州</span><span class="route-arrow">→</span>
+          <span class="route-tag">中渡古镇</span><span class="route-arrow">→</span>
+          <span class="route-tag">融水</span><span class="route-arrow">→</span>
+          <span class="route-tag">海口</span>
+        </div>
+        <div class="trip-highlights">✨ 峒那屿湾 + 古龙山大峡谷漂流 + 渠洋湖游船 + 柳州螺蛳粉</div>
+        <div class="trip-delta-row">
+          <div class="trip-delta">人均/天 <b>~¥600</b></div>
+          <div class="trip-delta" style="color:#94a3b8;font-weight:800;">📋 数据来自原攻略文档</div>
+        </div>
+      </div>
+
+      <div class="card" style="text-align:center;color:#94a3b8;font-size:13px;">
+        🪄 6 段已完成旅行 — 想写下一段？从"新建计划"开始
+      </div>
+    </section>
+
+    <!-- ===== 账目 ===== -->
+    <section class="page" id="page-accounts">
+      <div class="hero">
+        <div class="hero-title">💰 账目</div>
+        <div class="hero-sub">每一笔花费，都是旅行的记忆 💰</div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🧾 6 段旅程花费总览</div>
+          <button class="dashed-btn">+ 添加账目</button>
+        </div>
+        <div class="total-card">
+          <div class="total-row">
+            <div class="total-cell"><div class="v">¥115,318</div><div class="l">总花费（实测+规划）</div></div>
+            <div class="total-cell divider"><div class="v">59</div><div class="l">总晚数</div></div>
+            <div class="total-cell"><div class="v">¥1,955</div><div class="l">日均</div></div>
+          </div>
+          <div class="total-daily">
+            <div class="v" style="font-size:13px;color:#64748b;">实测 4 段 ¥53,579 · 广西（部分估算 ¥10,800）+ 马尔代夫（规划 ¥50,739）</div>
+          </div>
+        </div>
+        <div class="category-grid">
+          <div class="cat-card">
+            <div class="cat-icon">✈️</div>
+            <div class="cat-value">¥27,520</div>
+            <div class="cat-label">交通</div>
+            <div class="cat-bar"><div class="cat-bar-fill" style="width:78%"></div></div>
+          </div>
+          <div class="cat-card">
+            <div class="cat-icon">🏨</div>
+            <div class="cat-value">¥42,296</div>
+            <div class="cat-label">住宿</div>
+            <div class="cat-bar"><div class="cat-bar-fill" style="width:96%"></div></div>
+          </div>
+          <div class="cat-card">
+            <div class="cat-icon">🍜</div>
+            <div class="cat-value">¥14,460</div>
+            <div class="cat-label">餐饮</div>
+            <div class="cat-bar"><div class="cat-bar-fill" style="width:42%"></div></div>
+          </div>
+          <div class="cat-card">
+            <div class="cat-icon">🎫</div>
+            <div class="cat-value">¥15,280</div>
+            <div class="cat-label">游玩</div>
+            <div class="cat-bar"><div class="cat-bar-fill" style="width:45%"></div></div>
+          </div>
+          <div class="cat-card">
+            <div class="cat-icon">🚕</div>
+            <div class="cat-value">¥2,635</div>
+            <div class="cat-label">打车</div>
+            <div class="cat-bar"><div class="cat-bar-fill" style="width:8%"></div></div>
+          </div>
+          <div class="cat-card">
+            <div class="cat-icon">💰</div>
+            <div class="cat-value">¥13,127</div>
+            <div class="cat-label">其他</div>
+            <div class="cat-bar"><div class="cat-bar-fill" style="width:38%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title">📋 按行程查看</div>
+      <div class="trip-expense-list">
+        <div class="te-card" onclick="openTripDetail('egypt')">
+          <div class="te-top">
+            <div class="te-name">🇪🇬 埃及 · 红海双潜</div>
+            <div class="te-dates">5/27-6/11</div>
+          </div>
+          <div class="te-bar"><div class="te-bar-fill ok" style="width:80%"></div></div>
+          <div class="te-meta">
+            <span>实际 ¥23,437 / 预算 ¥29,368</span>
+            <span class="te-delta ok">节余 6,474.40</span>
+          </div>
+        </div>
+        <div class="te-card" onclick="openTripDetail('ph')">
+          <div class="te-top">
+            <div class="te-name">🇵🇭 菲律宾 · 跳岛</div>
+            <div class="te-dates">6/10-6/21</div>
+          </div>
+          <div class="te-bar"><div class="te-bar-fill ok" style="width:96%"></div></div>
+          <div class="te-meta">
+            <span>实际 ¥16,605 / 预算 ¥17,255</span>
+            <span class="te-delta ok">节余 1,517</span>
+          </div>
+        </div>
+        <div class="te-card" onclick="openTripDetail('yunnan')">
+          <div class="te-top">
+            <div class="te-name">🇨🇳 云南 · 大理+泸沽湖</div>
+            <div class="te-dates">11/28-12/6</div>
+          </div>
+          <div class="te-bar"><div class="te-bar-fill ok" style="width:94%"></div></div>
+          <div class="te-meta">
+            <span>实际 ¥9,025 / 预算 ¥9,558</span>
+            <span class="te-delta ok">节余 533</span>
+          </div>
+        </div>
+        <div class="te-card" onclick="openTripDetail('henan')">
+          <div class="te-top">
+            <div class="te-name">🇨🇳 河南 · 洛阳赏秋</div>
+            <div class="te-dates">11/27-12/1</div>
+          </div>
+          <div class="te-bar"><div class="te-bar-fill over" style="width:100%"></div></div>
+          <div class="te-meta">
+            <span>实际 ¥4,512 / 预算 ¥3,599</span>
+            <span class="te-delta over">超支 912.88</span>
+          </div>
+        </div>
+        <div class="te-card" onclick="openTripDetail('maldives')" style="background:linear-gradient(135deg,#fef9c3,#fef3c7);">
+          <div class="te-top">
+            <div class="te-name">🇲🇻 马尔代夫 · 跳岛水屋</div>
+            <div class="te-dates">9/7-9/21</div>
+          </div>
+          <div class="te-bar"><div class="te-bar-fill ok" style="width:100%;background:linear-gradient(90deg,#fbbf24,#f59e0b);"></div></div>
+          <div class="te-meta">
+            <span>规划预算 ¥50,739 / 实测待补充</span>
+            <span class="te-delta" style="color:#b45309;">📋 规划预算</span>
+          </div>
+        </div>
+        <div class="te-card" onclick="openTripDetail('guangxi')" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0);">
+          <div class="te-top">
+            <div class="te-name">🇨🇳 广西 · 徐闻→明仕→柳州</div>
+            <div class="te-dates">8/23-9/1</div>
+          </div>
+          <div class="te-bar"><div class="te-bar-fill" style="width:55%;background:linear-gradient(90deg,#10b981,#059669);"></div></div>
+          <div class="te-meta">
+            <span>实测 ¥5,932 已记录 · 预估 ~¥10,800</span>
+            <span class="te-delta" style="color:#059669;">📋 部分估算</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="link-row">
+        <span class="t">📊 明细总表</span>
+        <button class="link-btn" onclick="openSub('sub-expense')">查看全部 →</button>
+      </div>
+    </section>
+
+    <!-- ===== 推荐 ===== -->
+    <section class="page" id="page-recommend">
+      <div class="hero">
+        <div class="hero-title">✨ 推荐</div>
+        <div class="hero-sub">世界那么大，总有一个地方在等你 ✨</div>
+      </div>
+      <div class="intro-card intro-blue">🚝 已经走过 6 个国家、21 座城市 — 这是为你挑选的下一站候选清单。</div>
+
+      <div class="rec-card">
+        <div class="rec-image">🕌</div>
+        <div class="rec-body">
+          <div class="rec-title">🇲🇦 摩洛哥 · 马拉喀什</div>
+          <div class="rec-desc">麦地那老城里香料的气味、柏柏尔地毯、蓝色小镇舍夫沙万 — 北非的色彩像被打翻了颜料盘。</div>
+          <div class="rec-tags"><span class="rec-tag">色彩</span><span class="rec-tag">沙漠</span><span class="rec-tag">人文</span></div>
+        </div>
+      </div>
+      <div class="rec-card">
+        <div class="rec-image">🦁</div>
+        <div class="rec-body">
+          <div class="rec-title">🇰🇪 肯尼亚 · 马赛马拉</div>
+          <div class="rec-desc">动物大迁徙的现场直播，热气球上看角马过河。Safari 才是真正的世界。</div>
+          <div class="rec-tags"><span class="rec-tag">动物</span><span class="rec-tag">草原</span><span class="rec-tag">摄影</span></div>
+        </div>
+      </div>
+      <div class="rec-card">
+        <div class="rec-image">🛕</div>
+        <div class="rec-body">
+          <div class="rec-title">🇰🇭 柬埔寨 · 吴哥窟</div>
+          <div class="rec-desc">高棉的微笑藏在丛林里，黎明小吴哥倒影在莲花池。每块石头都比想象中大。</div>
+          <div class="rec-tags"><span class="rec-tag">古文明</span><span class="rec-tag">人文</span><span class="rec-tag">摄影</span></div>
+        </div>
+      </div>
+      <div class="rec-card">
+        <div class="rec-image">🏔️</div>
+        <div class="rec-body">
+          <div class="rec-title">🇳🇵 尼泊尔 · 喜马拉雅</div>
+          <div class="rec-desc">ABC 徒步 9 天，从稻田走进雪山，尼泊尔人和他们的微笑会留在你心里。</div>
+          <div class="rec-tags"><span class="rec-tag">徒步</span><span class="rec-tag">雪山</span><span class="rec-tag">挑战</span></div>
+        </div>
+      </div>
+      <div class="rec-card">
+        <div class="rec-image">🌋</div>
+        <div class="rec-body">
+          <div class="rec-title">🇮🇩 印尼 · 巴厘岛</div>
+          <div class="rec-desc">和菲律宾差不多的热带海岛，但印尼有火山、梯田和乌布的稻香 — 选这里不亏。</div>
+          <div class="rec-tags"><span class="rec-tag">海岛</span><span class="rec-tag">火山</span><span class="rec-tag">度假</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 攻略 ===== -->
+    <section class="page" id="page-guides">
+      <div class="hero">
+        <div class="hero-title">📷 攻略</div>
+        <div class="hero-sub">别人的脚步，你的灵感 📷</div>
+      </div>
+      <div class="intro-card intro-pink">🎞️ 从你走过的路出发，这些攻略正好用得上 — 已经游过的不踩坑，没游的先看别人的脚步。</div>
+
+      <div class="guide-card">
+        <div class="guide-image">📕<span class="xhs-badge">小红书</span></div>
+        <div class="guide-body">
+          <div class="guide-title">埃及 10 日全攻略｜金字塔 + 红海潜水 + 沙姆度假超详细</div>
+          <div class="guide-meta"><span class="guide-author">@北非漫游指南</span><span class="guide-stats"><span>👁️ 28.4万</span><span>❤️ 2.1万</span></span></div>
+        </div>
+      </div>
+      <div class="guide-card">
+        <div class="guide-image">📗<span class="xhs-badge">小红书</span></div>
+        <div class="guide-body">
+          <div class="guide-title">达哈卜（Dahab）自由潜最全攻略｜蓝洞、峡谷、轻奢度假村</div>
+          <div class="guide-meta"><span class="guide-author">@红海潜水中</span><span class="guide-stats"><span>👁️ 9.6万</span><span>❤️ 7320</span></span></div>
+        </div>
+      </div>
+      <div class="guide-card">
+        <div class="guide-image">📘<span class="xhs-badge">小红书</span></div>
+        <div class="guide-body">
+          <div class="guide-title">菲律宾宿务+薄荷岛 10 日跳岛攻略｜Ocean Jet 时刻表+交通</div>
+          <div class="guide-meta"><span class="guide-author">@跳岛达人小余</span><span class="guide-stats"><span>👁️ 18.7万</span><span>❤️ 1.4万</span></span></div>
+        </div>
+      </div>
+      <div class="guide-card">
+        <div class="guide-image">📙<span class="xhs-badge">小红书</span></div>
+        <div class="guide-body">
+          <div class="guide-title">墨宝 Moalboal 看沙丁鱼风暴｜一日浮潜路线（PN21）</div>
+          <div class="guide-meta"><span class="guide-author">@潜水女孩Aria</span><span class="guide-stats"><span>👁️ 12.3万</span><span>❤️ 9876</span></span></div>
+        </div>
+      </div>
+      <div class="guide-card">
+        <div class="guide-image">📓<span class="xhs-badge">小红书</span></div>
+        <div class="guide-body">
+          <div class="guide-title">洛阳 4 日冬日漫游｜唐装妆造 + 龙门石窟 + 老君山雪景</div>
+          <div class="guide-meta"><span class="guide-author">@洛水之南</span><span class="guide-stats"><span>👁️ 14.2万</span><span>❤️ 1.1万</span></span></div>
+        </div>
+      </div>
+      <div class="guide-card">
+        <div class="guide-image">📔<span class="xhs-badge">小红书</span></div>
+        <div class="guide-body">
+          <div class="guide-title">锡基霍尔 Siquijor｜环岛 2 日｜魔法岛不魔法但很美</div>
+          <div class="guide-meta"><span class="guide-author">@海岛慢游</span><span class="guide-stats"><span>👁️ 7.8万</span><span>❤️ 5610</span></span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 英语 ===== -->
+    <section class="page" id="page-english">
+      <div class="hero">
+        <div class="hero-title">📚 英语</div>
+        <div class="hero-sub">语言的边界，就是旅行的边界 📚</div>
+      </div>
+      <div class="intro-card intro-blue">📚 给接下来可能去的国家准备 — 摩洛哥、肯尼亚、欧洲都用得上。</div>
+
+      <div class="scenario-tabs" id="scenarioTabs">
+        <button class="scenario-tab active" data-s="travel">🏖️ 旅行场景</button>
+        <button class="scenario-tab" data-s="checkin">🏨 入住酒店</button>
+        <button class="scenario-tab" data-s="taxi">🚕 打车/包车</button>
+        <button class="scenario-tab" data-s="food">🍜 美食探店</button>
+        <button class="scenario-tab" data-s="emergency">🚨 紧急情况</button>
+      </div>
+
+      <div id="dialogBox"></div>
+    </section>
+
+    <!-- ===== 评价 ===== -->
+    <section class="page" id="page-reviews">
+      <div class="hero">
+        <div class="hero-title">💭 我的记录</div>
+        <div class="hero-sub">走过的路，都成了心里的歌 💭</div>
+      </div>
+      <div class="intro-card intro-purple">💭 你已经在路上的小记录 — 给下一次去打个底。</div>
+
+      <div class="review-filters" id="reviewFilters">
+        <button class="filter-chip active" data-c="all">全部</button>
+        <button class="filter-chip" data-c="egypt">🇪🇬 埃及</button>
+        <button class="filter-chip" data-c="ph">🇵🇭 菲律宾</button>
+        <button class="filter-chip" data-c="yunnan">🌸 云南</button>
+        <button class="filter-chip" data-c="henan">🏯 河南</button>
+        <button class="filter-chip" data-c="guangxi">🍃 广西</button>
+        <button class="filter-chip" data-c="maldives">🏝️ 马尔代夫</button>
+      </div>
+
+      <div id="reviewBox"></div>
+    </section>
+
+    <!-- ===== 单个主页面结束 ===== -->
+  </main>
+
+  <!-- 浮动左右切换按钮（兜底，看不见手势也能用） -->
+  <button class="swipe-fab left hidden" id="fabLeft" aria-label="上一个">‹</button>
+  <button class="swipe-fab right" id="fabRight" aria-label="下一个">›</button>
+  <div class="swipe-hint" id="swipeHint">👈  👉  左右滑动切换 tab</div>
+
+  <!-- ===== 底部导航（.phone 末位 flex 子元素，永远贴底） ===== -->
+  <nav class="bottom-nav" id="bottomNav">
+    <button class="nav-item active" data-page="overview"><span class="nav-icon">🏠</span><span class="nav-label">总览</span></button>
+    <button class="nav-item" data-page="footprints"><span class="nav-icon">🗺️</span><span class="nav-label">足迹</span></button>
+    <button class="nav-item" data-page="planning"><span class="nav-icon">📜</span><span class="nav-label">行程</span></button>
+    <button class="nav-item" data-page="accounts"><span class="nav-icon">💰</span><span class="nav-label">账目</span></button>
+    <button class="nav-item" data-page="recommend"><span class="nav-icon">✨</span><span class="nav-label">推荐</span></button>
+    <button class="nav-item" data-page="guides"><span class="nav-icon">📷</span><span class="nav-label">攻略</span></button>
+    <button class="nav-item" data-page="english"><span class="nav-icon">📚</span><span class="nav-label">英语</span></button>
+    <button class="nav-item" data-page="reviews"><span class="nav-icon">💭</span><span class="nav-label">记录</span></button>
+  </nav>
+</div>
+
+  <!-- 子页面：单个行程明细 (动态注入) -->
+  <div class="sub-page" id="sub-trip"></div>
+
+  <!-- 子页面：行程费用明细总表 -->
+  <div class="sub-page" id="sub-expense">
+    <div class="status-bar"><span id="clock2">16:26</span><div class="status-icons"><span>📶</span><span>📡</span><span class="battery">52</span></div></div>
+    <div class="top-bar">
+      <button class="icon-btn" onclick="closeSub('sub-expense')">✕</button>
+      <div class="url-bar">travel.app</div>
+      <button class="icon-btn">☰</button>
+    </div>
+    <main class="content" style="padding-top:4px;">
+      <div class="hero" style="margin-top: 4px;">
+        <div class="hero-title">📋 行程费用明细</div>
+        <div class="hero-sub">按行程汇总 · 2023-2025</div>
+      </div>
+      <div class="expense-table-card">
+        <table class="expense-table">
+          <thead>
+            <tr><th>行程</th><th>年</th><th>天</th><th>城市</th><th>✈️</th><th>🏨</th><th>🍜</th><th>🎫</th><th>🚕</th><th>💰</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="trip-name">埃及·红海双潜</td><td>2025</td><td>14</td><td>开罗·沙姆·达哈卜</td><td>¥7,719</td><td>¥6,104</td><td>¥3,938</td><td>¥5,069</td><td>¥1,338</td><td>¥269</td></tr>
+            <tr><td class="trip-name">菲律宾·跳岛</td><td>2025</td><td>12</td><td>宿务·薄荷·墨宝·锡基霍尔</td><td>¥5,375</td><td>¥3,425</td><td>¥5,124</td><td>¥-490</td><td>¥422</td><td>¥1,750</td></tr>
+            <tr><td class="trip-name">云南·大理+泸沽湖</td><td>2024</td><td>7</td><td>重庆·大理·泸沽湖</td><td>¥2,460</td><td>¥2,218</td><td>¥1,742</td><td>¥1,820</td><td>¥600</td><td>¥186</td></tr>
+            <tr><td class="trip-name">河南·洛阳赏秋</td><td>2025</td><td>4</td><td>郑州·中牟·洛阳</td><td>¥1,266</td><td>¥1,433</td><td>¥656</td><td>¥881</td><td>¥275</td><td>¥0</td></tr>
+            <tr style="background:#f0fdf4;"><td class="trip-name">广西·河池+柳州</td><td>2024</td><td>9</td><td>徐闻·明仕·渠洋湖·河池·柳州·融水</td><td>¥2,915</td><td>¥2,717</td><td>~¥3,000*</td><td>¥1,300*</td><td>¥0*</td><td>~¥900*</td></tr>
+            <tr style="background:#fefce8;"><td class="trip-name">马尔代夫·跳岛水屋</td><td>2023</td><td>14</td><td>Maafushi·Thinadhoo·Fulidhoo·威斯汀水屋</td><td>¥9,700</td><td>¥31,399</td><td>¥1,200</td><td>¥7,000</td><td>—</td><td>¥1,440*</td></tr>
+            <tr class="total-row"><td>合计（含估算 *）</td><td>'23-'25</td><td>59</td><td>21 城市</td><td>¥27,520</td><td>¥42,296</td><td>¥14,460*</td><td>¥15,280*</td><td>¥2,635</td><td>¥13,127*</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin:10px 16px;font-size:11px;color:#64748b;">
+        * 标记的为规划文档数据或餐饮/油费估测。实测完整费用需补充票据后入账。
+      </div>
+
+      <div class="section-title">📊 横向对比</div>
+      <div class="card">
+        <div style="display:flex;justify-content:space-around;text-align:center;font-size:11px;">
+          <div><div style="font-size:12px;font-weight:700;color:#7c3aed;">马尔代夫</div><div style="font-size:22px;font-weight:800;color:#6d28d9;">¥3,624</div><div style="color:#64748b;">日均(人/晚)</div></div>
+          <div style="border-left:1px dashed #cbd5e1;border-right:1px dashed #cbd5e1;padding:0 8px;"><div style="font-size:12px;font-weight:700;color:#2563eb;">埃及</div><div style="font-size:22px;font-weight:800;color:#1e40af;">¥1,674</div><div style="color:#64748b;">日均(人/晚)</div></div>
+          <div style="border-right:1px dashed #cbd5e1;padding-right:8px;"><div style="font-size:12px;font-weight:700;color:#10b981;">菲律宾</div><div style="font-size:22px;font-weight:800;color:#059669;">¥1,384</div><div style="color:#64748b;">日均(人/晚)</div></div>
+          <div style="border-right:1px dashed #cbd5e1;padding-right:8px;"><div style="font-size:12px;font-weight:700;color:#0891b2;">云南</div><div style="font-size:22px;font-weight:800;color:#0891b2;">¥1,289</div><div style="color:#64748b;">日均(人/晚)</div></div>
+          <div><div style="font-size:12px;font-weight:700;color:#10b981;">广西</div><div style="font-size:22px;font-weight:800;color:#059669;">~¥1,200</div><div style="color:#64748b;">日均(人/晚)</div></div>
+          <div><div style="font-size:12px;font-weight:700;color:#f59e0b;">河南</div><div style="font-size:22px;font-weight:800;color:#b45309;">¥1,128</div><div style="color:#64748b;">日均(人/晚)</div></div>
+        </div>
+      </div>
+
+      <div class="section-title">🎯 数据洞察</div>
+      <div class="card" style="line-height:1.8;font-size:13px;color:#475569;">
+        🏝️ <b>马尔代夫人均日均 ¥3,624</b> 是所有行程中最贵的，水屋（威斯汀 4 晚 AI 全餐）是大头。<br>
+        💎 <b>广西日均 ~¥1,200</b>，自驾 + 9 晚民宿 + 户外景区，性价比不错（数据含估算）。<br>
+        🐫 <b>河南 4 天超支 ¥912</b>，吃饭 + 采耳 + 妆造的"非必要项"占比较多。<br>
+        🌊 <b>埃及 14 天节余 ¥6,474</b>，机票没踩雷 + 红海包餐住宿，是长线最划算的。<br>
+        🐠 <b>菲律宾日均 ¥1,384</b>，跳岛+民宿，热带海岛性价比之选。<br>
+        🌸 <b>云南 ¥533 收支平衡</b>，但 ¥2,460 交通占总花费 27%，是 4 段已核算里占比最高的。<br>
+        📊 6 段旅程总花费 <b>~¥115k</b>，实测 4 段 ¥53,579 + 广西（部分估算）+ 马尔代夫（规划 ¥50,739）。
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+  const content = document.getElementById('mainContent');
+  const phone = document.querySelector('.phone');
+  const PAGES = ['overview','footprints','planning','accounts','recommend','guides','english','reviews'];
+  const PAGE_LABEL = ['总览','足迹','行程','账目','推荐','攻略','英语','记录'];
+  let currentIdx = 0;
+
+  function syncDots(idx){
+    currentIdx = idx;
+    document.querySelectorAll('#pageDots .page-dot').forEach((d,i)=>{
+      d.classList.toggle('active', i===idx);
+    });
+    document.getElementById('fabLeft').classList.toggle('hidden', idx===0);
+    document.getElementById('fabRight').classList.toggle('hidden', idx===PAGES.length-1);
+  }
+
+  function switchTab(targetPage){
+    const navEl = document.getElementById('bottomNav');
+    const item = navEl && navEl.querySelector('.nav-item[data-page="'+targetPage+'"]');
+    const page = document.getElementById('page-' + targetPage);
+    if (!item || !page) return;
+    if (navEl) navEl.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(p => { p.classList.remove('active','anim-left','anim-right'); });
+    const curIdx = currentIdx;
+    const newIdx = PAGES.indexOf(targetPage);
+    page.classList.add('active', newIdx > curIdx ? 'anim-right' : 'anim-left');
+    item.classList.add('active');
+    syncDots(newIdx);
+    content.scrollTop = 0;
+  }
+
+  function switchByIdx(newIdx){
+    if (newIdx < 0 || newIdx >= PAGES.length) return;
+    if (newIdx === currentIdx) return;
+    switchTab(PAGES[newIdx]);
+  }
+
+  // 事件委托：点击底部 nav 切换
+  const navEl = document.getElementById('bottomNav');
+  if (navEl) {
+    navEl.addEventListener('click', e => {
+      const item = e.target.closest('.nav-item');
+      if (!item) return;
+      switchTab(item.dataset.page);
+    });
+  }
+
+  // 左右浮动按钮
+  document.getElementById('fabLeft').addEventListener('click', () => switchByIdx(currentIdx-1));
+  document.getElementById('fabRight').addEventListener('click', () => switchByIdx(currentIdx+1));
+
+  // 顶部圆点点击直接跳转
+  document.getElementById('pageDots').addEventListener('click', e => {
+    const d = e.target.closest('.page-dot');
+    if (!d) return;
+    switchByIdx(parseInt(d.dataset.i, 10));
+  });
+
+  // ===== 横滑切换 tab（touch 方案，最稳）=====
+  // 为什么不用 Pointer Events：iOS Safari 在可滚动容器上横向滑动会触发 pointercancel，
+  // 导致手势被吞。这里用 touch 事件，touchmove 水平主导时 preventDefault 直接接管手势，
+  // 并加实时跟手视觉反馈，用户能明确感知手势被识别。
+  const SWIPE_MIN = 40;        // 触发最小水平位移（px）
+  const SWIPE_RATIO = 1.1;     // 水平必须比垂直大这么多倍才算"横滑"
+  let tStartX=0, tStartY=0, tTracking=false, tLocked=false;
+
+  function activePage(){ return document.querySelector('.page.active'); }
+  function resetTransform(){ const p = activePage(); if (p) p.style.transform = ''; }
+
+  function onTouchStart(e){
+    if (document.querySelector('.sub-page.active')) { tTracking = false; return; } // 子页面不抢
+    const tag = (e.target && e.target.tagName) || '';
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') { tTracking = false; return; }
+    const t = e.touches[0];
+    tStartX = t.clientX; tStartY = t.clientY;
+    tTracking = true; tLocked = false;
+  }
+  function onTouchMove(e){
+    if (!tTracking) return;
+    const t = e.touches[0];
+    const dx = t.clientX - tStartX;
+    const dy = t.clientY - tStartY;
+    // 一旦判定为水平主导，就接管（preventDefault 阻止浏览器滚动/前进后退手势）
+    if (!tLocked && Math.abs(dx) > Math.abs(dy)) tLocked = true;
+    if (tLocked) {
+      e.preventDefault();
+      const p = activePage();
+      if (p) p.style.transform = 'translateX(' + (dx * 0.35) + 'px)';
+    }
+  }
+  function onTouchEnd(e){
+    if (!tTracking) return;
+    tTracking = false;
+    resetTransform();
+    if (!tLocked) return;          // 不是水平手势，放行垂直滚动
+    const ct = e.changedTouches[0];
+    const dx = ct.clientX - tStartX;
+    const dy = ct.clientY - tStartY;
+    if (Math.abs(dx) < SWIPE_MIN) return;
+    if (Math.abs(dx) < Math.abs(dy) * SWIPE_RATIO) return;
+    if (dx < 0) switchByIdx(currentIdx + 1); // 左滑→下一个
+    else        switchByIdx(currentIdx - 1); // 右滑→上一个
+  }
+
+  const hasTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+  if (hasTouch) {
+    phone.addEventListener('touchstart', onTouchStart, {passive:true});
+    phone.addEventListener('touchmove',  onTouchMove,  {passive:false}); // 必须 false 才能 preventDefault
+    phone.addEventListener('touchend',   onTouchEnd,   {passive:true});
+    phone.addEventListener('touchcancel', () => { tTracking=false; tLocked=false; resetTransform(); });
+  } else {
+    // 桌面兜底：鼠标拖拽
+    let mDown=false, mX=0, mY=0;
+    phone.addEventListener('mousedown', e => { mDown=true; mX=e.clientX; mY=e.clientY; });
+    window.addEventListener('mouseup', e => {
+      if (!mDown) return; mDown=false;
+      const dx = e.clientX - mX, dy = e.clientY - mY;
+      if (Math.abs(dx) < SWIPE_MIN || Math.abs(dx) < Math.abs(dy) * SWIPE_RATIO) return;
+      if (dx < 0) switchByIdx(currentIdx + 1); else switchByIdx(currentIdx - 1);
+    });
+  }
+
+  // 首次进入显示一次"左右滑"提示
+  (function showHintOnce(){
+    try {
+      if (localStorage.getItem('swipeHintShown') === '1') return;
+      const hint = document.getElementById('swipeHint');
+      hint.classList.add('show');
+      setTimeout(() => hint.classList.remove('show'), 2800);
+      localStorage.setItem('swipeHintShown', '1');
+    } catch(_) {}
+  })();
+
+  function scrollTop(){ content.scrollTop = 0; }
+  function openSub(id){ document.getElementById(id).classList.add('active'); }
+  function closeSub(id){ document.getElementById(id).classList.remove('active'); }
+
+  // ===== Clock =====
+  function tick(){
+    const d = new Date();
+    const h = String(d.getHours()).padStart(2,'0');
+    const m = String(d.getMinutes()).padStart(2,'0');
+    const t = h + ':' + m;
+    const e1 = document.getElementById('clock'); if(e1) e1.textContent = t;
+    const e2 = document.getElementById('clock2'); if(e2) e2.textContent = t;
+  }
+  tick(); setInterval(tick, 30000);
+
+  // ===== 世界地图 =====
+  const worldMap = document.getElementById('worldMap');
+  const worldSVG = `<svg viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice">
+    <rect width="800" height="400" fill="#cfe8ff"/>
+    <g fill="#f8fafc" stroke="#bcdcf5" stroke-width="1">
+      <path d="M70,70 L120,55 L200,60 L240,90 L250,130 L235,170 L215,200 L180,210 L140,215 L100,200 L80,165 L65,120 Z"/>
+      <path d="M280,55 L320,50 L340,75 L325,110 L295,105 L280,80 Z"/>
+      <path d="M200,235 L230,230 L260,250 L265,290 L255,340 L235,380 L215,385 L195,360 L185,320 L190,270 Z"/>
+      <path d="M375,80 L430,75 L475,90 L478,125 L455,150 L425,160 L395,150 L372,132 L368,108 Z"/>
+      <path d="M395,165 L440,160 L475,180 L490,225 L495,278 L475,322 L450,355 L420,345 L400,308 L390,262 L385,212 Z"/>
+      <path d="M478,150 L520,150 L535,185 L518,215 L488,215 L473,190 Z"/>
+      <path d="M478,75 L535,68 L605,75 L685,85 L738,105 L748,140 L730,172 L700,188 L658,182 L618,172 L578,178 L540,162 L510,138 L495,110 L482,88 Z"/>
+      <path d="M580,180 L622,178 L642,215 L626,252 L605,256 L585,235 L575,210 Z"/>
+      <path d="M660,200 L702,205 L718,236 L702,262 L676,256 L660,236 Z"/>
+      <path d="M650,290 L720,285 L748,315 L736,348 L700,356 L660,350 L638,330 Z"/>
+    </g>
+  </svg>`;
+  worldMap.insertAdjacentHTML('afterbegin', worldSVG);
+
+  // 真实去过城市的图钉坐标
+  const pins = [
+    // Egypt (Africa - 居中偏左)
+    {x:55, y:55, label:'开罗', cls:'amber'},
+    {x:57, y:58, label:'沙姆沙伊赫', cls:'red'},
+    {x:58, y:60, label:'达哈卜', cls:'red'},
+    // Philippines (Asia - 右中偏下)
+    {x:78, y:60, label:'宿务', cls:'red'},
+    {x:79, y:62, label:'薄荷岛', cls:'red'},
+    {x:78, y:62, label:'墨宝', cls:'red'},
+    {x:79, y:64, label:'锡基霍尔', cls:'red'},
+    // Maldives (Indian Ocean - 中右)
+    {x:64, y:60, label:'Maafushi', cls:'red'},
+    {x:64, y:63, label:'Thinadhoo', cls:'red'},
+    {x:63, y:60, label:'Fulidhoo', cls:'red'},
+    {x:65, y:59, label:'威斯汀水屋', cls:'red'},
+    // China - 国内
+    {x:73, y:42, label:'洛阳', cls:'green'},
+    {x:72, y:42, label:'郑州', cls:'green'},
+    {x:70, y:43, label:'重庆', cls:'green'},
+    {x:71, y:48, label:'大理', cls:'green'},
+    {x:70, y:46, label:'泸沽湖', cls:'green'},
+    {x:74, y:50, label:'明仕田园', cls:'green'},
+    {x:73, y:51, label:'渠洋湖', cls:'green'},
+    {x:72, y:49, label:'河池', cls:'green'},
+    {x:72, y:46, label:'柳州', cls:'green'},
+    // Transit - 中转
+    {x:72, y:53, label:'曼谷', cls:''},
+    {x:71, y:62, label:'吉隆坡', cls:''},
+    {x:75, y:42, label:'广州/深圳', cls:''},
+  ];
+  pins.forEach(p => {
+    const pin = document.createElement('div');
+    pin.className = 'map-pin ' + p.cls;
+    pin.style.left = p.x + '%'; pin.style.top = p.y + '%';
+    worldMap.appendChild(pin);
+    const lab = document.createElement('div');
+    lab.className = 'pin-label';
+    lab.style.left = p.x + '%'; lab.style.top = p.y + '%';
+    lab.textContent = p.label;
+    worldMap.appendChild(lab);
+  });
+
+  // ===== 英语对话 =====
+  const dialogs = {
+    travel: [
+      {l:'How long is the layover in Bangkok?', z:'在曼谷的转机时间有多长？'},
+      {l:'Around three hours. Do you need a transit visa?', z:'大约 3 小时。你需要过境签证吗？'},
+      {l:'No, I\'ll stay airside. Where\'s the nearest restroom?', z:'不需要，我留在中转区。请问最近的洗手间在哪？'},
+      {l:'Right past duty-free, on the left side.', z:'过完免税店直走，左边就是。'}
+    ],
+    checkin: [
+      {l:'Hi, I have a reservation under Lee.', z:'你好，我有预订，姓李。'},
+      {l:'Welcome! May I see your passport and the booking confirmation?', z:'欢迎！能看一下您的护照和预订确认吗？'},
+      {l:'Here you go. Is breakfast included?', z:'给你。请问含早餐吗？'},
+      {l:'Yes, buffet breakfast is from 7 to 10 on the second floor.', z:'含的，自助早餐 7-10 点在二楼。'}
+    ],
+    taxi: [
+      {l:'Could you take me to the airport? How long will it take?', z:'能带我去机场吗？大概要多久？'},
+      {l:'Sure, about 40 minutes, depending on traffic.', z:'好的，看路况大约 40 分钟。'},
+      {l:'Great. Please use the meter, thanks.', z:'好的，请打表，谢谢。'},
+      {l:'No problem. Buckle up and we\'re good to go.', z:'没问题，请系好安全带我们就出发。'}
+    ],
+    food: [
+      {l:'What\'s the local specialty here?', z:'这儿的本地特色菜是什么？'},
+      {l:'You have to try the grilled seafood — it\'s caught this morning.', z:'你一定要试试今天的烤海鲜，今早刚捕的。'},
+      {l:'Sounds great. Is it spicy?', z:'听起来不错。辣吗？'},
+      {l:'Mild. I can ask the kitchen to make it extra mild if you want.', z:'是微辣。如果你想要完全不辣，我可以让厨房处理。'}
+    ],
+    emergency: [
+      {l:'I lost my passport. What should I do?', z:'我护照丢了，该怎么办？'},
+      {l:'Report it to the local police first, then contact your embassy.', z:'先去当地警局报失，然后联系大使馆。'},
+      {l:'Where is the nearest police station?', z:'最近的派出所在哪？'},
+      {l:'Two blocks away, on the corner with the bank. Take this form with you.', z:'往前走两个街区，银行那个路口就是。这是报失表。'}
+    ]
+  };
+  function renderDialog(s){
+    const box = document.getElementById('dialogBox');
+    const lines = dialogs[s];
+    const label = document.querySelector('.scenario-tab.active').textContent.trim();
+    let html = `<div class="dialog-title">💬 情景对话 · ${label}</div><div class="dialog-card">`;
+    lines.forEach((d,i) => {
+      const side = i % 2 === 0 ? 'left' : 'right';
+      const who = i % 2 === 0 ? '🧑‍🦱' : '🧕';
+      html += `<div class="dialog-line"><div class="bubble ${side}"><div class="avatar">${who}</div><div class="bubble-content"><div class="en">${d.l}</div><div class="zh">${d.z}</div></div></div></div>`;
+    });
+    html += `</div>`;
+    box.innerHTML = html;
+  }
+  document.querySelectorAll('.scenario-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.scenario-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      renderDialog(tab.dataset.s);
+    });
+  });
+  renderDialog('travel');
+
+  // ===== 我的记录（原"评价"）=====
+  const reviews = [
+    {tag:'egypt', city:'达哈卜', title:'沙漠与海的尽头', who:'沙', src:'自己记', body:'达哈卜比沙姆好太多。潜水便宜+安静，没有游客大团，早上浮潜看海豚像在另一个世界。'},
+    {tag:'egypt', city:'沙姆沙伊赫', title:'红海 7 晚的慢', who:'红', src:'自己记', body:'Grand Rotana 海景房 + 餐确实省心，但出了酒店就没什么可看的，更适合泡酒店+潜水。如果喜欢热闹可以选这里。'},
+    {tag:'egypt', city:'开罗', title:'金字塔下午', who:'埃', src:'自己记', body:'强烈建议傍晚去，光线正好拍。开罗中心脏乱差是事实，但金字塔真的会震撼。建议包车不要打车。'},
+    {tag:'ph', city:'薄荷岛', title:'跳岛第一天', who:'海', src:'自己记', body:'Bohol Beach Club 是这次最值钱的酒店，看日落吃饭都包。Chocolate Hill 没想象好玩，主要图个到此一游。'},
+    {tag:'ph', city:'墨宝 Moalboal', title:'沙丁鱼风暴', who:'鱼', src:'自己记', body:'Panagsama Beach 下水就能看到沙丁鱼！Kaiser’s Reef 看海龟。Coco Grove 含早含泳池，性价比爆表。'},
+    {tag:'ph', city:'锡基霍尔', title:'环岛摩托一日', who:'环', src:'自己记', body:'Cambughay Beach 跳台瀑布真的跳了！13000P 的 Villa Alexandra 是民宿但很温馨。海鲜便宜到吓人。'},
+    {tag:'ph', city:'宿务', title:'进出城枢纽', who:'城', src:'自己记', body:'宿务只是进出城的中转站，没什么可玩的。但 New Lucky House 真的便宜，建议住 1 晚过关或赶飞机。'},
+    {tag:'henan', city:'洛阳', title:'11 月底穿汉服', who:'洛', src:'自己记', body:'洛阳广场华阳饭店超棒，位置好+早餐有胡辣汤。唐装妆造一定不要在景区做，去小巷子里找靠谱的小店。'},
+    {tag:'henan', city:'河南', title:'吃饭打车超了', who:'超', src:'复盘', body:'这趟主要超在吃饭和打车。下次做"非景点"开支预算时多留 buffer，到景区不要打车。采耳一定要先看价别开门就躺下。'},
+    {tag:'yunnan', city:'大理', title:'古城 + 苍山洱海', who:'风', src:'自己记', body:'住大理古城比才村好 10 倍。寂照庵吃斋饭 + Only one side 蛋挞 + 桃源徒步一天 4 万步也值。南门绿玉市场对面小杨妈妈粉超便宜。'},
+    {tag:'yunnan', city:'泸沽湖', title:'好人小吃 45 元自助', who:'湖', src:'自己记', body:'好人小吃的 4 道菜自助（猪膘肉/烤鱼/酥油茶/苦荞粑）够 2 人吃饱。摩梭篝火晚会现场版比想象好玩。苹果园 5 元/斤，皮薄。'},
+    {tag:'yunnan', city:'重庆', title:'火锅按江湖规矩来', who:'雾', src:'自己记', body:'重庆 1 晚火锅局 ¥943 是全程最大单项！动物馆按摩真的辣。机场到重庆北站地铁 10 号线最划算。'},
+    {tag:'guangxi', city:'古龙山大峡谷', title:'必湿身的漂流', who:'漂', src:'自己记', body:'会湿身！必带雨衣毛巾防水袋。下山到漂流 30min → 漂流 50min → 瀑布底 20min → 溶洞暗河 20min → 接驳车 30min，全程 3-4h。'},
+    {tag:'guangxi', city:'渠洋湖', title:'环湖 + 拼船', who:'湖', src:'自己记', body:'村民自营游船 200 一船 8 人 — 现找人拼，我们 2 人只花 50！桨板 25/人。岜马屯观景台要爬一小段山⛰️。'},
+    {tag:'guangxi', city:'峒那屿湾', title:'广西的"小桂林"', who:'峒', src:'自己记', body:'走最美高速耗时 6.5h，门票+游船各 80 元 2~3h。明仕田园鱼鳞坝免费骑车 1h，性价比拉满。'},
+    {tag:'guangxi', city:'柳州', title:'4 家螺蛳粉都好吃', who:'螺', src:'自己记', body:'铛牛佬/周六/特香/静姐螺蛳粉，挨家吃完再加点茶麸洗头。住柳州深航 3 晚 372 元/晚。'},
+    {tag:'guangxi', city:'中渡古镇', title:'柴火粉上过央视', who:'渡', src:'自己记', body:'鹿寨中渡柴火粉中午 13 点关门！陈记老甲米粉店也上央视。荷花宴、肚肺汤、大杂烩、酸甜肉圆全吃一遍。'},
+    {tag:'maldives', city:'Maafushi', title:'跳岛水上基地', who:'马', src:'自己记', body:'离 Male 近的当地岛，潜水/夜钓/出海项目丰富。Lily Spencer 超市买食材自己做一餐，比外面吃省 50%。'},
+    {tag:'maldives', city:'Thinadhoo', title:'沉船潜水之都', who:'潜', src:'自己记', body:'羽毛酒店包早晚餐，每天浮潜都能看到 manta/海豚沉船。半拖吊桨（coral garden）必玩。'},
+    {tag:'maldives', city:'Fulidhoo', title:'护士鱼 + 海龟', who:'鱼', src:'自己记', body:'Cowry Inn 含早不包晚，海鲜便宜。酒店前礁就能看到护士鱼和大海龟，浮潜不用报名项目。'},
+    {tag:'maldives', city:'威斯汀水屋', title:'4 晚 AI 极简模式', who:'屋', src:'自己记', body:'All Inclusive 几乎不花钱：浮潜/潜水/鱼缸/海豚巡游都包。半日游项目丰富。唯一要付的是 200 美金小费。'},
+  ];
+  function renderReviews(c){
+    const box = document.getElementById('reviewBox');
+    const list = c === 'all' ? reviews : reviews.filter(r => r.tag === c);
+    if(!list.length){ box.innerHTML = '<div style="text-align:center;color:#94a3b8;padding:30px;">暂无该分类的记录～</div>'; return; }
+    box.innerHTML = list.map(r => `
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-avatar">${r.who}</div>
+          <div class="review-title">${r.title}</div>
+        </div>
+        <div class="review-source">${r.src}</div>
+        <div class="review-city">📍 ${r.city}</div>
+        <div class="review-body">${r.body}</div>
+      </div>`).join('');
+  }
+  document.querySelectorAll('.filter-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      renderReviews(chip.dataset.c);
+    });
+  });
+  renderReviews('all');
+
+  // ===== 单个行程详情子页 =====
+  const trips = {
+    egypt: {
+      cls:'egypt',
+      emoji:'🇪🇬',
+      title:'埃及 · 开罗 → 沙姆 → 达哈卜',
+      date:'2025-05-27 ~ 2025-06-11 · 14 晚 · 2 人',
+      actual:'¥23,436.80',
+      budget:'¥29,368',
+      delta:'节余 ¥6,474.40 🎉',
+      daily:'¥837 / 人均/天',
+      routes:['海口','曼谷中转','开罗','沙姆沙伊赫','达哈卜','沙姆','开罗','海口'],
+      highlight:'金字塔 + 红海潜水 + 沙姆度假 + 沙漠星空 + 海鲜烧烤',
+      days: [
+        {num:'Day 1 · 5/27', city:'海口 → 曼谷 → 开罗', money:'¥6,920 预算', actual:'¥6,920', note:'海航+东航联程 19:10-22:00 上海 + 01:50-09:00 开罗，到达已是第二天凌晨。'},
+        {num:'Day 2 · 5/28', city:'开罗 → 沙姆沙伊赫', money:'¥1,490 预算', actual:'¥739', note:'飞机 15:45-17:15，沙姆航空 1h30m。手机卡+换货币 USD/EUR 推荐在机场换。出机场直接打车到酒店。'},
+        {num:'Day 3-6 · 5/28-5/31', city:'沙姆沙伊赫（4 晚）', money:'¥4,371 预算', actual:'¥3,984.08', note:'Grand Rotana Resort & Spa 海景房双早，超 Nice。沙姆伊斯坦布尔公园 / SOHO Square / Old Market / Il Mercato 都值得逛。海边酒吧/market 餐厅不错。'},
+        {num:'Day 7 · 6/2', city:'沙姆 → 达哈卜', money:'¥220 预算', actual:'¥146', note:'打车 1h，途中戈壁风景超棒。建议提前订好达哈卜酒店，walk-in 价格会涨。'},
+        {num:'Day 8-10 · 6/2-6/9', city:'达哈卜（7 晚）', money:'¥6,836 预算', actual:'¥3,939.45', note:'Tropical DiHab Oasis + 镇上 walk-in 民宿。自由潜/潜水比沙姆便宜一半。Dahab 镇像 80 年代希腊，蓝洞/峡谷不要错过。'},
+        {num:'Day 11-12 · 6/9-6/10', city:'达哈卜 → 沙姆 → 开罗', money:'¥1,892 预算', actual:'¥2,288.33', note:'回沙姆希尔顿逸林住 1 晚（800），再到开罗喜来登 1 晚。开罗机场快线往返，注意安全。'},
+        {num:'Day 13-14 · 6/10-6/11', city:'开罗 1 日 + 回家', money:'¥2,100 预算', actual:'¥2,361.61', note:'早上去金字塔+博物馆，下午购物。开罗喜来登位置好。回程飞 14h+，记得 6/12 留出 1 天调整。'},
+      ]
+    },
+    henan: {
+      cls:'henan',
+      emoji:'🇨🇳',
+      title:'河南 · 郑州 → 中牟 → 洛阳',
+      date:'2025-11-27 ~ 2025-12-01 · 4 晚 · 2 人',
+      actual:'¥4,511.88',
+      budget:'¥3,599',
+      delta:'超支 ¥912.88 ⚠️',
+      daily:'¥564 / 人均/天',
+      routes:['海口','郑州','中牟','洛阳','郑州','海口'],
+      highlight:'洛阳古城 + 唐装妆造 + 龙门石窟 + 老君山可能错过',
+      days: [
+        {num:'Day 1 · 11/27', city:'海口 → 郑州 → 中牟', money:'¥623 预算', actual:'¥523', note:'海南航空 270×2=540 实际 440，机票省了 100。中牟住 1 晚 83 元。'},
+        {num:'Day 2 · 11/28', city:'中牟 → 洛阳', money:'¥131 预算', actual:'¥131', note:'动车 65.5×2，到了直接打车到洛阳广场华阳饭店。'},
+        {num:'Day 2-4 · 11/28-12/1', city:'洛阳（3 晚）', money:'¥1,950 预算', actual:'¥2,887.30', note:'住宿 ¥1350（华阳饭店 350×3），超 ¥300。游玩 + 妆造 ¥423（超 ¥123），采耳等休闲 ¥458.3（超 ¥158），吃饭 ¥656.4（超 ¥356）。复盘：吃饭打车 buffer 不够。'},
+        {num:'Day 5 · 12/1', city:'洛阳 → 郑州 → 海口', money:'¥695 预算', actual:'¥695', note:'动车 78.5×2 + 海航 269×2，下午到家。'},
+      ]
+    },
+    ph: {
+      cls:'ph',
+      emoji:'🇵🇭',
+      title:'菲律宾 · 宿务 → 薄荷 → 墨宝 → 锡基霍尔',
+      date:'2025-06-10 ~ 2025-06-21 · 12 晚 · 2 人',
+      actual:'¥16,605',
+      budget:'¥17,255',
+      delta:'节余 ¥1,517 🎉',
+      daily:'¥692 / 人均/天',
+      routes:['海口','吉隆坡中转','宿务','薄荷岛','墨宝','锡基霍尔','宿务','海口'],
+      highlight:'Ocean Jet 跳岛 · 沙丁鱼风暴 · Chocolate Hill · 古堡跳海',
+      days: [
+        {num:'Day 1 · 6/10', city:'海口 → 吉隆坡 → 宿务', money:'¥4,374 预算', actual:'¥4,628.11', note:'海航+厦航联程 16:10-18:20 + 07:35-19:50，单日预算 2087/人挺高。注意：菲律宾保险 110/人可保 15 天。'},
+        {num:'Day 2-3 · 6/11-6/13', city:'薄荷岛（2 晚）', money:'¥8,000+ 预算', actual:'¥1,605.48', note:'Ocean Jet 2h 渡轮 ¥239/2 人，住宿 Bohol Beach Club 2610 比价。Chocolate Hill + 悬崖餐厅。'},
+        {num:'Day 4-5 · 6/13-6/16', city:'墨宝 Moalboal（3 晚）', money:'¥...', actual:'¥4,000+', note:'Panagsama Beach 看沙丁鱼风暴。Kaisers Reef 看海龟。Coco Grove 含早，含 2 晚。浮潜装备 200/天。'},
+        {num:'Day 6-8 · 6/16-6/18', city:'锡基霍尔（3 晚）', money:'¥...', actual:'¥3,000+', note:'Cambughay Beach 跳台瀑布 + Salagdoong Lake Cliff Jumping。Villa Alexandra 房间 2450 含早。环岛摩托 350/天。'},
+        {num:'Day 9-10 · 6/21', city:'宿务 → 海口', money:'¥...', actual:'¥...', note:'New Lucky House 100/晚，位置好+便宜。6/22 港口回程。注意 6/22 早上动车 → 机场要预留 2h。'},
+      ]
+    },
+    yunnan: {
+      cls:'yunnan',
+      emoji:'🇨🇳',
+      title:'云南 · 海口 → 重庆 → 大理 → 泸沽湖',
+      date:'2024-11-28 ~ 2024-12-06 · 7 晚 · 2 人',
+      actual:'¥9,025.37',
+      budget:'¥9,558',
+      delta:'节余 ¥533 🎉',
+      daily:'¥645 / 人均/天',
+      routes:['海口','重庆','大理','泸沽湖','昆明中转','海口'],
+      highlight:'重庆火锅 + 大理古城 + 苍山洱海 + 泸沽湖摩梭',
+      days: [
+        {num:'Day 1 · 11/28', city:'海口 → 重庆 (1 晚)', money:'¥1,060 预算', actual:'¥1,005', note:'海航 海口→重庆 10:40-12:55，4 人火锅局，¥943.46 一顿下肚直接过半。重庆动物园值得逛。'},
+        {num:'Day 2 · 11/29', city:'重庆 → 大理 (2 晚)', money:'¥600 预算', actual:'¥699', note:'飞机 6:35-8:25 机票 300×2 实际 699 比预算超 ¥99 (超 ¥99)。入住大理古城全季酒店，洱海边晚餐+酒吧。'},
+        {num:'Day 3-4 · 11/29-12/1', city:'大理古城 (2 晚)', money:'¥1,000 预算', actual:'¥1,440.30', note:'苍山+中和索道+桃源徒步+寂照庵吃斋饭。南门绿玉市场小杨妈妈粉对面、北门买水果。特色菜推荐：铜锅马铃薯特色养生菌火锅+烤肉、素馨园菌清真小吃、Only one side 蛋挞巨好吃。'},
+        {num:'Day 5 · 12/1', city:'大理 → 泸沽湖 (顺风车)', money:'¥400 预算', actual:'¥300', note:'顺风车 4-6h，路上风景美。住 2 晚呈也云海客栈(宁蒗) + 3 晚呈也云山海望酒店(大落水村)。两酒店相距 6 公里。'},
+        {num:'Day 6-8 · 12/1-12/6', city:'泸沽湖 (5 晚)', money:'¥2,500 预算', actual:'¥2,106.61', note:'吃：好人小吃 4 道菜自助 45 元/人/餐 往女神湾猪膘肉。玩：阿妈风味-菌香腊排骨(薄荷炸猪排,乱刀牛肉)-大落水烧烤、里格无敌大落水看摩梭篝火晚会、大落水村看苹果园。摩梭篝火表演晚西边 80/人。'},
+        {num:'Day 9 · 12/6', city:'泸沽湖 → 海口', money:'¥1,748 预算', actual:'¥1,234', note:'泸沽湖→昆明 12:55-14:00 + 昆明→海口中转飞机，¥874×2=1748 比预算省 514 (实际 1234)。'},
+        {num:'', city:'合计', money:'总预算 9558', actual:'¥9,025.37', note:'节余 ¥533。日均 ¥1,289/人/晚 — 交通占比 27% 是 4 段旅程里最高的。'}
+      ]
+    },
+    maldives: {
+      cls:'maldives',
+      emoji:'🇲🇻',
+      title:'马尔代夫 · 跳岛 + 威斯汀水屋',
+      date:'2023-09-07 ~ 2023-09-21 · 14 晚 · 2 人',
+      actual:'¥50,739 (规划预算)',
+      budget:'¥50,739',
+      delta:'规划预算 🆕 · 实测待补',
+      daily:'¥1,812 / 人均/天',
+      routes:['海口','广州','马累','Maafushi 5晚','Thinadhoo','Fulidhoo','威斯汀水屋 4晚','马累','深圳','海口'],
+      highlight:'马富士跳岛 · Thinadhoo 沉船潜水 · Fulidhoo 海鲜 · 威斯汀水屋 (AI 全餐)',
+      days: [
+        {num:'阶段 1 · 9/7-9/12', city:'海口 → 广州 → 马累 → Maafushi (5 晚)', money:'住宿 ¥2,160 (432×5)', actual:'¥—', note:'马富士当地岛，潜水/夜钓/出海项目丰富。Lily Spencer 超市买食物自己做饭。'},
+        {num:'阶段 2 · 9/10-9/13', city:'Thinadhoo (羽毛酒店 3 晚)', money:'住宿 ¥1,239 (双早双晚包税)', actual:'¥—', note:'羽毛酒店含早晚。半拖吊浆/沉船浮潜/manta/海豚巡游 — 浮潜性价比高。'},
+        {num:'阶段 3 · 9/13-9/16', city:'Fulidhoo (Cowry Inn 3 晚)', money:'住宿 ¥1,140 + 绿色税 ~¥260', actual:'¥—', note:'Cowry Inn 海鲜、蔬鱼浮潜；可近距离看海龟、护士鱼。包早不包晚。'},
+        {num:'阶段 4 · 9/16-9/20', city:'威斯汀 Maldives (水屋 4 晚 · AI)', money:'— (含早晚餐 · 含项目)', actual:'¥—', note:'Westin 水屋 All Inclusive 几乎不用再花钱：浮潜、潜水、鱼缸、海豚巡游都包。半日游项目丰富。'},
+        {num:'阶段 5 · 9/20-9/21', city:'马累 + 深圳中转', money:'住宿 ¥700 (马累¥400+12刀税+深圳¥300)', actual:'¥—', note:'马累过夜 1 晚 + 深圳 1 晚，准备次日航班回国。'},
+        {num:'费用合计', city:'按规划 ¥50,739', money:'¥50,739', actual:'实测待补充', note:'住宿 ¥31,399 + 交通 ¥9,700 + 餐饮 ¥1,200 + 项目 ¥7,000 + 小费 ¥1,440（200 美金）。实测如有出入请补登。'},
+      ]
+    },
+    guangxi: {
+      cls:'guangxi',
+      emoji:'🇨🇳',
+      title:'广西 · 徐闻→明仕→古龙山→渠洋湖→河池→柳州→融水',
+      date:'2024-08-23 ~ 2024-09-01 · 9 晚 · 2 人',
+      actual:'~¥10,800 (已记录 ¥5,932)',
+      budget:'~¥12,000',
+      delta:'部分估算 · 已记录交通住宿门票',
+      daily:'~¥600 / 人均/天',
+      routes:['海口','徐闻','明仕田园','古龙山大峡谷','渠洋湖','瑶王府','河池小三峡','柳州','中渡古镇','融水','海口'],
+      highlight:'峒那屿湾 · 古龙山大峡谷漂流 · 渠洋湖游船 + 桨板 · 柳州螺蛳粉 + 茶麸洗头',
+      days: [
+        {num:'Day 1 · 8/23', city:'海口 → 徐闻', money:'船票 455 + 住宿 183', actual:'¥638', note:'19:30 新海港出发徐闻，住在徐闻。第二天要走最美高速过广西。'},
+        {num:'Day 2 · 8/24', city:'海口 → 明仕田园 (大新县)', money:'高速 245 + 门票 320 + 住宿 235', actual:'¥800', note:'走最美高速去峒那屿湾 6.5h。游峒那屿湾（80+80）2~3h → 鱼鳞坝骑车 → 住大新县。'},
+        {num:'Day 3 · 8/25', city:'明仕 → 古龙山 → 渠洋湖 → 瑶王府', money:'门票 380 + 渠洋湖 100 + 住宿 210 + 高速 225', actual:'¥915', note:'三叠领瀑布 30min → 古龙山大峡谷漂流（含地下暗河溶洞步行 3-4h）→ 渠洋湖游船+桨板 → 385km 到瑶王府。'},
+        {num:'Day 4 · 8/26', city:'瑶王府 → 河池小三峡 → 龙江第一湾 → 铂悦', money:'门票 442 + 住宿 366 + 高速 42', actual:'¥850', note:'遥望天下 99 元 → 河池小三峡（87 门票+游船+观光车）→ 龙江第一湾 10 门 + 30×2 竹筏 → 住铂悦。'},
+        {num:'Day 5 · 8/27', city:'九顿/吞榜天窗 → 柳州', money:'高速 121 + 柳州深航 378', actual:'¥499', note:'吞榜天窗玩水后直奔柳州 189km 3h。住柳州深航，吃粉、按摩。'},
+        {num:'Day 6-7 · 8/28-29', city:'柳州 (2 晚)', money:'吃粉 + 按摩 + 茶麸洗头 + 柳州深航 744', actual:'~¥1,200', note:'水上公交、龙潭公园。铛牛佬/周六/特香/静姐螺蛳粉，茶麸洗头。'},
+        {num:'Day 8 · 8/30', city:'柳州 → 中渡古镇 → 鹿鸣谷', money:'住宿 322', actual:'~¥500', note:'77km 1.6h。中渡古镇、响水瀑布、鹿鸣谷、香桥岩溶地质公园。中渡柴火粉中午 13 点关门。'},
+        {num:'Day 9 · 8/31', city:'鹿寨 → 融水', money:'高速 42 + 住宿 279 + 三友瀑布', actual:'~¥470', note:'152km 2.6h。融水风情苗乡酒店 + 三友瀑布景区。'},
+        {num:'Day 10 · 9/1', city:'融水 → 海口', money:'高速 320 + 船票 455', actual:'¥775', note:'656km 6.5h。住宿 + 船票返回。'},
+        {num:'费用合计', city:'按本攻略', money:'~¥10,800', actual:'已记录 ¥5,932', note:'已记录：交通 ¥3,503 + 住宿 ¥2,717 + 门票/游玩 ¥1,242 = ¥7,462（含估算。完整实际花费以账单为准）。'},
+      ]
+    }
+  };
+
+  function fmtDays(t){
+    // 优先从 date 字段中提取"X 晚"
+    const m = (t.date||'').match(/(\d+)\s*晚/);
+    if (m) return m[1] + ' 晚';
+    const a = parseFloat((t.actual||'').replace(/[¥,~()一-鿿 ]/g,'')) || NaN;
+    const d = parseFloat((t.daily||'').replace(/[¥,~()一-鿿 ]/g,'')) || NaN;
+    return (isFinite(a) && isFinite(d) && d>0) ? (a/d).toFixed(0)+' 晚' : '—';
+  }
+  function openTripDetail(id){
+    const t = trips[id];
+    if(!t) return;
+    const sub = document.getElementById('sub-trip');
+    sub.innerHTML = `
+      <div class="status-bar"><span id="clock-trip">16:26</span><div class="status-icons"><span>📶</span><span>📡</span><span class="battery">52</span></div></div>
+      <div class="top-bar">
+        <button class="icon-btn" onclick="closeSub('sub-trip')">✕</button>
+        <div class="url-bar">travel.app</div>
+        <button class="icon-btn">☰</button>
+      </div>
+      <main class="content" style="padding-top:4px;">
+        <div class="hero" style="margin-top:4px;">
+          <div class="hero-title">${t.emoji} ${t.title.split(' · ')[0]}</div>
+          <div class="hero-sub">${t.title.split(' · ')[1] || ''}</div>
+        </div>
+        <div class="trip-summary ${t.cls}">
+          <div class="ts-top">
+            <div class="ts-title">${t.emoji} ${t.title.split(' · ')[0]} · 总览</div>
+            <div>
+              <div class="ts-price">${t.actual}</div>
+              <div class="ts-meta">预算 ${t.budget}</div>
+            </div>
+          </div>
+          <div style="font-size:12px;color:#475569;margin-top:8px;">📅 ${t.date}</div>
+          <div class="ts-stats">
+            <div class="ts-cell"><div class="v">${t.daily}</div><div class="l">人均/天</div></div>
+            <div class="ts-cell"><div class="v">${fmtDays(t)}</div><div class="l">出行天数</div></div>
+            <div class="ts-cell"><div class="v">${t.routes.length}</div><div class="l">经过城市</div></div>
+          </div>
+          <div style="font-size:13px;color:#1e40af;font-weight:700;margin-top:8px;">${t.delta}</div>
+          <div class="ts-route">
+            ${t.routes.map((r,i) => i<t.routes.length-1 ? `<span class="route-tag">${r}</span><span class="route-arrow">→</span>` : `<span class="route-tag">${r}</span>`).join('')}
+          </div>
+          <div class="ts-highlight">✨ ${t.highlight}</div>
+        </div>
+        <div class="section-title">📅 每日明细</div>
+        <div class="day-list">
+          ${t.days.map(d => `
+            <div class="day-card">
+              <div class="day-head">
+                <span class="day-num">${d.num}</span>
+                <span class="day-city">${d.city}</span>
+                <span class="day-money">${d.actual}</span>
+              </div>
+              <div class="day-items">
+                <div class="day-item">
+                  <div class="day-item-c"><span class="cat">预算</span>${d.money}</div>
+                </div>
+              </div>
+              <div class="day-note">📝 ${d.note}</div>
+            </div>
+          `).join('')}
+        </div>
+        <div class="stars">⭐ 🐚 ⭐ 🐚 ⭐</div>
+        <div class="card" style="text-align:center;color:#64748b;font-size:13px;">点击右上角 ✕ 返回工作台</div>
+      </main>
+    `;
+    // Update clock
+    const d = new Date();
+    const h = String(d.getHours()).padStart(2,'0');
+    const m = String(d.getMinutes()).padStart(2,'0');
+    const e = document.getElementById('clock-trip');
+    if(e) e.textContent = h+':'+m;
+    sub.classList.add('active');
+  }
+</script>
+</body>
+</html>
