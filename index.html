@@ -102,10 +102,10 @@
   .ex-card .ex-drill { font-size: 9px; color: #93c5fd; margin-top: 3px; }
   /* 标签统计弹层 */
   .tag-bar-row { display: flex; align-items: center; gap: 8px; margin: 6px 0; }
-  .tag-bar-row .tbl { font-size: 12px; width: 54px; color: #475569; flex-shrink: 0; }
-  .tag-bar-row .tbt { flex: 1; height: 16px; background: #eef2ff; border-radius: 8px; overflow: hidden; }
-  .tag-bar-row .tbf { height: 100%; background: linear-gradient(90deg,#a78bfa,#8b5cf6); border-radius: 8px; }
-  .tag-bar-row .tbv { font-size: 12px; font-weight: 700; width: 22px; text-align: right; color: #6d28d9; }
+  .tag-bar-row .tbl { font-size: 13px; width: 64px; color: #475569; flex-shrink: 0; font-weight: 600; }
+  .tag-bar-row .tbt { flex: 1; height: 22px; background: #eef2ff; border-radius: 11px; overflow: hidden; }
+  .tag-bar-row .tbf { height: 100%; background: linear-gradient(90deg,#a78bfa,#8b5cf6); border-radius: 11px; }
+  .tag-bar-row .tbv { font-size: 14px; font-weight: 800; width: 30px; text-align: right; color: #6d28d9; }
 
   /* 行程聚合页 tabs */
   .trip-tabs { display:flex; gap:4px; padding:8px 12px; background:#eef2ff; border-bottom:1px solid rgba(30,58,138,0.06); }
@@ -243,8 +243,8 @@
     -webkit-tap-highlight-color: transparent; touch-action: manipulation; font-family: inherit;
   }
   .nav-item.active { color: #2563eb; }
-  .nav-item .nav-icon { font-size: 19px; display: block; line-height: 1.1; pointer-events: none; }
-  .nav-item .nav-label { font-size: 10px; margin-top: 2px; font-weight: 500; pointer-events: none; }
+  .nav-item .nav-icon { font-size: 24px; display: block; line-height: 1.15; pointer-events: none; }
+  .nav-item .nav-label { font-size: 12px; margin-top: 3px; font-weight: 600; pointer-events: none; }
 
   /* 圆点 + 浮动按钮 + 提示 */
   .page-dots { display: flex; gap: 5px; padding: 6px 0 4px; justify-content: center; align-items: center; }
@@ -324,11 +324,11 @@
   .kv:last-child { border-bottom: none; }
   .kv .k { color: #475569; }
   .kv .v { font-weight: 700; color: #1e3a8a; }
-  .bar-row { display: flex; align-items: center; gap: 8px; margin: 7px 0; }
-  .bar-row .bl { font-size: 12px; width: 42px; color: #475569; flex-shrink: 0; }
-  .bar-track { flex: 1; height: 14px; background: #eef2ff; border-radius: 7px; overflow: hidden; }
-  .bar-fill { height: 100%; background: linear-gradient(90deg,#60a5fa,#818cf8); border-radius: 7px; }
-  .bar-row .bv { font-size: 12px; font-weight: 700; width: 38px; text-align: right; color: #1e40af; }
+  .bar-row { display: flex; align-items: center; gap: 10px; margin: 11px 0; }
+  .bar-row .bl { font-size: 13px; width: 52px; color: #475569; flex-shrink: 0; font-weight: 600; }
+  .bar-track { flex: 1; height: 22px; background: #eef2ff; border-radius: 11px; overflow: hidden; }
+  .bar-fill { height: 100%; background: linear-gradient(90deg,#60a5fa,#818cf8); border-radius: 11px; }
+  .bar-row .bv { font-size: 14px; font-weight: 800; width: 56px; text-align: right; color: #1e40af; }
   .country-line { display: flex; align-items: flex-start; gap: 8px; font-size: 14px; padding: 8px 0; border-bottom: 1px dashed rgba(30,58,138,0.07); }
   .country-line:last-child { border-bottom: none; }
   .country-line .cl-sub { font-size: 11px; color: #94a3b8; margin-top: 2px; }
@@ -461,11 +461,11 @@
     <!-- ===== 英语 ===== -->
     <section class="page" id="page-english">
       <div class="hero">
-        <div class="hero-title">📚 英语</div>
-        <div class="hero-sub">出境必备话术 · 🔊 真人发音 🗣️</div>
+        <div class="hero-title">📚 多语言话术</div>
+        <div class="hero-sub">英 / 日 / 韩 / 泰 / 法 · 按场景分类 🗣️</div>
       </div>
-      <div class="intro-card intro-purple">🗣️ 通用话术库：点 🔊 听发音，点「＋行程」加入某趟旅行的专属英语本。行程专属短句在行程详情「英语」标签里编辑。</div>
-      <div class="lib-search"><input id="engSearch" placeholder="🔍 搜索短句（中文或英文）" oninput="renderEnglishLib()"></div>
+      <div class="intro-card intro-purple">🌍 多语言出境话术库：切换顶部语言查看对应翻译，点 🔊 听真人发音；点「＋行程」加入某趟旅行的专属短句本。行程专属短句在行程详情「英语」标签里编辑。</div>
+      <div class="lib-search"><input id="engSearch" placeholder="🔍 搜索（中 / 英 / 日 / 韩 / 泰 / 法 任意字段）" oninput="renderEnglishLib()"></div>
       <div id="englishLib"></div>
     </section>
 
@@ -681,7 +681,7 @@ const SEED = {
       companions:['闺蜜'], cost:{stay:1500,transport:1500,food:1012,play:500},
       summary:'赏秋 + 美食，非必要项花得有点多。' },
     { id:'guangxi', name:'广西·河池+柳州', flag:'🇨🇳', country:'中国', date:'2024-08', nights:9, status:'done',
-      budget:'~¥10,800', budgetNote:'含估算', route:['徐闻','明仕','渠洋湖','河池','柳州','融水'], tags:['自驾','短途'],
+      budget:'¥10,800', budgetNote:'含估算', route:['徐闻','明仕','渠洋湖','河池','柳州','融水'], tags:['自驾','短途'],
       companions:['家人'], cost:{stay:3500,transport:4500,food:2000,play:800},
       summary:'自驾 + 喀斯特山水，性价比不错。' },
     { id:'maldives', name:'马尔代夫·跳岛水屋', flag:'🇲🇻', country:'马尔代夫', date:'2023-09', nights:14, status:'done',
@@ -704,17 +704,30 @@ const SEED = {
     { id:'w4', name:'新西兰', flag:'🇳🇿', country:'新西兰', done:false }
   ],
   englishLib: [
-    {cat:'机场出入境', zh:'护照请出示', en:'May I see your passport?'},
-    {cat:'机场出入境', zh:'我要转机', en:'I have a connecting flight.'},
-    {cat:'酒店入住', zh:'我有预订', en:'I have a reservation.'},
-    {cat:'酒店入住', zh:'wifi 密码是多少', en:'What is the wifi password?'},
-    {cat:'餐厅点餐', zh:'请给我菜单', en:'May I have the menu?'},
-    {cat:'餐厅点餐', zh:'不要辣', en:'No spicy, please.'},
-    {cat:'打车', zh:'去这里多少钱', en:'How much to go here?'},
-    {cat:'购物', zh:'可以便宜点吗', en:'Can you give me a discount?'},
-    {cat:'医疗急救', zh:'我需要医生', en:'I need a doctor.'},
-    {cat:'潜水出海', zh:'一潜多少钱', en:'How much for one dive?'},
-    {cat:'潜水出海', zh:'船几点出发', en:'What time does the boat leave?'}
+    /* 出行 */
+    {cat:'出行', zh:'请问洗手间在哪', en:'Where is the restroom?', ja:'トイレはどこですか？', ko:'화장실이 어디예요?', th:'ห้องน้ำอยู่ที่ไหน?', fr:'Où sont les toilettes ?'},
+    {cat:'出行', zh:'请帮我叫出租车', en:'Please call me a taxi.', ja:'タクシーを呼んでください。', ko:'택시를 불러 주세요.', th:'ช่วยเรียกแท็กซี่ให้หน่อยค่ะ', fr:'Pouvez-vous m\'appeler un taxi ?'},
+    {cat:'出行', zh:'这附近有地铁站吗', en:'Is there a subway station nearby?', ja:'近くに駅はありますか？', ko:'이 근처에 지하철역이 있나요?', th:'มีสถานีรถไฟใต้ดินใกล้ๆ ไหม?', fr:'Y a-t-il une station de métro à proximité ?'},
+    /* 用餐 */
+    {cat:'用餐', zh:'请给我菜单', en:'May I have the menu?', ja:'メニューをください。', ko:'메뉴 주세요.', th:'ขอเมนูหน่อยค่ะ', fr:'Puis-je avoir le menu ?'},
+    {cat:'用餐', zh:'不要辣', en:'No spicy, please.', ja:'辛くしないでください。', ko:'맵지 않게 해 주세요.', th:'ไม่เผ็ดค่ะ', fr:'Pas épicé, s\'il vous plaît.'},
+    {cat:'用餐', zh:'请买单', en:'Can I have the bill?', ja:'お会計をお願いします。', ko:'계산서 주세요.', th:'เช็คบิลด้วยค่ะ', fr:'L\'addition, s\'il vous plaît.'},
+    /* 游玩 */
+    {cat:'游玩', zh:'门票多少钱', en:'How much is the ticket?', ja:'チケットはいくらですか？', ko:'입장료 얼마예요?', th:'ตั๋วราคาเท่าไหร่คะ', fr:'Combien coûte le billet ?'},
+    {cat:'游玩', zh:'可以拍照吗', en:'Can I take photos?', ja:'写真を撮ってもいいですか？', ko:'사진 찍어도 돼요?', th:'ถ่ายรูปได้ไหมคะ', fr:'Puis-je prendre des photos ?'},
+    {cat:'游玩', zh:'这个景点几点关门', en:'What time does this place close?', ja:'ここは 何時に閉まりますか？', ko:'여기는 몇 시에 닫아요?', th:'ที่นี่ปิดกี่โมงคะ', fr:'À quelle heure fermez-vous ?'},
+    /* 住宿 */
+    {cat:'住宿', zh:'我有预订', en:'I have a reservation.', ja:'予約があります。', ko:'예약했어요.', th:'มีการจองค่ะ', fr:'J\'ai une réservation.'},
+    {cat:'住宿', zh:'WiFi 密码是多少', en:'What is the Wi-Fi password?', ja:'Wi-Fi のパスワードは何ですか？', ko:'와이파이 비밀번호가 뭐예요?', th:'รหัส Wi-Fi อะไรคะ', fr:'Quel est le mot de passe Wi-Fi ?'},
+    {cat:'住宿', zh:'可以晚一点退房吗', en:'Can I check out later?', ja:'遅くチェックアウトできますか？', ko:'늦게 체크아웃해도 될까요?', th:'เช็คเอาท์สายได้ไหมคะ', fr:'Puis-je partir plus tard ?'},
+    /* 购物 */
+    {cat:'购物', zh:'可以便宜点吗', en:'Can you give me a discount?', ja:'安くなりますか？', ko:'깎아 주세요.', th:'ลดได้ไหมคะ', fr:'Pouvez-vous me faire un prix ?'},
+    {cat:'购物', zh:'试衣间在哪', en:'Where is the fitting room?', ja:'試着室はどこですか？', ko:'탈의실이 어디예요?', th:'ห้องลองเสื้ออยู่ที่ไหนคะ', fr:'Où est la cabine d\'essayage ?'},
+    {cat:'购物', zh:'支持支付宝吗', en:'Do you accept Alipay?', ja:'アリペイは使えますか？', ko:'알리페이 돼요?', th:'รับอาลีเพย์ไหมคะ', fr:'Acceptez-vous Alipay ?'},
+    /* 医疗 */
+    {cat:'医疗', zh:'我需要医生', en:'I need a doctor.', ja:'医者が必要です。', ko:'의사가 필요해요.', th:'ฉันต้องการหมอค่ะ', fr:'J\'ai besoin d\'un médecin.'},
+    {cat:'医疗', zh:'我对…过敏', en:'I\'m allergic to …', ja:'…にアレルギーがあります。', ko:'… 알레르기가 있어요.', th:'ฉันแพ้ … ค่ะ', fr:'Je suis allergique à …'},
+    {cat:'医疗', zh:'最近的医院在哪', en:'Where is the nearest hospital?', ja:'一番近い病院はどこですか？', ko:'가장 가까운 병원이 어디예요?', th:'โรงพยาบาลที่ใกล้ที่สุดอยู่ที่ไหนคะ', fr:'Où est l\'hôpital le plus proche ?'}
   ],
   trash: []
 };
@@ -1099,7 +1112,7 @@ function saveBudget(id){ const t=store.trips.find(x=>x.id===id); if(!t) return; 
 function renderTripEnglish(t){
   const arr=t.english||[];
   let html='<div class="form-row"><label>本行程专属英语短句</label>'+
-    '<div id="e-list">'+arr.map((it,idx)=>'<div class="eng-row"><div><div class="er-zh">'+esc(it.zh)+'</div><div class="er-en">'+esc(it.en)+'</div></div><span class="er-play" onclick="playEnglish(\''+esc(it.en)+'\')">🔊</span><span class="er-del" onclick="delEnglish(\''+t.id+'\','+idx+')">✕</span></div>').join('')+'</div>'+
+    '<div id="e-list">'+arr.map((it,idx)=>'<div class="eng-row"><div><div class="er-zh">'+esc(it.zh)+'</div><div class="er-en">'+esc(it.en||it.zh)+'</div></div><span class="er-play" onclick=\'playEnglish('+JSON.stringify(it.en||it.zh)+',"en")\'>🔊</span><span class="er-del" onclick="delEnglish(\''+t.id+'\','+idx+')">✕</span></div>').join('')+'</div>'+
     '<div style="display:flex;gap:8px;margin-top:8px;"><input id="e-zh" placeholder="中文" style="flex:1;border:1px solid #cbd5e1;border-radius:8px;padding:8px;font-size:13px;"><input id="e-en" placeholder="English" style="flex:1;border:1px solid #cbd5e1;border-radius:8px;padding:8px;font-size:13px;"><button class="quick-btn" onclick="addEnglish(\''+t.id+'\')">＋</button></div></div>';
   html+='<div class="form-hint">通用话术库在底部【英语】Tab，可「＋行程」加入这里。</div>';
   document.getElementById('tripBody').innerHTML=html;
@@ -1107,12 +1120,55 @@ function renderTripEnglish(t){
 }
 function addEnglish(id){ const t=store.trips.find(x=>x.id===id); const zh=document.getElementById('e-zh').value.trim(); const en=document.getElementById('e-en').value.trim(); if(!zh||!en) return; t.english=t.english||[]; t.english.push({zh,en,fav:false}); saveStore(); renderAll(); renderTripEnglish(t); }
 function delEnglish(id,idx){ const t=store.trips.find(x=>x.id===id); t.english.splice(idx,1); saveStore(); renderAll(); renderTripEnglish(t); }
-function playEnglish(text){ try{ const u=new SpeechSynthesisUtterance(text); u.lang='en-US'; if(window.speechSynthesis){ speechSynthesis.cancel(); speechSynthesis.speak(u); } else showToast('当前环境不支持语音'); }catch(e){ showToast('当前环境不支持语音'); } }
+function playEnglish(text, langCode){
+  try{
+    const u=new SpeechSynthesisUtterance(text);
+    const m=(LANGS||[]).find(x=>x.code===langCode);
+    u.lang = m ? m.tts : 'en-US';
+    if(window.speechSynthesis){ speechSynthesis.cancel(); speechSynthesis.speak(u); } else showToast('当前环境不支持语音');
+  }catch(e){ showToast('当前环境不支持语音'); }
+}
+const LANGS = [
+  {code:'en', label:'🇺🇸 EN',   tts:'en-US'},
+  {code:'ja', label:'🇯🇵 日本語', tts:'ja-JP'},
+  {code:'ko', label:'🇰🇷 한국어', tts:'ko-KR'},
+  {code:'th', label:'🇹🇭 ไทย',   tts:'th-TH'},
+  {code:'fr', label:'🇫🇷 FR',   tts:'fr-FR'}
+];
+let currentLang = 'en';
+function setLang(code){ currentLang=code; renderEnglishLib(); }
 function renderGuideLib(){
-  let html='<div class="section-title">📋 通用攻略模板</div>';
+  const ug = store.userGuides || [];
+  let html='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><div class="section-title" style="margin:0;">📋 通用攻略模板</div><button class="quick-btn" style="flex:none;min-width:auto;padding:7px 12px;font-size:13px;" onclick="openGuideEditor()">＋ 添加攻略</button></div>';
   html+=Object.keys(GUIDE_TPLS).map(k=>'<div class="card"><div style="font-weight:700;margin-bottom:4px;">'+esc(k)+'</div><div style="display:flex;flex-wrap:wrap;gap:6px;">'+GUIDE_TPLS[k].map(it=>'<span class="route-tag">'+esc(it)+'</span>').join('')+'</div><button class="link-btn" style="margin-top:8px;" onclick="applyGuideToTrip(\''+esc(k)+'\')">应用到行程</button></div>').join('');
-  html+='<div class="form-hint">模板会作为打卡清单插入所选行程的「攻略」里。</div>';
+  html += '<div class="section-title">✍️ 我的攻略（'+ug.length+'）</div>';
+  html += ug.length ? ug.map(g=>'<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;"><span class="route-tag" style="background:#dbeafe;color:#1e40af;">'+esc(g.cat||'其他')+'</span><div><span style="cursor:pointer;color:#2563eb;font-size:13px;margin-right:10px;font-weight:700;" onclick="openGuideEditor(\''+g.id+'\')">编辑</span><span style="cursor:pointer;color:#dc2626;font-size:13px;font-weight:700;" onclick="delUserGuide(\''+g.id+'\')">删除</span></div></div><div style="font-weight:700;margin-top:6px;font-size:15px;">'+esc(g.title||'(无标题)')+'</div><div style="font-size:13px;color:#475569;line-height:1.65;margin-top:4px;white-space:pre-wrap;">'+esc(g.body||'')+'</div></div>').join('') : '<div style="text-align:center;color:#94a3b8;padding:16px;font-size:13px;background:#f8fafc;border-radius:12px;border:1px dashed #cbd5e1;">还没添加攻略，点右上「＋ 添加攻略」开始记录你的小贴士 ✍️</div>';
+  html+='<div class="form-hint">通用模板可一键作为打卡清单插入行程；自建攻略独立保存，可编辑/删除。</div>';
   document.getElementById('guideLib').innerHTML=html;
+}
+function openGuideEditor(id){
+  const g = id ? (store.userGuides||[]).find(x=>x.id===id) : null;
+  const cat = prompt('分类（出行 / 用餐 / 游玩 / 住宿 / 购物 / 其他）：', g?(g.cat||'其他'):'其他');
+  if(cat===null){ showToast('已取消'); return; }
+  const title = prompt('攻略标题：', g?(g.title||''):'');
+  if(title===null){ showToast('已取消'); return; }
+  if(!title.trim()){ showToast('标题不能为空'); return; }
+  const body = prompt('内容（提示：换行用 \\n）：', g?(g.body||''):'');
+  if(body===null){ showToast('已取消'); return; }
+  store.userGuides = store.userGuides || [];
+  if(!g){
+    store.userGuides.unshift({ id:'g_'+Date.now(), cat:cat.trim()||'其他', title:title.trim(), body:body });
+    showToast('已添加攻略 ✍️');
+  } else {
+    g.cat = cat.trim()||'其他'; g.title = title.trim(); g.body = body;
+    showToast('已更新攻略');
+  }
+  saveStore(); renderAll();
+}
+function delUserGuide(id){
+  if(!confirm('确定删除这条自建攻略？')) return;
+  store.userGuides = (store.userGuides||[]).filter(x=>x.id!==id);
+  saveStore(); renderAll(); showToast('已删除');
 }
 function applyGuideToTrip(name){
   const trips=store.trips||[]; if(!trips.length){ showToast('还没有行程'); return; }
@@ -1124,10 +1180,24 @@ function applyGuideToTrip(name){
 function renderEnglishLib(){
   const q=(document.getElementById('engSearch').value||'').toLowerCase();
   const lib=store.englishLib||[];
-  const cats={}; lib.forEach(it=>{ if(q && (it.zh+it.en).toLowerCase().indexOf(q)<0) return; (cats[it.cat]=cats[it.cat]||[]).push(it); });
+  const lang=currentLang;
+  // 语言选择器
+  let html='<div style="display:flex;gap:6px;overflow-x:auto;padding:4px 2px 10px;-webkit-overflow-scrolling:touch;scrollbar-width:none;">';
+  html+=LANGS.map(l=>'<button onclick="setLang(\''+l.code+'\')" style="flex:none;padding:7px 12px;border-radius:18px;border:1.5px solid '+(lang===l.code?'#2563eb':'#cbd5e1')+';background:'+(lang===l.code?'#2563eb':'#fff')+';color:'+(lang===l.code?'#fff':'#475569')+';font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">'+l.label+'</button>').join('');
+  html+='</div>';
+  // 按分类 + 多语言搜索
+  const cats={}; lib.forEach(it=>{
+    const text=(it.zh+' '+(it.en||'')+' '+(it.ja||'')+' '+(it.ko||'')+' '+(it.th||'')+' '+(it.fr||'')).toLowerCase();
+    if(q && text.indexOf(q)<0) return;
+    (cats[it.cat]=cats[it.cat]||[]).push(it);
+  });
   const keys=Object.keys(cats);
-  let html=keys.length?keys.map(c=>'<div class="lib-cat">'+esc(c)+'</div>'+cats[c].map(it=>'<div class="eng-row"><div><div class="er-zh">'+esc(it.zh)+'</div><div class="er-en">'+esc(it.en)+'</div></div><span class="er-play" onclick="playEnglish(\''+esc(it.en)+'\')">🔊</span><span class="er-del" style="color:#2563eb;cursor:pointer;margin-left:8px;" onclick="addLibToTrip(\''+esc(it.zh)+'\',\''+esc(it.en)+'\')">＋行程</span></div>').join('')).join(''):'<div style="text-align:center;color:#94a3b8;padding:20px;">没有匹配的短句</div>';
-  html+='<div class="form-hint">点 🔊 听发音；点「＋行程」加入某趟旅行的专属英语本。</div>';
+  html += keys.length ? keys.map(c=>'<div class="lib-cat">'+esc(c)+'</div>'+cats[c].map(it=>{
+    const main = it[lang] || it.en || it.zh;
+    const playArg = JSON.stringify(main);
+    return '<div class="eng-row"><div><div class="er-zh">'+esc(it.zh)+'</div><div class="er-en" style="font-size:14px;color:#1e40af;font-weight:700;">'+esc(main)+'</div></div><span class="er-play" onclick=\'playEnglish('+playArg+',"'+lang+'")\'>🔊</span><span style="color:#2563eb;cursor:pointer;font-size:13px;margin-left:8px;font-weight:700;" onclick="addLibToTrip(\''+esc(it.zh)+'\',\''+esc(it.en||it.zh)+'\')">＋行程</span></div>';
+  }).join('')).join('') : '<div style="text-align:center;color:#94a3b8;padding:20px;">没有匹配的短句</div>';
+  html+='<div class="form-hint">切换语言查看对应翻译；点 🔊 听真人发音；点「＋行程」加入某趟旅行。</div>';
   document.getElementById('englishLib').innerHTML=html;
 }
 function addLibToTrip(zh,en){
