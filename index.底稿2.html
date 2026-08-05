@@ -183,6 +183,32 @@
   /* 子页面 */
   .sub-page { position: absolute; inset: 0; background: linear-gradient(180deg, #f0f9ff 0%, #eff6ff 100%); z-index: 100; display: none; flex-direction: column; }
   .sub-page.active { display: flex; }
+
+  /* 添加按钮 */
+  .add-btn { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; margin: 0 0 12px; padding: 12px; border: 1.5px dashed #93c5fd; border-radius: 14px; background: rgba(239,246,255,0.55); color: #2563eb; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .add-btn:active { background: #dbeafe; }
+
+  /* 编辑/新增 模态 */
+  .editor-mask { position: absolute; inset: 0; background: rgba(15,23,42,0.45); z-index: 200; display: none; align-items: flex-end; justify-content: center; }
+  .editor-sheet { width: 100%; max-height: 90%; background: #f8fafc; border-radius: 18px 18px 0 0; display: flex; flex-direction: column; animation: slideUp .25s ease; }
+  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  .editor-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid rgba(30,58,138,0.08); position: sticky; top: 0; background: #f8fafc; border-radius: 18px 18px 0 0; z-index: 1; }
+  .editor-title { font-size: 16px; font-weight: 800; color: #1e3a8a; }
+  .editor-x { border: none; background: none; font-size: 20px; color: #94a3b8; cursor: pointer; padding: 4px 8px; -webkit-tap-highlight-color: transparent; }
+  .editor-body { padding: 14px 16px; overflow-y: auto; }
+  .editor-group { display: flex; flex-direction: column; gap: 12px; }
+  .form-row { display: flex; flex-direction: column; gap: 5px; }
+  .form-row label { font-size: 12px; font-weight: 700; color: #475569; }
+  .form-row input, .form-row textarea, .form-row select { font-size: 16px; padding: 10px 12px; border: 1px solid rgba(30,58,138,0.18); border-radius: 10px; background: #fff; color: #1e293b; font-family: inherit; width: 100%; box-sizing: border-box; -webkit-appearance: none; }
+  .form-row textarea { min-height: 80px; resize: vertical; line-height: 1.5; }
+  .form-row input:focus, .form-row textarea:focus, .form-row select:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.12); }
+  .form-hint { font-size: 11px; color: #94a3b8; margin-top: -3px; }
+  .editor-actions { display: flex; gap: 10px; padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); border-top: 1px solid rgba(30,58,138,0.08); background: #f8fafc; }
+  .btn-save, .btn-cancel, .btn-del { padding: 12px; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; border: none; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .btn-save { background: #2563eb; color: #fff; flex: 2; }
+  .btn-save:active { background: #1d4ed8; }
+  .btn-cancel { background: #e2e8f0; color: #475569; }
+  .btn-del { background: #fee2e2; color: #dc2626; flex: 1; }
 </style>
 </head>
 <body>
@@ -235,6 +261,7 @@
         <div class="hero-title">📜 行程</div>
         <div class="hero-sub">六段旅程，说走就走 ✈️</div>
       </div>
+      <button class="add-btn" onclick="openEditor('trip')">＋ 添加行程</button>
       <div id="tripList"></div>
     </section>
 
@@ -282,6 +309,7 @@
         <div class="hero-title">💭 记录</div>
         <div class="hero-sub">走过的路，都成了心里的歌 💭</div>
       </div>
+      <button class="add-btn" onclick="openEditor('review')">＋ 添加记录</button>
       <div id="reviewList"></div>
     </section>
   </main>
@@ -300,6 +328,41 @@
     <button class="nav-item" data-page="english"><span class="nav-icon">📚</span><span class="nav-label">英语</span></button>
     <button class="nav-item" data-page="reviews"><span class="nav-icon">💭</span><span class="nav-label">记录</span></button>
   </nav>
+
+  <!-- ===== 编辑/新增 模态 ===== -->
+  <div class="editor-mask" id="editorMask" onclick="if(event.target===this)closeEditor()">
+    <div class="editor-sheet">
+      <div class="editor-head">
+        <div class="editor-title" id="editorTitle">添加行程</div>
+        <button class="editor-x" onclick="closeEditor()">✕</button>
+      </div>
+      <div class="editor-body">
+        <div class="editor-group" id="grp-trip">
+          <div class="form-row"><label>名称</label><input id="f-name" placeholder="如 日本·东京"></div>
+          <div class="form-row"><label>国旗 emoji</label><input id="f-flag" placeholder="🏳️"></div>
+          <div class="form-row"><label>国家</label><input id="f-country" placeholder="日本"></div>
+          <div class="form-row"><label>日期 (YYYY-MM)</label><input id="f-date" placeholder="2026-08"></div>
+          <div class="form-row"><label>晚数</label><input id="f-nights" type="number" inputmode="numeric" placeholder="7"></div>
+          <div class="form-row"><label>状态</label><select id="f-status"><option value="done">已完成</option><option value="plan">规划中</option></select></div>
+          <div class="form-row"><label>预算</label><input id="f-budget" placeholder="¥23,436"></div>
+          <div class="form-row"><label>预算备注</label><input id="f-budgetNote" placeholder="节余 6,474"></div>
+          <div class="form-row"><label>路线（用逗号分隔）</label><input id="f-route" placeholder="东京，富士山，大阪"><div class="form-hint">例：城市A，城市B，城市C</div></div>
+          <div class="form-row"><label>小结</label><textarea id="f-summary" placeholder="一句话记录这段旅程"></textarea></div>
+        </div>
+        <div class="editor-group" id="grp-review" style="display:none">
+          <div class="form-row"><label>标题</label><input id="f-title" placeholder="如 东京美食地图"></div>
+          <div class="form-row"><label>标签</label><input id="f-tag" placeholder="🇯🇵 日本"></div>
+          <div class="form-row"><label>日期 (YYYY-MM)</label><input id="f-rdate" placeholder="2026-08"></div>
+          <div class="form-row"><label>正文</label><textarea id="f-body" placeholder="写点什么…"></textarea></div>
+        </div>
+      </div>
+      <div class="editor-actions">
+        <button class="btn-del" id="editorDelete" style="display:none" onclick="deleteCurrent()">删除</button>
+        <button class="btn-cancel" onclick="closeEditor()">取消</button>
+        <button class="btn-save" onclick="saveEditor()">保存</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -469,7 +532,7 @@ function renderTrips(){
   el.innerHTML = (store.trips||[]).map(t=>{
     const badge = t.status==='done' ? '<span class="trip-status">已完成</span>' : '<span class="trip-status">规划中</span>';
     const tags = (t.route||[]).map(r=>'<span class="route-tag">'+r+'</span>').join('');
-    return '<div class="trip-card '+(t.status==='done'?'done':'')+'"><div class="trip-title">'+t.flag+' '+t.name+'</div>'+badge+'<div class="trip-budget">'+t.budget+' <span style="font-size:12px;color:#64748b;font-weight:500;">'+t.budgetNote+'</span></div><div class="trip-meta"><span>📅 '+t.date+'</span><span>🌙 '+(t.nights||0)+' 晚</span></div><div class="trip-route">'+tags+'</div><div style="margin-top:8px;font-size:13px;color:#475569;">'+t.summary+'</div></div>';
+    return '<div class="trip-card '+(t.status==='done'?'done':'')+'" onclick="openEditor(\'trip\',\''+t.id+'\')"><div class="trip-title">'+t.flag+' '+t.name+'</div>'+badge+'<div class="trip-budget">'+t.budget+' <span style="font-size:12px;color:#64748b;font-weight:500;">'+t.budgetNote+'</span></div><div class="trip-meta"><span>📅 '+t.date+'</span><span>🌙 '+(t.nights||0)+' 晚</span></div><div class="trip-route">'+tags+'</div><div style="margin-top:8px;font-size:13px;color:#475569;">'+t.summary+'</div></div>';
   }).join('');
 }
 
@@ -488,7 +551,7 @@ function renderAccounts(){
 
 function renderReviews(){
   const el = document.getElementById('reviewList');
-  el.innerHTML = (store.reviews||[]).map(r=>'<div class="review-card"><div class="review-title">'+r.title+'</div><div class="review-meta">'+r.date+' · <span class="review-tag">'+(r.tag||'')+'</span></div><div class="review-body">'+r.body+'</div></div>').join('') || '<div class="card" style="text-align:center;color:#94a3b8;">暂无记录</div>';
+  el.innerHTML = (store.reviews||[]).map(r=>'<div class="review-card" onclick="openEditor(\'review\',\''+r.id+'\')"><div class="review-title">'+r.title+'</div><div class="review-meta">'+r.date+' · <span class="review-tag">'+(r.tag||'')+'</span></div><div class="review-body">'+r.body+'</div></div>').join('') || '<div class="card" style="text-align:center;color:#94a3b8;">暂无记录</div>';
 }
 
 function renderAll(){
@@ -545,7 +608,7 @@ let tStartX=0, tStartY=0, tTracking=false, tLocked=false;
 function activePage(){ return document.querySelector('.page.active'); }
 function resetTransform(){ const p = activePage(); if (p) p.style.transform = ''; }
 function onTS(e){
-  if (document.querySelector('.sub-page.active')) { tTracking=false; return; }
+  if (document.querySelector('.sub-page.active') || (document.getElementById('editorMask') && document.getElementById('editorMask').style.display === 'flex')) { tTracking=false; return; }
   const t = e.touches[0]; tStartX=t.clientX; tStartY=t.clientY; tTracking=true; tLocked=false;
 }
 function onTM(e){
@@ -587,6 +650,62 @@ if (hasTouch){
     localStorage.setItem('swipeHintShown','1');
   } catch(_){}
 })();
+
+/* =========================================================
+   编辑 / 新增 / 删除（手机可用）
+   ========================================================= */
+function setVal(id, v){ const e = document.getElementById(id); if (e) e.value = (v == null ? '' : v); }
+function getVal(id){ const e = document.getElementById(id); return e ? e.value.trim() : ''; }
+function setSel(id, v){ const e = document.getElementById(id); if (e) e.value = (v == null ? '' : v); }
+
+let editingType = 'trip', editingId = null;
+function openEditor(type, id){
+  editingType = type; editingId = id || null;
+  document.getElementById('grp-trip').style.display = (type === 'trip') ? 'block' : 'none';
+  document.getElementById('grp-review').style.display = (type === 'review') ? 'block' : 'none';
+  document.getElementById('editorTitle').textContent = (id ? '编辑' : '添加') + (type === 'trip' ? '行程' : '记录');
+  document.getElementById('editorDelete').style.display = id ? 'block' : 'none';
+  if (type === 'trip'){
+    const t = id ? (store.trips.find(x => x.id === id) || {}) : {};
+    setVal('f-name', t.name); setVal('f-flag', t.flag); setVal('f-country', t.country);
+    setVal('f-date', t.date); setVal('f-nights', t.nights); setSel('f-status', t.status || 'done');
+    setVal('f-budget', t.budget); setVal('f-budgetNote', t.budgetNote);
+    setVal('f-route', (t.route || []).join('，')); setVal('f-summary', t.summary);
+  } else {
+    const r = id ? (store.reviews.find(x => x.id === id) || {}) : {};
+    setVal('f-title', r.title); setVal('f-tag', r.tag); setVal('f-rdate', r.date); setVal('f-body', r.body);
+  }
+  document.getElementById('editorMask').style.display = 'flex';
+}
+function closeEditor(){ document.getElementById('editorMask').style.display = 'none'; }
+function saveEditor(){
+  if (editingType === 'trip'){
+    const obj = {
+      id: editingId || ('trip_' + Date.now()),
+      name: getVal('f-name'), flag: getVal('f-flag') || '🏳️', country: getVal('f-country'),
+      date: getVal('f-date'), nights: parseInt(getVal('f-nights') || '0', 10) || 0,
+      status: getVal('f-status'), budget: getVal('f-budget'), budgetNote: getVal('f-budgetNote'),
+      route: getVal('f-route').split(/[，,、]/).map(s => s.trim()).filter(Boolean),
+      summary: getVal('f-summary')
+    };
+    if (editingId){ const i = store.trips.findIndex(x => x.id === editingId); if (i >= 0) store.trips[i] = obj; }
+    else store.trips.unshift(obj);
+  } else {
+    const obj = {
+      id: editingId || ('rev_' + Date.now()),
+      title: getVal('f-title'), tag: getVal('f-tag'), date: getVal('f-rdate'), body: getVal('f-body')
+    };
+    if (editingId){ const i = store.reviews.findIndex(x => x.id === editingId); if (i >= 0) store.reviews[i] = obj; }
+    else store.reviews.unshift(obj);
+  }
+  saveStore(); renderAll(); closeEditor();
+}
+function deleteCurrent(){
+  if (!editingId) return;
+  if (editingType === 'trip') store.trips = store.trips.filter(x => x.id !== editingId);
+  else store.reviews = store.reviews.filter(x => x.id !== editingId);
+  saveStore(); renderAll(); closeEditor();
+}
 
 /* =========================================================
    启动
