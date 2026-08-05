@@ -962,6 +962,15 @@ function sortTripsByDateDesc(arr){
   };
   return (arr||[]).slice().sort((a,b)=> key(b)-key(a));
 }
+// 同款逻辑用于记录（reviews），保证记录页也按时间由近到远
+function sortReviewsByDateDesc(arr){
+  const key = r => {
+    const m = String(r&&r.date||'').match(/^(\d{4})[.\-/年]?(\d{1,2})/);
+    if (!m) return -1;            // 无日期的排到最末
+    return (+m[1])*100 + (+m[2]);
+  };
+  return (arr||[]).slice().sort((a,b)=> key(b)-key(a));
+}
 
 function renderTrips(){
   document.getElementById('tripList').innerHTML = sortTripsByDateDesc(store.trips).map(t=>{
@@ -1135,7 +1144,8 @@ function deleteYearBudget(year){
 }
 
 function renderReviews(){
-  document.getElementById('reviewList').innerHTML=(store.reviews||[]).map(r=>'<div class="review-card" onclick="openDetail(\'review\',\''+r.id+'\')"><div class="review-title">'+esc(r.title)+'</div><div class="review-meta">'+r.date+' · <span class="review-tag">'+(r.tag||'')+'</span></div><div class="review-body">'+esc(r.body||'')+'</div></div>').join('') || '<div class="card" style="text-align:center;color:#94a3b8;">暂无记录</div>';
+  const list = sortReviewsByDateDesc(store.reviews);
+  document.getElementById('reviewList').innerHTML=list.map(r=>'<div class="review-card" onclick="openDetail(\'review\',\''+r.id+'\')"><div class="review-title">'+esc(r.title)+'</div><div class="review-meta">'+r.date+' · <span class="review-tag">'+(r.tag||'')+'</span></div><div class="review-body">'+esc(r.body||'')+'</div></div>').join('') || '<div class="card" style="text-align:center;color:#94a3b8;">暂无记录</div>';
 }
 
 function renderWishlist(){
@@ -1753,7 +1763,7 @@ if(cloudReady) pullFromCloud(); else updateConn('offline');
 </script>
 <script>
   if ('serviceWorker' in navigator && (location.protocol==='https:'||location.hostname==='localhost')) {
-    window.addEventListener('load', function(){ navigator.serviceWorker.register('./sw.js?v=4').catch(function(){}); });
+    window.addEventListener('load', function(){ navigator.serviceWorker.register('./sw.js?v=5').catch(function(){}); });
   }
 </script>
 </body>
