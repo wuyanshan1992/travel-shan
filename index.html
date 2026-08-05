@@ -801,7 +801,20 @@ let store = loadStore();
 function loadStore(){
   try {
     const raw = localStorage.getItem(LS_KEY);
-    if (raw){ const s = JSON.parse(raw); s.trash = s.trash || []; s.wishlist = s.wishlist || []; return s; }
+    if (raw){
+      const s = JSON.parse(raw);
+      s.trash = s.trash || []; s.wishlist = s.wishlist || [];
+      // 一次性迁移：清洗老数据里 t.budget 前多余的 "~" / 空格
+      let dirty = false;
+      (s.trips||[]).forEach(t=>{
+        if (t.budget && /^[~\s]/.test(t.budget)){
+          const cleaned = cleanBudget(t.budget);
+          if (cleaned !== t.budget){ t.budget = cleaned; dirty = true; }
+        }
+      });
+      if (dirty){ try { localStorage.setItem(LS_KEY, JSON.stringify(s)); } catch(e){} }
+      return s;
+    }
   } catch(e){}
   const init = JSON.parse(JSON.stringify(SEED));
   try { localStorage.setItem(LS_KEY, JSON.stringify(init)); } catch(e){}
@@ -862,6 +875,12 @@ function showToast(msg){
 }
 function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 function moneyNum(s){ return parseFloat(String(s||'').replace(/[^\d.]/g,''))||0; }
+// 清洗金额显示：去掉前导 ~ / 空格 / 多余符号，保证以 ¥ 开头
+function cleanBudget(s){
+  let v = String(s==null?'':s).replace(/^[~\s\u00A0]+/, '');
+  if (!v) return '';
+  return /^¥/.test(v) ? v : '¥'+v;
+}
 const STATUS_LABEL = { done:'已完成', ongoing:'进行中', plan:'计划中', shelved:'已搁置' };
 
 /* =========================================================
@@ -976,7 +995,7 @@ function renderTrips(){
   document.getElementById('tripList').innerHTML = sortTripsByDateDesc(store.trips).map(t=>{
     const tags=(t.route||[]).map(r=>'<span class="route-tag">'+esc(r)+'</span>').join('');
     const tag2=(t.tags||[]).map(r=>'<span class="route-tag" style="background:#f3e8ff;color:#7c3aed;">'+esc(r)+'</span>').join('');
-    return '<div class="trip-card '+(t.status||'done')+'" onclick="openDetail(\'trip\',\''+t.id+'\')"><div class="trip-title">'+t.flag+' '+esc(t.name)+'</div><span class="trip-status '+(t.status||'done')+'">'+STATUS_LABEL[t.status||'done']+'</span><div class="trip-budget">'+esc(t.budget)+' <span style="font-size:12px;color:#64748b;font-weight:500;">'+esc(t.budgetNote||'')+'</span></div><div class="trip-meta"><span>📅 '+esc(t.date)+'</span><span>🌙 '+(t.nights||0)+' 晚</span></div><div class="trip-route">'+tags+tag2+'</div><div style="margin-top:8px;font-size:13px;color:#475569;">'+esc(t.summary||'')+'</div></div>';
+    return '<div class="trip-card '+(t.status||'done')+'" onclick="openDetail(\'trip\',\''+t.id+'\')"><div class="trip-title">'+t.flag+' '+esc(t.name)+'</div><span class="trip-status '+(t.status||'done')+'">'+STATUS_LABEL[t.status||'done']+'</span><div class="trip-budget">'+esc(cleanBudget(t.budget))+' <span style="font-size:12px;color:#64748b;font-weight:500;">'+esc(t.budgetNote||'')+'</span></div><div class="trip-meta"><span>📅 '+esc(t.date)+'</span><span>🌙 '+(t.nights||0)+' 晚</span></div><div class="trip-route">'+tags+tag2+'</div><div style="margin-top:8px;font-size:13px;color:#475569;">'+esc(t.summary||'')+'</div></div>';
   }).join('') || '<div class="card" style="text-align:center;color:#94a3b8;">暂无行程，点右上角 ＋ 新建</div>';
 }
 
@@ -989,7 +1008,7 @@ function renderAccounts(){
   const trips=sortTripsByDateDesc(store.trips);
   const total=trips.reduce((s,t)=>s+moneyNum(t.budget),0);
   document.getElementById('accTotal').innerHTML='<div class="total-row"><div class="total-cell"><div class="v">'+trips.length+'</div><div class="l">段旅程</div></div><div class="total-cell divider"><div class="v">'+trips.reduce((s,t)=>s+(t.nights||0),0)+'</div><div class="l">总晚数</div></div><div class="total-cell"><div class="v">≈¥'+(total/1000).toFixed(0)+'k</div><div class="l">总花费</div></div></div>';
-  document.getElementById('accList').innerHTML=trips.map(t=>'<div class="card" style="display:flex;justify-content:space-between;align-items:center;"><div><div style="font-size:15px;font-weight:700;">'+t.flag+' '+esc(t.name)+'</div><div style="font-size:11px;color:#94a3b8;margin-top:2px;">'+t.date+' · '+(t.nights||0)+' 晚</div></div><div style="font-size:18px;font-weight:800;color:#2563eb;">'+esc(t.budget)+'</div></div>').join('');
+  document.getElementById('accList').innerHTML=trips.map(t=>'<div class="card" style="display:flex;justify-content:space-between;align-items:center;"><div><div style="font-size:15px;font-weight:700;">'+t.flag+' '+esc(t.name)+'</div><div style="font-size:11px;color:#94a3b8;margin-top:2px;">'+t.date+' · '+(t.nights||0)+' 晚</div></div><div style="font-size:18px;font-weight:800;color:#2563eb;">'+esc(cleanBudget(t.budget))+'</div></div>').join('');
   // 分类汇总
   const cat={stay:0,transport:0,food:0,play:0}; let hasCat=false;
   trips.forEach(t=>{ if(t.cost){ hasCat=true; cat.stay+=t.cost.stay||0; cat.transport+=t.cost.transport||0; cat.food+=t.cost.food||0; cat.play+=t.cost.play||0; } });
@@ -1280,7 +1299,7 @@ function renderTripOverview(t){
     '<button class="quick-btn" onclick="actArchive(\'trip\',\''+t.id+'\')">📥 归档</button>'+
     '<button class="quick-btn" onclick="confirmDelete(\'trip\',\''+t.id+'\')">🗑️ 删除</button>'+
     '</div>';
-  html+='<div class="detail-block"><h4>概览</h4>'+kv('状态',STATUS_LABEL[t.status||'done'])+kv('国家',t.country||'-')+kv('日期',t.date||'-')+kv('晚数',(t.nights||0)+' 晚')+kv('预算',t.budget||'-')+(t.budgetNote?kv('备注',t.budgetNote):'')+'</div>';
+  html+='<div class="detail-block"><h4>概览</h4>'+kv('状态',STATUS_LABEL[t.status||'done'])+kv('国家',t.country||'-')+kv('日期',t.date||'-')+kv('晚数',(t.nights||0)+' 晚')+kv('预算',cleanBudget(t.budget)||'-')+(t.budgetNote?kv('备注',t.budgetNote):'')+'</div>';
   html+='<div class="detail-block"><h4>路线</h4><div style="display:flex;flex-wrap:wrap;gap:6px;">'+((t.route||[]).map(r=>'<span class="route-tag">'+esc(r)+'</span>').join(''))+'</div></div>';
   if(t.tags&&t.tags.length) html+='<div class="detail-block"><h4>标签</h4><div style="display:flex;flex-wrap:wrap;gap:6px;">'+t.tags.map(r=>'<span class="route-tag" style="background:#f3e8ff;color:#7c3aed;cursor:pointer;" onclick="filterByTag(\''+esc(r)+'\')">'+esc(r)+'</span>').join('')+'</div></div>';
   if(t.companions&&t.companions.length) html+='<div class="detail-block"><h4>同行人</h4><div style="display:flex;flex-wrap:wrap;gap:6px;">'+t.companions.map(r=>'<span class="route-tag" style="background:#ecfeff;color:#0e7490;">'+esc(r)+'</span>').join('')+'</div></div>';
@@ -1763,7 +1782,7 @@ if(cloudReady) pullFromCloud(); else updateConn('offline');
 </script>
 <script>
   if ('serviceWorker' in navigator && (location.protocol==='https:'||location.hostname==='localhost')) {
-    window.addEventListener('load', function(){ navigator.serviceWorker.register('./sw.js?v=5').catch(function(){}); });
+    window.addEventListener('load', function(){ navigator.serviceWorker.register('./sw.js?v=6').catch(function(){}); });
   }
 </script>
 </body>
