@@ -763,6 +763,8 @@
               <input id="f-cost-transport" type="number" inputmode="numeric" placeholder="交通">
               <input id="f-cost-food" type="number" inputmode="numeric" placeholder="餐饮">
               <input id="f-cost-play" type="number" inputmode="numeric" placeholder="游玩">
+              <input id="f-cost-shopping" type="number" inputmode="numeric" placeholder="购物">
+              <input id="f-cost-other" type="number" inputmode="numeric" placeholder="其他">
             </div>
             <div class="form-hint">留空则按「预算」汇总；填了会在花费下钻里展示占比</div>
           </div>
@@ -1981,6 +1983,7 @@ function openEditor(type,id){
     setVal('f-companions',(t.companions||[]).join('，'));
     setVal('f-cost-stay',t.cost?t.cost.stay:''); setVal('f-cost-transport',t.cost?t.cost.transport:'');
     setVal('f-cost-food',t.cost?t.cost.food:''); setVal('f-cost-play',t.cost?t.cost.play:'');
+    setVal('f-cost-shopping',t.cost?t.cost.shopping:''); setVal('f-cost-other',t.cost?t.cost.other:'');
   } else {
     const r=id?(store.reviews.find(x=>x.id===id)||{}):{};
     setVal('f-title',r.title); setVal('f-tag',r.tag); setVal('f-rdate',r.date); setVal('f-body',r.body);
@@ -1997,7 +2000,7 @@ function saveEditor(){
       route:getVal('f-route').split(/[，,、]/).map(s=>s.trim()).filter(Boolean),
       tags:getVal('f-tags').split(/[，,、]/).map(s=>s.trim()).filter(Boolean),
       companions:getVal('f-companions').split(/[，,、]/).map(s=>s.trim()).filter(Boolean),
-      cost:(function(){ const s=parseFloat(getVal('f-cost-stay'))||0, t=parseFloat(getVal('f-cost-transport'))||0, f=parseFloat(getVal('f-cost-food'))||0, p=parseFloat(getVal('f-cost-play'))||0; return (s+t+f+p>0)?{stay:s,transport:t,food:f,play:p}:undefined; })(),
+      cost:(function(){ const s=parseFloat(getVal('f-cost-stay'))||0, t=parseFloat(getVal('f-cost-transport'))||0, f=parseFloat(getVal('f-cost-food'))||0, p=parseFloat(getVal('f-cost-play'))||0, sh=parseFloat(getVal('f-cost-shopping'))||0, o=parseFloat(getVal('f-cost-other'))||0; return (s+t+f+p+sh+o>0)?{stay:s,transport:t,food:f,play:p,shopping:sh,other:o}:undefined; })(),
       summary:getVal('f-summary') };
     if (editingId){ const i=store.trips.findIndex(x=>x.id===editingId); if(i>=0) store.trips[i]=obj; } else store.trips.unshift(obj);
   } else {
@@ -2599,7 +2602,7 @@ if(cloudReady) pullFromCloud(); else updateConn('offline');
 </script>
 <script>
   if ('serviceWorker' in navigator && (location.protocol==='https:'||location.hostname==='localhost')) {
-    window.addEventListener('load', function(){ navigator.serviceWorker.register('./sw.js?v=10').catch(function(){}); });
+    window.addEventListener('load', function(){ navigator.serviceWorker.register('./sw.js?v=11').catch(function(){}); });
   }
 </script>
 </body>
