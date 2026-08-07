@@ -13,6 +13,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#1e3a8a">
 <script src="./supabase-js.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body { height: 100%; }
@@ -57,19 +59,21 @@
   .conn-text { font-size: 10px; color: #64748b; white-space: nowrap; }
 
   .hero {
-    margin: 4px 16px 10px; padding: 16px 16px 14px;
-    background: linear-gradient(135deg, rgba(191,219,254,0.9), rgba(219,234,254,0.9));
-    border-radius: 18px; position: relative; overflow: hidden;
+    margin: 4px 16px 10px; padding: 18px 16px 16px;
+    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 45%, #60a5fa 75%, #93c5fd 100%);
+    border-radius: 20px; position: relative; overflow: hidden;
+    box-shadow: 0 8px 24px rgba(30,64,175,0.25);
   }
-  .hero::after { content: '✈️'; position: absolute; right: 12px; bottom: 4px; font-size: 38px; opacity: 0.5; transform: rotate(15deg); }
-  .hero-title { font-size: 26px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
-  .hero-sub { margin-top: 6px; font-size: 13px; color: #475569; }
+  .hero::before { content:''; position:absolute; left:-30px; top:-30px; width:120px; height:120px; background:rgba(255,255,255,0.12); border-radius:50%; }
+  .hero::after { content: '✈️'; position: absolute; right: 14px; bottom: 6px; font-size: 42px; opacity: 0.45; transform: rotate(-12deg); }
+  .hero-title { font-size: 26px; font-weight: 800; display: flex; align-items: center; gap: 8px; color:#fff; text-shadow:0 2px 8px rgba(0,0,0,0.15); position:relative; z-index:1; }
+  .hero-sub { margin-top: 6px; font-size: 13px; color: rgba(255,255,255,0.9); position:relative; z-index:1; }
   .hero-fab {
-    position: absolute; top: 12px; right: 12px;
+    position: absolute; top: 14px; right: 14px;
     width: 42px; height: 42px; border-radius: 50%;
-    background: #2563eb; color: #fff; border: none; cursor: pointer;
+    background: #fff; color: #1e40af; border: none; cursor: pointer;
     font-size: 24px; line-height: 1; display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 4px 12px rgba(37,99,235,0.4); z-index: 3;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.18); z-index: 3;
     -webkit-tap-highlight-color: transparent; touch-action: manipulation;
   }
   .hero-fab:active { transform: scale(0.92); }
@@ -214,11 +218,11 @@
   .trip-card.plan::before { background: linear-gradient(180deg, #60a5fa, #3b82f6); }
   .trip-card.shelved::before { background: linear-gradient(180deg, #cbd5e1, #94a3b8); }
   .trip-title { font-size: 17px; font-weight: 700; color: #1e3a8a; }
-  .trip-status { display: inline-block; padding: 2px 10px; border-radius: 10px; font-size: 11px; margin-top: 6px; font-weight: 600; }
-  .trip-status.done { background: #d1fae5; color: #059669; }
-  .trip-status.ongoing { background: #fef3c7; color: #d97706; }
-  .trip-status.plan { background: #dbeafe; color: #2563eb; }
-  .trip-status.shelved { background: #e2e8f0; color: #64748b; }
+  .trip-status { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 11px; margin-top: 6px; font-weight: 700; letter-spacing: 0.3px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  .trip-status.done { background: #dcfce7; color: #166534; }
+  .trip-status.ongoing { background: #fef3c7; color: #92400e; }
+  .trip-status.plan { background: #dbeafe; color: #1e40af; }
+  .trip-status.shelved { background: #fce7f3; color: #9d174d; }
   .trip-budget { font-size: 18px; font-weight: 800; color: #2563eb; margin-top: 6px; }
   .trip-meta { display: flex; align-items: center; gap: 14px; margin-top: 8px; font-size: 12px; color: #64748b; }
   .trip-route { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; align-items: center; }
@@ -367,6 +371,40 @@
   /* toast */
   .toast { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); background: rgba(15,23,42,0.9); color: #fff; padding: 12px 20px; border-radius: 12px; font-size: 14px; z-index: 300; opacity: 0; transition: opacity .25s; pointer-events: none; max-width: 80%; text-align: center; }
   .toast.show { opacity: 1; }
+
+  /* ===== Leaflet 地图 ===== */
+  .fp-map-wrap { margin:0 16px 12px; border-radius:18px; overflow:hidden; box-shadow:0 8px 28px rgba(30,58,138,0.12); position:relative; background:#e0e7ff; }
+  .fp-map { width:100%; height:280px; z-index:1; }
+  .fp-map-wrap .fp-map-cap { position:absolute; left:12px; top:12px; z-index:5; background:rgba(255,255,255,0.92); backdrop-filter:blur(8px); padding:6px 12px; border-radius:999px; font-size:12px; font-weight:700; color:#1e3a8a; box-shadow:0 2px 8px rgba(30,58,138,0.1); }
+  .fp-pin { background:#1e40af; color:#fff; border-radius:50% 50% 50% 0; transform:rotate(-45deg); width:24px; height:24px; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 6px rgba(0,0,0,0.3); border:2px solid #fff; }
+  .fp-pin span { transform:rotate(45deg); font-size:12px; line-height:1; }
+  .leaflet-container a.leaflet-popup-close-button { color:#475569; }
+
+  /* 行程卡片内嵌小地图 */
+  .trip-route-map { width:100%; height:140px; margin-top:10px; border-radius:12px; overflow:hidden; z-index:1; background:#e0e7ff; }
+  .route-num-pin { background:#2563eb; color:#fff; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; border:2px solid #fff; box-shadow:0 2px 6px rgba(0,0,0,0.3); }
+
+  /* ===== 账目 6 宫格 ===== */
+  .acc-cat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:0 16px 14px; }
+  .acc-cat-card { background:#fff; border-radius:14px; padding:14px 8px 10px; text-align:center; box-shadow:0 4px 14px rgba(30,58,138,0.06); position:relative; overflow:hidden; }
+  .acc-cat-card::before { content:''; position:absolute; left:0; top:0; right:0; height:3px; background:linear-gradient(90deg,var(--cc1,#60a5fa),var(--cc2,#34d399)); }
+  .acc-cat-card .acc-cat-icon { font-size:22px; }
+  .acc-cat-card .acc-cat-val { font-size:18px; font-weight:800; color:#1e3a8a; margin-top:4px; }
+  .acc-cat-card .acc-cat-label { font-size:11px; color:#64748b; margin-top:2px; }
+  .acc-cat-card .acc-cat-pct { font-size:10px; color:#94a3b8; margin-top:2px; }
+
+  /* ===== 浮动操作栏 ===== */
+  .float-bar { position:fixed; left:50%; transform:translateX(-50%); bottom:74px; z-index:120; display:none; gap:6px; background:rgba(255,255,255,0.96); backdrop-filter:blur(12px); padding:6px 8px; border-radius:999px; box-shadow:0 6px 24px rgba(30,58,138,0.18); border:1px solid rgba(30,58,138,0.08); }
+  .float-bar.show { display:flex; }
+  .float-bar button { width:38px; height:38px; border-radius:50%; border:none; background:transparent; font-size:18px; cursor:pointer; color:#1e3a8a; display:flex; align-items:center; justify-content:center; -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
+  .float-bar button:active { background:#e0e7ff; }
+
+  /* ===== 状态芯片升级 ===== */
+  .status-chip { display:inline-block; padding:2px 8px; border-radius:999px; font-size:11px; font-weight:700; letter-spacing:0.3px; }
+  .status-chip.done { background:#dcfce7; color:#166534; }
+  .status-chip.planning { background:#fef3c7; color:#92400e; }
+  .status-chip.ongoing { background:#dbeafe; color:#1e40af; }
+  .status-chip.wish { background:#fce7f3; color:#9d174d; }
 </style>
 </head>
 <body>
@@ -434,6 +472,10 @@
         <div class="hero-title">🗺️ 足迹</div>
         <div class="hero-sub">珊珊走过的山川湖海 🌍</div>
       </div>
+      <div class="fp-map-wrap">
+        <div class="fp-map-cap" id="fpMapCap">📍 0 个城市</div>
+        <div id="fpMap" class="fp-map"></div>
+      </div>
       <div class="card" id="fpList"></div>
     </section>
 
@@ -454,6 +496,8 @@
         <div class="hero-sub">每一分钱都算得清 🧾</div>
       </div>
       <div class="total-card" id="accTotal"></div>
+      <div class="section-title">📊 消费分类</div>
+      <div class="acc-cat-grid" id="accCatGrid"></div>
       <!-- 年度预算 -->
       <div style="display:flex;justify-content:space-between;align-items:center;margin:14px 16px 8px;font-size:14px;font-weight:700;color:#1e3a8a;">
         <span>📅 年度预算规划</span>
@@ -497,10 +541,10 @@
     <!-- ===== 记录 ===== -->
     <section class="page" id="page-reviews">
       <div class="hero">
-        <div class="hero-title">💭 记录</div>
+        <div class="hero-title">💭 评价</div>
         <div class="hero-sub">走过的路，都成了心里的歌 💭</div>
       </div>
-      <button class="add-btn" onclick="openEditor('review')">＋ 添加记录</button>
+      <button class="add-btn" onclick="openEditor('review')">＋ 添加评价</button>
       <div id="reviewList"></div>
     </section>
   </main>
@@ -508,6 +552,13 @@
   <button class="swipe-fab left hidden" id="fabLeft" aria-label="上一个">‹</button>
   <button class="swipe-fab right" id="fabRight" aria-label="下一个">›</button>
   <div class="swipe-hint" id="swipeHint">👈  👉  左右滑动切换 tab</div>
+
+  <!-- 浮动操作栏 -->
+  <div class="float-bar" id="floatBar">
+    <button onclick="scrollTop()" title="返回顶部">↑</button>
+    <button onclick="shareApp()" title="分享">🔗</button>
+    <button onclick="refreshApp()" title="刷新">🔄</button>
+  </div>
 
   <nav class="bottom-nav" id="bottomNav">
     <button class="nav-item active" data-page="overview"><span class="nav-icon">🏠</span><span class="nav-label">总览</span></button>
@@ -517,7 +568,7 @@
     <button class="nav-item" data-page="recommend"><span class="nav-icon">✨</span><span class="nav-label">推荐</span></button>
     <button class="nav-item" data-page="guides"><span class="nav-icon">📷</span><span class="nav-label">攻略</span></button>
     <button class="nav-item" data-page="english"><span class="nav-icon">📚</span><span class="nav-label">英语</span></button>
-    <button class="nav-item" data-page="reviews"><span class="nav-icon">💭</span><span class="nav-label">记录</span></button>
+    <button class="nav-item" data-page="reviews"><span class="nav-icon">💭</span><span class="nav-label">评价</span></button>
   </nav>
 
   <!-- 批量操作条 -->
@@ -793,6 +844,85 @@ const SEED = {
 };
 
 /* =========================================================
+   城市坐标字典（覆盖 SEED + 常用扩展）
+   ========================================================= */
+const CITY_COORDS = {
+  // 埃及
+  '开罗':[30.0444,31.2357],'沙姆沙伊赫':[27.9158,34.3300],'达哈卜':[28.5047,34.5130],
+  '卢克索':[25.6872,32.6396],'阿斯旺':[24.0889,32.8998],'亚历山大':[31.2001,29.9187],
+  // 菲律宾
+  '宿务':[10.3157,123.8854],'薄荷':[9.8499,124.1435],'墨宝':[9.9491,123.3904],
+  '锡基霍尔':[9.1981,123.6047],'马尼拉':[14.5995,120.9842],'长滩岛':[11.9674,121.9248],
+  '巴拉望':[9.8349,118.7384],'科隆':[12.0024,120.2054],'杜马盖地':[9.3083,123.3056],
+  // 中国
+  '重庆':[29.5630,106.5516],'大理':[25.6065,100.2670],'泸沽湖':[27.7058,100.7882],
+  '郑州':[34.7466,113.6253],'中牟':[34.5372,113.9719],'洛阳':[34.6197,112.4540],
+  '徐闻':[20.3269,110.1764],'明仕':[22.8724,106.9297],'渠洋湖':[23.1086,106.2131],
+  '河池':[24.6969,108.0853],'柳州':[24.3264,109.4280],'融水':[25.0666,109.2567],
+  '北京':[39.9042,116.4074],'上海':[31.2304,121.4737],'广州':[23.1291,113.2644],
+  '深圳':[22.5431,114.0579],'成都':[30.5728,104.0668],'西安':[34.3416,108.9398],
+  '杭州':[30.2741,120.1551],'南京':[32.0603,118.7969],'武汉':[30.5928,114.3055],
+  '长沙':[28.2282,112.9388],'厦门':[24.4798,118.0894],'青岛':[36.0671,120.3826],
+  '三亚':[18.2528,109.5119],'海口':[20.0440,110.1990],'昆明':[25.0389,102.7183],
+  '丽江':[26.8721,100.2250],'香格里拉':[27.8329,99.7063],'西双版纳':[22.0074,100.7972],
+  '拉萨':[29.6500,91.1000],'敦煌':[40.1421,94.6619],'乌鲁木齐':[43.8256,87.6168],
+  '兰州':[36.0611,103.8343],'银川':[38.4872,106.2309],'西宁':[36.6171,101.7782],
+  '天津':[39.3434,117.3616],'苏州':[31.2989,120.5853],'桂林':[25.2736,110.2900],
+  '阳朔':[24.7784,110.4885],'北海':[21.4750,109.1430],'涠洲岛':[21.0389,109.1358],
+  '黄山':[30.1345,118.2985],'九寨沟':[33.2603,103.9183],'张家界':[29.1170,110.4792],
+  '凤凰':[27.9486,109.5996],'衡山':[27.3000,112.7000],'武夷山':[27.7280,117.7130],
+  // 马尔代夫
+  'Maafushi':[3.9408,73.4905],'Thinadhoo':[3.7806,72.9216],'Fulidhoo':[3.6750,73.4253],
+  '威斯汀水屋':[4.1745,73.5089],'马累':[4.1755,73.5093],'库拉玛蒂':[4.5833,73.0833],
+  // 东南亚
+  '曼谷':[13.7563,100.5018],'清迈':[18.7883,98.9853],'普吉岛':[7.8804,98.3923],
+  '芭提雅':[12.9236,100.8825],'苏梅岛':[9.5018,99.9518],'河内':[21.0285,105.8542],
+  '岘港':[16.0544,108.2022],'会安':[15.8801,108.3380],'芽庄':[12.2388,109.1967],
+  '暹粒':[13.3671,103.8448],'金边':[11.5564,104.9282],'万象':[17.9757,102.6331],
+  '琅勃拉邦':[19.8845,102.1346],'巴厘岛':[8.4095,115.1889],'吉隆坡':[3.1390,101.6869],
+  '槟城':[5.4141,100.3290],'兰卡威':[6.3500,99.8000],'新加坡':[1.3521,103.8198],
+  // 日韩
+  '东京':[35.6762,139.6503],'大阪':[34.6937,135.5023],'京都':[35.0116,135.7681],
+  '名古屋':[35.1815,136.9066],'札幌':[43.0618,141.3545],'福冈':[33.5904,130.4017],
+  '冲绳':[26.3344,127.8056],'北海道':[43.2203,141.8634],'横滨':[35.4437,139.6380],
+  '奈良':[34.6851,135.8048],'广岛':[34.3853,132.4553],'首尔':[37.5665,126.9780],
+  '釜山':[35.1796,129.0756],'济州岛':[33.4996,126.5312],'仁川':[37.4563,126.7052],
+  // 欧洲
+  '巴黎':[48.8566,2.3522],'伦敦':[51.5074,-0.1278],'罗马':[41.9028,12.4964],
+  '米兰':[45.4642,9.1900],'威尼斯':[45.4408,12.3155],'佛罗伦萨':[43.7696,11.2558],
+  '巴塞罗那':[41.3851,2.1734],'马德里':[40.4168,-3.7038],'里斯本':[38.7223,-9.1393],
+  '波尔图':[41.1579,-8.6291],'阿姆斯特丹':[52.3676,4.9041],'布鲁塞尔':[50.8503,4.3517],
+  '柏林':[52.5200,13.4050],'慕尼黑':[48.1351,11.5820],'法兰克福':[50.1109,8.6821],
+  '维也纳':[48.2082,16.3738],'布拉格':[50.0755,14.4378],'布达佩斯':[47.4979,19.0402],
+  '雅典':[37.9838,23.7275],'圣托里尼':[36.3932,25.4615],'米克诺斯':[37.4462,25.3289],
+  '雷克雅未克':[64.1466,-21.9426],'奥斯陆':[59.9139,10.7522],'特罗姆瑟':[69.6492,18.9553],
+  '罗瓦涅米':[66.5039,25.7294],'赫尔辛基':[60.1699,24.9384],'斯德哥尔摩':[59.3293,18.0686],
+  '哥本哈根':[55.6761,12.5683],'苏黎世':[47.3769,8.5417],'日内瓦':[46.2044,6.1432],
+  '莫斯科':[55.7558,37.6173],'圣彼得堡':[59.9311,30.3609],'伊斯坦布尔':[41.0082,28.9784],
+  // 美洲
+  '纽约':[40.7128,-74.0060],'洛杉矶':[34.0522,-118.2437],'旧金山':[37.7749,-122.4194],
+  '拉斯维加斯':[36.1699,-115.1398],'夏威夷':[21.3099,-157.8581],'西雅图':[47.6062,-122.3321],
+  '芝加哥':[41.8781,-87.6298],'波士顿':[42.3601,-71.0589],'迈阿密':[25.7617,-80.1918],
+  '多伦多':[43.6532,-79.3832],'温哥华':[49.2827,-123.1207],'墨西哥城':[19.4326,-99.1332],
+  '哈瓦那':[23.1136,-82.3666],'利马':[12.0464,-77.0428],'布宜诺斯艾利斯':[-34.6037,-58.3816],
+  '里约热内卢':[-22.9068,-43.1729],'圣保罗':[-23.5505,-46.6333],
+  // 大洋洲
+  '悉尼':[-33.8688,151.2093],'墨尔本':[-37.8136,144.9631],'布里斯班':[-27.4698,153.0251],
+  '珀斯':[-31.9505,115.8605],'奥克兰':[-36.8485,174.7633],'皇后镇':[-45.0312,168.6626],
+  // 中东 & 非洲
+  '迪拜':[25.2048,55.2708],'阿布扎比':[24.4539,54.3773],'多哈':[25.2854,51.5310],
+  '开普敦':[-33.9249,18.4241],'约翰内斯堡':[-26.2041,28.0473],'内罗毕':[-1.2921,36.8219],
+  '卡萨布兰卡':[33.5731,-7.5898],'马拉喀什':[31.6295,-7.9811]
+};
+function coordOf(city){
+  if(!city) return null;
+  if(CITY_COORDS[city]) return CITY_COORDS[city];
+  // 容错：去括号、去空格再试一次
+  const k2 = String(city).replace(/[（(].*?[)）]/g,'').trim();
+  return CITY_COORDS[k2] || null;
+}
+
+/* =========================================================
    STORE
    ========================================================= */
 const LS_KEY = 'travel_store_v1';
@@ -992,32 +1122,133 @@ function sortReviewsByDateDesc(arr){
 }
 
 function renderTrips(){
-  document.getElementById('tripList').innerHTML = sortTripsByDateDesc(store.trips).map(t=>{
+  const trips=sortTripsByDateDesc(store.trips);
+  document.getElementById('tripList').innerHTML = trips.map(t=>{
     const tags=(t.route||[]).map(r=>'<span class="route-tag">'+esc(r)+'</span>').join('');
     const tag2=(t.tags||[]).map(r=>'<span class="route-tag" style="background:#f3e8ff;color:#7c3aed;">'+esc(r)+'</span>').join('');
-    return '<div class="trip-card '+(t.status||'done')+'" onclick="openDetail(\'trip\',\''+t.id+'\')"><div class="trip-title">'+t.flag+' '+esc(t.name)+'</div><span class="trip-status '+(t.status||'done')+'">'+STATUS_LABEL[t.status||'done']+'</span><div class="trip-budget">'+esc(cleanBudget(t.budget))+' <span style="font-size:12px;color:#64748b;font-weight:500;">'+esc(t.budgetNote||'')+'</span></div><div class="trip-meta"><span>📅 '+esc(t.date)+'</span><span>🌙 '+(t.nights||0)+' 晚</span></div><div class="trip-route">'+tags+tag2+'</div><div style="margin-top:8px;font-size:13px;color:#475569;">'+esc(t.summary||'')+'</div></div>';
+    return '<div class="trip-card '+(t.status||'done')+'" onclick="openDetail(\'trip\',\''+t.id+'\')"><div class="trip-title">'+t.flag+' '+esc(t.name)+'</div><span class="trip-status '+(t.status||'done')+'">'+STATUS_LABEL[t.status||'done']+'</span><div class="trip-budget">'+esc(cleanBudget(t.budget))+' <span style="font-size:12px;color:#64748b;font-weight:500;">'+esc(t.budgetNote||'')+'</span></div><div class="trip-meta"><span>📅 '+esc(t.date)+'</span><span>🌙 '+(t.nights||0)+' 晚</span></div><div class="trip-route">'+tags+tag2+'</div><div style="margin-top:8px;font-size:13px;color:#475569;">'+esc(t.summary||'')+'</div><div class="trip-route-map" id="tripMap-'+t.id+'" onclick="event.stopPropagation();"></div></div>';
   }).join('') || '<div class="card" style="text-align:center;color:#94a3b8;">暂无行程，点右上角 ＋ 新建</div>';
+  // 渲染所有小地图
+  renderTripRouteMaps(trips);
+}
+
+/* 行程卡片内嵌路线小地图 */
+const tripMapInstances={};
+function renderTripRouteMaps(trips){
+  if(typeof L==='undefined') return;
+  trips.forEach(t=>{
+    const el=document.getElementById('tripMap-'+t.id);
+    if(!el) return;
+    const cities=(t.route||[]).map(coordOf).filter(Boolean);
+    if(cities.length<1){ el.style.display='none'; return; }
+
+    if(tripMapInstances[t.id]){ try{ tripMapInstances[t.id].remove(); }catch(e){} }
+    const map=L.map('tripMap-'+t.id,{zoomControl:false,attributionControl:false,scrollWheelZoom:false,dragging:false,doubleClickZoom:false,touchZoom:false,keyboard:false}).setView(cities[0],cities.length>1?3:5);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{maxZoom:18,subdomains:'abcd'}).addTo(map);
+
+    // 编号图钉 + 折线
+    cities.forEach((co,i)=>{
+      const pin=L.divIcon({className:'',html:'<div class="route-num-pin">'+(i+1)+'</div>',iconSize:[22,22],iconAnchor:[11,11]});
+      L.marker(co,{icon:pin}).addTo(map);
+    });
+    if(cities.length>1){
+      L.polyline(cities,{color:'#2563eb',weight:2,opacity:0.7,dashArray:'4 4'}).addTo(map);
+    }
+    // fit bounds
+    if(cities.length>1){
+      try{ map.fitBounds(cities,{padding:[16,16],maxZoom:7}); }catch(e){}
+    } else {
+      try{ map.setView(cities[0],5); }catch(e){}
+    }
+    tripMapInstances[t.id]=map;
+    setTimeout(()=>{ try{ map.invalidateSize(); }catch(e){} }, 150);
+  });
 }
 
 function renderFootprints(){
-  const rows=sortTripsByDateDesc(store.trips).map(t=>(t.route||[]).map(c=>({flag:t.flag,city:c}))).flat();
+  const trips=sortTripsByDateDesc(store.trips);
+  const rows=trips.map(t=>(t.route||[]).map(c=>({flag:t.flag,city:c,trip:t}))).flat();
   document.getElementById('fpList').innerHTML = rows.map(r=>'<div style="padding:12px 16px;border-bottom:1px dashed rgba(30,58,138,0.08);display:flex;align-items:center;gap:10px;font-size:14px;"><span style="font-size:20px;">'+r.flag+'</span>'+esc(r.city)+'</div>').join('') || '<div style="padding:20px;text-align:center;color:#94a3b8;">暂无足迹</div>';
+  renderFootprintMap(trips);
+}
+
+/* 足迹世界地图 */
+let fpMapInstance=null;
+let fpMapLayerGroup=null;
+function renderFootprintMap(trips){
+  const cap=document.getElementById('fpMapCap');
+  if(typeof L==='undefined'){
+    // Leaflet 没加载，悄悄降级
+    if(cap) cap.textContent='📡 地图加载中…';
+    return;
+  }
+  if(!fpMapInstance){
+    fpMapInstance=L.map('fpMap',{zoomControl:true,attributionControl:false,scrollWheelZoom:false}).setView([20,30],2);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{
+      maxZoom:18, subdomains:'abcd'
+    }).addTo(fpMapInstance);
+    fpMapLayerGroup=L.layerGroup().addTo(fpMapInstance);
+  } else {
+    fpMapLayerGroup.clearLayers();
+  }
+
+  // 收集所有城市的坐标，按城市聚合（同一城市多 trip 取最新 trip）
+  const cityMap={}; // city -> {coords, trips:[{flag,name,date}]}
+  let placed=0;
+  trips.forEach(t=>{
+    (t.route||[]).forEach(c=>{
+      const co=coordOf(c);
+      if(!co) return;
+      placed++;
+      if(!cityMap[c]){ cityMap[c]={coords:co,trips:[]}; }
+      cityMap[c].trips.push({flag:t.flag,name:t.name,date:t.date});
+    });
+  });
+
+  const bounds=[];
+  Object.keys(cityMap).forEach(c=>{
+    const info=cityMap[c];
+    const pin=L.divIcon({className:'',html:'<div class="fp-pin"><span>✓</span></div>',iconSize:[24,24],iconAnchor:[12,24],popupAnchor:[0,-24]});
+    const m=L.marker(info.coords,{icon:pin}).addTo(fpMapLayerGroup);
+    const tripList=info.trips.map(t=>'<div style="font-size:11px;color:#64748b;padding:1px 0;">'+t.flag+' '+esc(t.name)+' · '+t.date+'</div>').join('');
+    m.bindPopup('<div style="font-size:13px;font-weight:700;color:#1e3a8a;margin-bottom:2px;">📍 '+esc(c)+'</div>'+tripList);
+    bounds.push(info.coords);
+  });
+
+  if(cap){
+    cap.textContent='📍 '+Object.keys(cityMap).length+' 个城市 · '+placed+' 段足迹';
+  }
+
+  // 自动调整视野
+  if(bounds.length){
+    setTimeout(()=>{ try{ fpMapInstance.fitBounds(bounds,{padding:[40,40],maxZoom:6}); }catch(e){} }, 100);
+  }
+  // 切页时强制重新计算尺寸
+  setTimeout(()=>{ try{ fpMapInstance.invalidateSize(); }catch(e){} }, 200);
 }
 
 function renderAccounts(){
   const trips=sortTripsByDateDesc(store.trips);
   const total=trips.reduce((s,t)=>s+moneyNum(t.budget),0);
   document.getElementById('accTotal').innerHTML='<div class="total-row"><div class="total-cell"><div class="v">'+trips.length+'</div><div class="l">段旅程</div></div><div class="total-cell divider"><div class="v">'+trips.reduce((s,t)=>s+(t.nights||0),0)+'</div><div class="l">总晚数</div></div><div class="total-cell"><div class="v">≈¥'+(total/1000).toFixed(0)+'k</div><div class="l">总花费</div></div></div>';
+  // 6 宫格分类汇总（住宿/交通/餐饮/门票/购物/其他）
+  const CATS=[
+    {k:'stay',     icon:'🏨', label:'住宿',  c1:'#60a5fa', c2:'#3b82f6'},
+    {k:'transport',icon:'✈️', label:'交通',  c1:'#34d399', c2:'#10b981'},
+    {k:'food',     icon:'🍜', label:'餐饮',  c1:'#fbbf24', c2:'#f59e0b'},
+    {k:'play',     icon:'🎫', label:'门票',  c1:'#f472b6', c2:'#ec4899'},
+    {k:'shopping', icon:'🛍️', label:'购物',  c1:'#a78bfa', c2:'#8b5cf6'},
+    {k:'other',    icon:'📦', label:'其他',  c1:'#94a3b8', c2:'#64748b'}
+  ];
+  const cat={}; CATS.forEach(c=>cat[c.k]=0);
+  let hasCat=false, sum=0;
+  trips.forEach(t=>{ if(t.cost){ hasCat=true; CATS.forEach(c=>{ const v=t.cost[c.k]||0; cat[c.k]+=v; sum+=v; }); } });
+  document.getElementById('accCatGrid').innerHTML=CATS.map(c=>{
+    const v=cat[c.k];
+    const pct=sum?Math.round(v/sum*100):0;
+    return '<div class="acc-cat-card" style="--cc1:'+c.c1+';--cc2:'+c.c2+';"><div class="acc-cat-icon">'+c.icon+'</div><div class="acc-cat-val">¥'+v.toLocaleString()+'</div><div class="acc-cat-label">'+c.label+'</div><div class="acc-cat-pct">'+pct+'%</div></div>';
+  }).join('')+(hasCat?'<div style="grid-column:1/-1;font-size:11px;color:#94a3b8;text-align:center;padding:4px 0;">合计 ¥'+sum.toLocaleString()+'（仅含填写了细项的行程）</div>':'<div style="grid-column:1/-1;font-size:11px;color:#94a3b8;text-align:center;padding:4px 0;">还没有填写消费细项，点行程详情补充 ✏️</div>');
   document.getElementById('accList').innerHTML=trips.map(t=>'<div class="card" style="display:flex;justify-content:space-between;align-items:center;"><div><div style="font-size:15px;font-weight:700;">'+t.flag+' '+esc(t.name)+'</div><div style="font-size:11px;color:#94a3b8;margin-top:2px;">'+t.date+' · '+(t.nights||0)+' 晚</div></div><div style="font-size:18px;font-weight:800;color:#2563eb;">'+esc(cleanBudget(t.budget))+'</div></div>').join('');
-  // 分类汇总
-  const cat={stay:0,transport:0,food:0,play:0}; let hasCat=false;
-  trips.forEach(t=>{ if(t.cost){ hasCat=true; cat.stay+=t.cost.stay||0; cat.transport+=t.cost.transport||0; cat.food+=t.cost.food||0; cat.play+=t.cost.play||0; } });
-  if(hasCat){
-    const labels={stay:'🏨 住宿',transport:'🚗 交通',food:'🍜 餐饮',play:'🎡 游玩'};
-    const sum=cat.stay+cat.transport+cat.food+cat.play; const cmax=Math.max(1,cat.stay,cat.transport,cat.food,cat.play);
-    const catHtml='<div class="section-title">📊 消费分类</div><div class="card">'+Object.keys(labels).map(k=>{ const v=cat[k]; const pct=sum?Math.round(v/sum*100):0; return '<div class="bar-row"><span class="bl">'+labels[k]+'</span><div class="bar-track"><div class="bar-fill" style="width:'+(v/cmax*100)+'%"></div></div><span class="bv">'+pct+'%</span></div>'; }).join('')+'<div class="form-hint" style="margin-top:6px;">合计 ¥'+sum.toLocaleString()+'（仅含填写了细项的行程）</div></div>';
-    document.getElementById('accList').innerHTML=catHtml+document.getElementById('accList').innerHTML;
-  }
   renderYearBudget();
 }
 
@@ -1729,6 +1960,37 @@ function switchTab(targetPage){
   page.classList.add('active', newIdx>currentIdx?'anim-right':'anim-left');
   item.classList.add('active'); syncDots(newIdx); content.scrollTop=0;
   if(selectMode) exitSelectMode();
+  updateFloatBar();
+  // 切到足迹页时强制地图重算尺寸
+  if(targetPage==='footprints' && fpMapInstance){ setTimeout(()=>{ try{ fpMapInstance.invalidateSize(); }catch(e){} }, 250); }
+}
+function updateFloatBar(){
+  const fb=document.getElementById('floatBar');
+  if(!fb) return;
+  const maskOpen=document.getElementById('editorMask').classList.contains('show')
+    || document.getElementById('detailMask').classList.contains('show')
+    || document.getElementById('menuMask').classList.contains('show')
+    || document.getElementById('filterMask').classList.contains('show')
+    || document.getElementById('ybMask').classList.contains('show')
+    || document.querySelector('.sub-page.active');
+  fb.classList.toggle('show', !maskOpen && content.scrollTop>180);
+}
+content.addEventListener('scroll', updateFloatBar, {passive:true});
+
+function scrollTop(){ content.scrollTo({top:0,behavior:'smooth'}); }
+function shareApp(){
+  if(navigator.share){
+    navigator.share({title:'珊珊的旅行世界', text:'我的旅行记录 · 行程/账目/攻略/英语一站式', url:location.href}).catch(()=>{});
+  } else {
+    // 降级：复制链接
+    try{ navigator.clipboard.writeText(location.href); toast('🔗 链接已复制'); }catch(e){ toast('请手动复制地址栏'); }
+  }
+}
+function refreshApp(){
+  toast('🔄 正在同步…');
+  // 清掉 SW 缓存并刷新
+  if('caches' in window){ caches.keys().then(ks=>ks.forEach(k=>caches.delete(k))); }
+  setTimeout(()=>location.reload(true), 600);
 }
 function switchByIdx(newIdx){ if(newIdx<0||newIdx>=PAGES.length||newIdx===currentIdx) return; switchTab(PAGES[newIdx]); }
 document.getElementById('bottomNav').addEventListener('click', e=>{ const item=e.target.closest('.nav-item'); if(item) switchTab(item.dataset.page); });
@@ -1782,7 +2044,7 @@ if(cloudReady) pullFromCloud(); else updateConn('offline');
 </script>
 <script>
   if ('serviceWorker' in navigator && (location.protocol==='https:'||location.hostname==='localhost')) {
-    window.addEventListener('load', function(){ navigator.serviceWorker.register('./sw.js?v=6').catch(function(){}); });
+    window.addEventListener('load', function(){ navigator.serviceWorker.register('./sw.js?v=7').catch(function(){}); });
   }
 </script>
 </body>
