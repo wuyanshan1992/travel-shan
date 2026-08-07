@@ -1394,8 +1394,14 @@ function renderAccounts(){
     {k:'other',    icon:'📦', label:'其他',  c1:'#94a3b8', c2:'#64748b'}
   ];
   const cat={}; CATS.forEach(c=>cat[c.k]=0);
-  let hasCat=false, sum=0;
-  trips.forEach(t=>{ if(t.cost){ hasCat=true; CATS.forEach(c=>{ const v=t.cost[c.k]||0; cat[c.k]+=v; sum+=v; }); } });
+  let hasCat=false;
+  const ZH={stay:'住宿',transport:'交通',food:'餐饮',play:'门票',shopping:'购物',other:'其他'};
+  trips.forEach(t=>{ if(t.cost){ hasCat=true; CATS.forEach(c=>{
+    const ev=t.cost[c.k], zv=t.cost[ZH[c.k]];
+    const v=(typeof ev==='number'?ev:0)+(typeof zv==='number'?zv:0);
+    cat[c.k]+=v;
+  }); } });
+  const sum=CATS.reduce((s,c)=>s+cat[c.k],0);
   document.getElementById('accCatGrid').innerHTML=CATS.map(c=>{
     const v=cat[c.k];
     const pct=sum?Math.round(v/sum*100):0;
@@ -1428,7 +1434,9 @@ function yearOf(year){
     matchedAll++;
     let n = 0, isActual = false;
     if (t.cost && typeof t.cost === 'object' && Object.keys(t.cost).length){
-      n = (t.cost.stay||0)+(t.cost.transport||0)+(t.cost.food||0)+(t.cost.play||0)+(t.cost.other||0);
+      const ZH={stay:'住宿',transport:'交通',food:'餐饮',play:'门票',shopping:'购物',other:'其他'};
+      const pick=k=>{ const a=t.cost[k], b=t.cost[ZH[k]]; return (typeof a==='number'?a:0)+(typeof b==='number'?b:0); };
+      n = pick('stay')+pick('transport')+pick('food')+pick('play')+pick('shopping')+pick('other');
       isActual = n > 0;
     }
     if (!n) n = moneyNum(t.budget);
@@ -2591,7 +2599,7 @@ if(cloudReady) pullFromCloud(); else updateConn('offline');
 </script>
 <script>
   if ('serviceWorker' in navigator && (location.protocol==='https:'||location.hostname==='localhost')) {
-    window.addEventListener('load', function(){ navigator.serviceWorker.register('./sw.js?v=9').catch(function(){}); });
+    window.addEventListener('load', function(){ navigator.serviceWorker.register('./sw.js?v=10').catch(function(){}); });
   }
 </script>
 </body>
