@@ -405,6 +405,102 @@
   .status-chip.planning { background:#fef3c7; color:#92400e; }
   .status-chip.ongoing { background:#dbeafe; color:#1e40af; }
   .status-chip.wish { background:#fce7f3; color:#9d174d; }
+
+  /* ===== C阶段：推荐页渐变卡片 ===== */
+  .rec-grid { display:flex; flex-direction:column; gap:14px; margin:0 0 16px; }
+  .rec-card {
+    border-radius:18px; padding:18px 16px; color:#fff; position:relative; overflow:hidden;
+    box-shadow:0 6px 22px rgba(0,0,0,0.12); cursor:pointer; -webkit-tap-highlight-color:transparent; touch-action:manipulation;
+  }
+  .rec-card:active { transform:scale(0.98); }
+  .rec-card .rec-bg { position:absolute; right:-20px; top:-20px; font-size:80px; opacity:0.18; }
+  .rec-card .rec-flag { font-size:28px; }
+  .rec-card .rec-name { font-size:19px; font-weight:800; margin-top:4px; text-shadow:0 2px 6px rgba(0,0,0,0.15); }
+  .rec-card .rec-desc { font-size:13px; opacity:0.92; margin-top:6px; line-height:1.6; }
+  .rec-card .rec-meta { display:flex; gap:12px; margin-top:10px; font-size:12px; opacity:0.9; }
+  .rec-card .rec-meta span { display:flex; align-items:center; gap:3px; }
+  .rec-card .rec-tags { display:flex; gap:6px; margin-top:8px; flex-wrap:wrap; }
+  .rec-card .rec-tag { padding:3px 8px; border-radius:8px; background:rgba(255,255,255,0.25); font-size:11px; font-weight:600; }
+  .rec-pref { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+  .rec-pref .rp-chip { padding:5px 12px; border-radius:999px; background:rgba(255,255,255,0.85); font-size:12px; font-weight:700; color:#1e40af; box-shadow:0 2px 8px rgba(30,58,138,0.08); }
+
+  /* ===== C阶段：费用 Excel 表格 ===== */
+  .acc-table-wrap { margin:0 16px 14px; overflow-x:auto; -webkit-overflow-scrolling:touch; border-radius:14px; box-shadow:0 2px 12px rgba(30,58,138,0.06); background:#fff; }
+  .acc-table { width:100%; border-collapse:collapse; font-size:12px; min-width:520px; }
+  .acc-table th { background:#1e3a8a; color:#fff; padding:9px 6px; text-align:center; font-weight:700; white-space:nowrap; position:sticky; top:0; }
+  .acc-table td { padding:8px 6px; text-align:center; border-bottom:1px solid #e2e8f0; color:#1e293b; }
+  .acc-table tr:last-child td { border-bottom:none; }
+  .acc-table .acc-t-name { text-align:left; font-weight:600; white-space:nowrap; }
+  .acc-table .acc-t-total { font-weight:800; color:#1e40af; }
+  .acc-table tfoot td { background:#eff6ff; font-weight:800; color:#1e3a8a; }
+  .acc-table-btns { display:flex; gap:8px; margin:0 16px 10px; }
+  .acc-table-btns button { flex:1; padding:9px; border-radius:10px; border:1px solid rgba(30,58,138,0.15); background:#fff; font-size:13px; font-weight:700; color:#1e40af; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+  .acc-table-btns button:active { background:#e0e7ff; }
+  .acc-table-btns button.on { background:#1e3a8a; color:#fff; }
+
+  /* ===== C阶段：自然语言记账 ===== */
+  .nl-input-wrap { margin:0 16px 12px; }
+  .nl-input-box { display:flex; gap:8px; align-items:center; background:#fff; border:1.5px solid #c7d2fe; border-radius:14px; padding:8px 12px; box-shadow:0 2px 10px rgba(30,58,138,0.06); }
+  .nl-input-box input { flex:1; border:none; outline:none; font-size:14px; color:#1e3a8a; background:transparent; min-width:0; }
+  .nl-input-box input::placeholder { color:#94a3b8; }
+  .nl-input-box button { flex-shrink:0; padding:7px 14px; border-radius:10px; background:#2563eb; color:#fff; border:none; font-size:13px; font-weight:700; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+  .nl-input-box button:active { background:#1d4ed8; }
+  .nl-hint { font-size:11px; color:#94a3b8; margin-top:5px; padding:0 4px; }
+  .nl-preview { margin-top:6px; padding:8px 12px; border-radius:10px; background:#f0fdf4; border:1px solid #bbf7d0; font-size:13px; color:#166534; display:none; }
+  .nl-preview.show { display:block; }
+
+  /* ===== C阶段：英语情景对话 ===== */
+  .dialog-section { margin:0 16px 16px; }
+  .dialog-scene-btns { display:flex; gap:8px; overflow-x:auto; padding:4px 0 10px; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+  .dialog-scene-btns::-webkit-scrollbar { display:none; }
+  .dialog-scene-btns button { flex:none; padding:8px 14px; border-radius:999px; border:1.5px solid #cbd5e1; background:#fff; font-size:13px; font-weight:700; color:#475569; cursor:pointer; white-space:nowrap; -webkit-tap-highlight-color:transparent; }
+  .dialog-scene-btns button.on { border-color:#2563eb; background:#2563eb; color:#fff; }
+  .dialog-bubbles { background:rgba(255,255,255,0.9); border-radius:16px; padding:14px; box-shadow:0 2px 12px rgba(30,58,138,0.06); }
+  .dlg-bubble { display:flex; gap:8px; margin-bottom:12px; align-items:flex-start; }
+  .dlg-bubble.right { flex-direction:row-reverse; }
+  .dlg-avatar { width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+  .dlg-bubble:not(.right) .dlg-avatar { background:#dbeafe; }
+  .dlg-bubble.right .dlg-avatar { background:#fef3c7; }
+  .dlg-bubble .dlg-content { max-width:72%; }
+  .dlg-bubble .dlg-bubble-box { padding:10px 14px; border-radius:14px; font-size:14px; line-height:1.5; }
+  .dlg-bubble:not(.right) .dlg-bubble-box { background:#eff6ff; color:#1e3a8a; border-bottom-left-radius:4px; }
+  .dlg-bubble.right .dlg-bubble-box { background:#fef3c7; color:#92400e; border-bottom-right-radius:4px; }
+  .dlg-bubble .dlg-play { font-size:16px; cursor:pointer; margin-top:4px; display:inline-block; }
+  .dlg-bubble .dlg-translation { font-size:12px; color:#64748b; margin-top:3px; }
+
+  /* ===== C阶段：预算分摊 ===== */
+  .split-section { background:#fff; border-radius:14px; padding:14px; margin-top:10px; box-shadow:0 1px 6px rgba(30,58,138,0.05); }
+  .split-section h4 { font-size:13px; color:#64748b; margin-bottom:8px; font-weight:700; }
+  .split-row { display:flex; align-items:center; gap:10px; margin:8px 0; font-size:14px; }
+  .split-row input { width:60px; padding:6px; border:1px solid #cbd5e1; border-radius:8px; text-align:center; font-size:14px; }
+  .split-result { margin-top:8px; padding:10px; border-radius:10px; background:#f0fdf4; font-size:14px; color:#166534; font-weight:600; }
+  .split-person { display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px dashed #e2e8f0; font-size:13px; }
+  .split-person:last-child { border-bottom:none; }
+  .split-person .sp-amt { font-weight:800; color:#1e40af; }
+
+  /* ===== C阶段：AI攻略生成 ===== */
+  .ai-gen-box { margin:0 16px 14px; padding:14px; border-radius:16px; background:linear-gradient(135deg,#ede9fe,#ddd6fe); border:1.5px solid #c4b5fd; }
+  .ai-gen-box h4 { font-size:14px; font-weight:800; color:#5b21b6; margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+  .ai-gen-inputs { display:flex; flex-direction:column; gap:8px; }
+  .ai-gen-inputs input, .ai-gen-inputs select { padding:9px 12px; border:1px solid #c4b5fd; border-radius:10px; font-size:14px; background:#fff; color:#1e293b; }
+  .ai-gen-btn { padding:11px; border-radius:12px; border:none; background:linear-gradient(135deg,#7c3aed,#6d28d9); color:#fff; font-size:14px; font-weight:800; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+  .ai-gen-btn:active { opacity:0.85; }
+  .ai-gen-btn:disabled { opacity:0.5; }
+  .ai-gen-result { margin-top:10px; padding:12px; border-radius:12px; background:#fff; border:1px solid #c4b5fd; font-size:13px; color:#475569; line-height:1.7; white-space:pre-wrap; display:none; }
+  .ai-gen-result.show { display:block; }
+  .ai-gen-loading { text-align:center; padding:16px; color:#7c3aed; font-size:14px; font-weight:600; display:none; }
+  .ai-gen-loading.show { display:block; }
+
+  /* ===== C阶段：攻略PDF导出 ===== */
+  .guide-export-btns { display:flex; gap:8px; margin-top:8px; }
+  .guide-export-btns button { flex:1; padding:9px; border-radius:10px; border:1px solid rgba(30,58,138,0.15); background:#fff; font-size:13px; font-weight:700; color:#1e40af; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+  .guide-export-btns button:active { background:#e0e7ff; }
+  @media print {
+    body * { visibility:hidden; }
+    #printArea, #printArea * { visibility:visible; }
+    #printArea { position:absolute; left:0; top:0; width:100%; }
+    .no-print { display:none !important; }
+  }
 </style>
 </head>
 <body>
@@ -498,6 +594,25 @@
       <div class="total-card" id="accTotal"></div>
       <div class="section-title">📊 消费分类</div>
       <div class="acc-cat-grid" id="accCatGrid"></div>
+      <!-- 费用 Excel 表格 -->
+      <div class="acc-table-btns">
+        <button id="accViewGrid" class="on" onclick="accSwitchView('grid')">📱 宫格视图</button>
+        <button id="accViewTable" onclick="accSwitchView('table')">📊 表格视图</button>
+        <button onclick="exportCSV()">📥 导出CSV</button>
+      </div>
+      <div class="acc-table-wrap" id="accTableWrap" style="display:none;">
+        <table class="acc-table" id="accTable"></table>
+      </div>
+      <!-- 自然语言快速记账 -->
+      <div class="nl-input-wrap">
+        <div class="nl-input-box">
+          <span style="font-size:16px;">✍️</span>
+          <input id="nlInput" placeholder="输入：住宿500 / 打车120 / 门票两人360" onkeydown="if(event.key==='Enter')nlSubmit()">
+          <button onclick="nlSubmit()">记一笔</button>
+        </div>
+        <div class="nl-hint">💡 支持类别+金额，如「餐饮200」「购物1500」；也可输入「两人AA」自动分摊</div>
+        <div class="nl-preview" id="nlPreview"></div>
+      </div>
       <!-- 年度预算 -->
       <div style="display:flex;justify-content:space-between;align-items:center;margin:14px 16px 8px;font-size:14px;font-weight:700;color:#1e3a8a;">
         <span>📅 年度预算规划</span>
@@ -514,7 +629,8 @@
         <div class="hero-title">✨ 推荐</div>
         <div class="hero-sub">下次去哪？灵感来了 💡</div>
       </div>
-      <div class="intro-card intro-blue">🌟 珊珊的旅行偏好：海岛控 + 潜水党 + 性价比选手。下次可以考虑：<br>· 印尼 蓝梦岛 / 科莫多（潜水 + 火山）<br>· 泰国 斯米兰（船宿）<br>· 国内 涠洲岛 / 东山岛（自驾短途）</div>
+      <div class="rec-pref" id="recPref"></div>
+      <div class="rec-grid" id="recGrid"></div>
     </section>
 
     <!-- ===== 攻略 ===== -->
@@ -524,6 +640,27 @@
         <div class="hero-sub">通用攻略素材库 · 一键应用到行程 📝</div>
       </div>
       <div class="intro-card intro-pink">📌 通用攻略：<br>· 潜水证提前在国内考，岛上贵且慢<br>· 海岛住宿选含早，省一顿钱<br>· 租摩托最自由，但一定戴头盔<br>· 汇率用实时 APP 比价，少换汇损</div>
+      <!-- AI 攻略生成 -->
+      <div class="ai-gen-box">
+        <h4>🤖 AI 攻略生成</h4>
+        <div class="ai-gen-inputs">
+          <input id="aiDest" placeholder="目的地（如：巴厘岛）">
+          <div style="display:flex;gap:8px;">
+            <input id="aiDays" type="number" placeholder="天数" style="flex:1;" min="1" max="30">
+            <select id="aiStyle" style="flex:1;">
+              <option value="海岛潜水">海岛潜水</option>
+              <option value="城市观光">城市观光</option>
+              <option value="自驾游">自驾游</option>
+              <option value="美食之旅">美食之旅</option>
+              <option value="文化历史">文化历史</option>
+              <option value="户外探险">户外探险</option>
+            </select>
+          </div>
+          <button class="ai-gen-btn" id="aiGenBtn" onclick="generateAIGuide()">✨ 生成攻略</button>
+        </div>
+        <div class="ai-gen-loading" id="aiLoading">🤖 AI 正在生成攻略，请稍候…</div>
+        <div class="ai-gen-result" id="aiResult"></div>
+      </div>
       <div id="guideLib"></div>
     </section>
 
@@ -534,6 +671,12 @@
         <div class="hero-sub">英 / 日 / 韩 / 泰 / 法 · 按场景分类 🗣️</div>
       </div>
       <div class="intro-card intro-purple">🌍 多语言出境话术库：切换顶部语言查看对应翻译，点 🔊 听真人发音；点「＋行程」加入某趟旅行的专属短句本。行程专属短句在行程详情「英语」标签里编辑。</div>
+      <!-- 情景对话 -->
+      <div class="dialog-section">
+        <div style="font-size:15px;font-weight:700;color:#1e3a8a;margin-bottom:6px;">🎭 情景对话</div>
+        <div class="dialog-scene-btns" id="dlgSceneBtns"></div>
+        <div class="dialog-bubbles" id="dlgBubbles"></div>
+      </div>
       <div class="lib-search"><input id="engSearch" placeholder="🔍 搜索（中 / 英 / 日 / 韩 / 泰 / 法 任意字段）" oninput="renderEnglishLib()"></div>
       <div id="englishLib"></div>
     </section>
@@ -671,6 +814,7 @@
       <div class="sheet-body" style="padding-bottom:6px;">
         <button class="menu-item" onclick="manualSync()"><span class="mi-icon">🔄</span><span>手动云端同步<div class="mi-sub">立即上传/拉取最新数据</div></span></button>
         <button class="menu-item" onclick="generateReport()"><span class="mi-icon">🖼️</span><span>生成旅行年报<div class="mi-sub">海报图片，可保存分享</div></span></button>
+        <button class="menu-item" onclick="shareTripSummary()"><span class="mi-icon">📤</span><span>分享整套行程<div class="mi-sub">生成行程摘要文本分享</div></span></button>
         <button class="menu-item" onclick="exportBackup()"><span class="mi-icon">💾</span><span>数据备份导出<div class="mi-sub">全部行程导出文件</div></span></button>
         <button class="menu-item" onclick="openSettings()"><span class="mi-icon">⚙️</span><span>设置<div class="mi-sub">回收站 / 缓存</div></span></button>
         <button class="menu-item" onclick="openHelp()"><span class="mi-icon">❓</span><span>帮助中心<div class="mi-sub">使用说明</div></span></button>
@@ -1411,7 +1555,7 @@ function renderWishlist(){
 }
 function toggleWishlist(){ const w=document.getElementById('wishlistWrap'); const open=w.style.display==='none'; w.style.display=open?'block':'none'; document.querySelector('.section-title .link-btn[onclick="toggleWishlist()"]').textContent=open?'收起':'展开'; }
 
-function renderAll(){ renderStats(); renderHistory(); renderTrips(); renderFootprints(); renderAccounts(); renderReviews(); renderWishlist(); renderGuideLib(); renderEnglishLib(); }
+function renderAll(){ renderStats(); renderHistory(); renderTrips(); renderFootprints(); renderAccounts(); renderReviews(); renderWishlist(); renderGuideLib(); renderEnglishLib(); renderRecommend(); renderDialogScenes(); }
 
 /* =========================================================
    统计下钻
@@ -1544,6 +1688,7 @@ function renderTripGuide(t){
   let html='<div class="form-row"><label>攻略正文</label><textarea class="guide-text" id="g-text" placeholder="写点贴士、注意事项、链接…">'+esc(g.text||'')+'</textarea></div>';
   html+='<div class="form-row"><label>打包 / 打卡清单</label><div class="checklist" id="g-check">'+((g.checklist||[]).map((it,idx)=>'<div class="check-item'+(it.done?' done':'')+'" onclick="toggleGuideItem(\''+t.id+'\','+idx+')"><span class="ci-ck">'+(it.done?'✓':'')+'</span><span class="ci-tx">'+esc(it.t)+'</span><span class="ci-del" onclick="event.stopPropagation();delGuideItem(\''+t.id+'\','+idx+')">✕</span></div>').join('')||'<div style="font-size:13px;color:#94a3b8;">还没有清单项，下面加一个</div>')+'</div><div style="display:flex;gap:8px;margin-top:6px;"><input id="g-new" placeholder="新清单项" style="flex:1;border:1px solid #cbd5e1;border-radius:8px;padding:8px;font-size:13px;"><button class="quick-btn" style="flex:0 0 auto;" onclick="addGuideItem(\''+t.id+'\')">＋</button></div></div>';
   html+='<div class="form-row"><label>插入预设模板</label><div class="tpl-row">'+Object.keys(GUIDE_TPLS).map(k=>'<span class="tpl-chip" onclick="applyGuideTemplate(\''+t.id+'\',\''+esc(k)+'\')">'+esc(k)+'</span>').join('')+'</div></div>';
+  html+='<div class="guide-export-btns"><button onclick="exportGuidePDF(\''+t.id+'\')">📄 导出PDF</button></div>';
   document.getElementById('tripBody').innerHTML=html;
   document.getElementById('tripActions').innerHTML='<button class="btn-cancel" onclick="closeTrip()">关闭</button><button class="btn-save" onclick="saveGuide(\''+t.id+'\')">保存攻略</button>';
 }
@@ -1577,6 +1722,8 @@ function renderTripBudget(t){
     (hasActual?'<div class="kv"><span class="k">实际 / 已记录</span><span class="v '+(actual>planned?'bud-warn':'')+'">¥'+Math.round(actual).toLocaleString()+'</span></div>':'')+
     (hasActual?('<div class="kv"><span class="k">差额</span><span class="v '+(actual>planned?'bud-warn':'')+'">'+(actual>planned?('超支 ¥'+Math.round(actual-planned).toLocaleString()):('结余 ¥'+Math.round(planned-actual).toLocaleString()))+'</span></div>'):'<div class="form-hint">在行程编辑里填「花费拆分」可对比实际</div>')+
     '</div>';
+  // C阶段：费用分摊
+  html+=renderSplitSection(t);
   document.getElementById('tripBody').innerHTML=html;
   document.getElementById('tripActions').innerHTML='<button class="btn-cancel" onclick="closeTrip()">关闭</button><button class="btn-save" onclick="saveBudget(\''+t.id+'\')">保存预算</button>';
 }
@@ -1963,12 +2110,15 @@ function switchTab(targetPage){
   updateFloatBar();
   // 切到足迹页时强制地图重算尺寸
   if(targetPage==='footprints' && fpMapInstance){ setTimeout(()=>{ try{ fpMapInstance.invalidateSize(); }catch(e){} }, 250); }
+  // 切到英语页时渲染对话
+  if(targetPage==='english'){ renderDialogScenes(); }
 }
 function updateFloatBar(){
   const fb=document.getElementById('floatBar');
   if(!fb) return;
   const maskOpen=document.getElementById('editorMask').classList.contains('show')
     || document.getElementById('detailMask').classList.contains('show')
+    || document.getElementById('tripMask').classList.contains('show')
     || document.getElementById('menuMask').classList.contains('show')
     || document.getElementById('filterMask').classList.contains('show')
     || document.getElementById('ybMask').classList.contains('show')
@@ -2003,7 +2153,7 @@ let tStartX=0,tStartY=0,tTracking=false,tLocked=false;
 function activePage(){ return document.querySelector('.page.active'); }
 function resetTransform(){ const p=activePage(); if(p) p.style.transform=''; }
 function onTS(e){
-  if (document.querySelector('.sub-page.active') || document.getElementById('editorMask').classList.contains('show') || document.getElementById('detailMask').classList.contains('show') || document.getElementById('menuMask').classList.contains('show') || document.getElementById('filterMask').classList.contains('show') || document.getElementById('ybMask').classList.contains('show')) { tTracking=false; return; }
+  if (document.querySelector('.sub-page.active') || document.getElementById('editorMask').classList.contains('show') || document.getElementById('detailMask').classList.contains('show') || document.getElementById('tripMask').classList.contains('show') || document.getElementById('menuMask').classList.contains('show') || document.getElementById('filterMask').classList.contains('show') || document.getElementById('ybMask').classList.contains('show')) { tTracking=false; return; }
   if (e.target.closest('.swipe-row')) { tTracking=false; return; }
   if (e.target.closest('input,textarea,select,button,a')) { tTracking=false; return; }
   const t=e.touches[0]; tStartX=t.clientX; tStartY=t.clientY; tTracking=true; tLocked=false;
@@ -2034,6 +2184,394 @@ if(hasTouch){
   window.addEventListener('mouseup',e=>{ if(!mDown) return; mDown=false; const dx=e.clientX-mX, dy=e.clientY-mY; if(Math.abs(dx)<SWIPE_MIN||Math.abs(dx)<Math.abs(dy)*SWIPE_RATIO) return; if(dx<0) switchByIdx(currentIdx+1); else switchByIdx(currentIdx-1); });
 }
 (function showHintOnce(){ try{ if(localStorage.getItem('swipeHintShown')==='1') return; document.getElementById('swipeHint').classList.add('show'); setTimeout(()=>document.getElementById('swipeHint').classList.remove('show'),2800); localStorage.setItem('swipeHintShown','1'); }catch(_){} })();
+
+/* =========================================================
+   C阶段：推荐页渐变卡片
+   ========================================================= */
+const RECOMMENDATIONS = [
+  { flag:'🇮🇩', name:'蓝梦岛 / 科莫多', country:'印尼', desc:'潜水天堂 + 科莫多巨蜥，船宿看粉色沙滩。性价比超高，适合冒险型海岛控。',
+    budget:'¥6,000-8,000', season:'4-10月', tags:['潜水','海岛','冒险'], gradient:'linear-gradient(135deg,#06b6d4,#0891b2,#0e7490)' },
+  { flag:'🇹🇭', name:'斯米兰群岛', country:'泰国', desc:'每年仅开放半年的绝美群岛，船宿潜水看鲸鲨。水清沙白，性价比之王。',
+    budget:'¥5,000-7,000', season:'11月-次年4月', tags:['潜水','船宿','海岛'], gradient:'linear-gradient(135deg,#3b82f6,#2563eb,#1d4ed8)' },
+  { flag:'🇨🇳', name:'涠洲岛', country:'中国', desc:'国内最大火山岛，骑行环岛看珊瑚礁。海鲜便宜，适合自驾短途。',
+    budget:'¥2,000-3,500', season:'全年', tags:['自驾','短途','海岛'], gradient:'linear-gradient(135deg,#10b981,#059669,#047857)' },
+  { flag:'🇨🇳', name:'东山岛', country:'中国', desc:'福建小众海岛，左耳取景地。海鲜大排档 + 日出沙滩，自驾首选。',
+    budget:'¥1,500-2,500', season:'5-10月', tags:['自驾','短途','美食'], gradient:'linear-gradient(135deg,#f59e0b,#d97706,#b45309)' },
+  { flag:'🇳🇿', name:'新西兰南岛', country:'新西兰', desc:'极限运动之都皇后镇 + 米尔福德峡湾。自驾环南岛看冰川湖泊，人生必去。',
+    budget:'¥15,000-25,000', season:'11月-次年4月', tags:['自驾','户外','长线'], gradient:'linear-gradient(135deg,#8b5cf6,#7c3aed,#6d28d9)' },
+  { flag:'🇲🇻', name:'马尔代夫居民岛', country:'马尔代夫', desc:'不住水屋也能玩转马代！居民岛跳岛 + 公共船出海，人均3千潜两天。',
+    budget:'¥8,000-12,000', season:'11月-次年4月', tags:['海岛','潜水','跳岛'], gradient:'linear-gradient(135deg,#06b6d4,#3b82f6,#2563eb)' },
+  { flag:'🇵🇭', name:'巴拉望', country:'菲律宾', desc:'世界最美岛屿之一，地下河 + 爱妮岛跳岛。比长滩更原始，潜水性价比极高。',
+    budget:'¥5,000-8,000', season:'11月-次年5月', tags:['潜水','海岛','跳岛'], gradient:'linear-gradient(135deg,#14b8a6,#0d9488,#0f766e)' },
+  { flag:'🇪🇬', name:'红海船宿', country:'埃及', desc:'世界顶级潜点，沉船 + 鲨鱼 + 珊瑚墙。船宿一周含全餐，潜水爱好者终极目标。',
+    budget:'¥10,000-15,000', season:'3-11月', tags:['潜水','船宿','长线'], gradient:'linear-gradient(135deg,#ef4444,#dc2626,#b91c1c)' }
+];
+const USER_PREFS = ['🏝️ 海岛控','🤿 潜水党','💰 性价比','🗺️ 自驾','🍤 美食','📷 拍照'];
+function renderRecommend(){
+  const prefEl=document.getElementById('recPref');
+  if(prefEl) prefEl.innerHTML = USER_PREFS.map(p=>'<span class="rp-chip">'+p+'</span>').join('');
+  const gridEl=document.getElementById('recGrid');
+  if(!gridEl) return;
+  gridEl.innerHTML = RECOMMENDATIONS.map((r,i)=>(
+    '<div class="rec-card" style="background:'+r.gradient+';" onclick="recCardClick('+i+')">'+
+    '<div class="rec-bg">'+r.flag+'</div>'+
+    '<div class="rec-flag">'+r.flag+'</div>'+
+    '<div class="rec-name">'+esc(r.name)+'</div>'+
+    '<div class="rec-desc">'+esc(r.desc)+'</div>'+
+    '<div class="rec-meta">'+
+    '<span>💰 '+esc(r.budget)+'</span>'+
+    '<span>📅 '+esc(r.season)+'</span>'+
+    '<span>🌍 '+esc(r.country)+'</span>'+
+    '</div>'+
+    '<div class="rec-tags">'+r.tags.map(t=>'<span class="rec-tag">'+esc(t)+'</span>').join('')+'</div>'+
+    '</div>'
+  )).join('');
+}
+function recCardClick(i){
+  const r=RECOMMENDATIONS[i];
+  // 加入愿望清单
+  if(!store.wishlist) store.wishlist=[];
+  if(store.wishlist.some(w=>w.name===r.name)){ showToast('已在愿望清单中 ✓'); return; }
+  store.wishlist.push({ id:'w_'+Date.now(), name:r.name, flag:r.flag, country:r.country, done:false });
+  saveStore(); renderWishlist();
+  showToast('已加入愿望清单 📌');
+}
+
+/* =========================================================
+   C阶段：费用 Excel 表格 + CSV 导出
+   ========================================================= */
+function accSwitchView(view){
+  const grid=document.getElementById('accCatGrid');
+  const table=document.getElementById('accTableWrap');
+  const btnG=document.getElementById('accViewGrid');
+  const btnT=document.getElementById('accViewTable');
+  if(view==='table'){
+    grid.style.display='none'; table.style.display='block';
+    btnG.classList.remove('on'); btnT.classList.add('on');
+    renderAccTable();
+  } else {
+    grid.style.display='grid'; table.style.display='none';
+    btnG.classList.add('on'); btnT.classList.remove('on');
+  }
+}
+function renderAccTable(){
+  const trips=sortTripsByDateDesc(store.trips);
+  const CATS=[
+    {k:'stay',label:'住宿'},{k:'transport',label:'交通'},{k:'food',label:'餐饮'},
+    {k:'play',label:'门票'},{k:'shopping',label:'购物'},{k:'other',label:'其他'}
+  ];
+  let html='<thead><tr><th>行程</th><th>日期</th>';
+  CATS.forEach(c=>html+='<th>'+c.label+'</th>');
+  html+='<th>合计</th></tr></thead><tbody>';
+  let totals={}; CATS.forEach(c=>totals[c.k]=0); let grandTotal=0;
+  trips.forEach(t=>{
+    const co=t.cost||{}; let rowTotal=0;
+    html+='<tr><td class="acc-t-name">'+(t.flag||'')+' '+esc(t.name)+'</td><td>'+esc(t.date||'')+'</td>';
+    CATS.forEach(c=>{
+      const v=co[c.k]||0;
+      rowTotal+=v; totals[c.k]+=v;
+      html+='<td>'+(v?'¥'+v.toLocaleString():'—')+'</td>';
+    });
+    grandTotal+=rowTotal;
+    html+='<td class="acc-t-total">¥'+rowTotal.toLocaleString()+'</td></tr>';
+  });
+  html+='</tbody><tfoot><tr><td colspan="2">合计</td>';
+  CATS.forEach(c=>html+='<td>¥'+totals[c.k].toLocaleString()+'</td>');
+  html+='<td>¥'+grandTotal.toLocaleString()+'</td></tr></tfoot>';
+  document.getElementById('accTable').innerHTML=html;
+}
+function exportCSV(){
+  const trips=sortTripsByDateDesc(store.trips);
+  const CATS=['stay','transport','food','play','shopping','other'];
+  const labels=['住宿','交通','餐饮','门票','购物','其他'];
+  let csv='\uFEFF行程,日期,晚数,'+labels.join(',')+',合计\n';
+  trips.forEach(t=>{
+    const co=t.cost||{}; let total=0;
+    const vals=CATS.map(k=>{ const v=co[k]||0; total+=v; return v; });
+    csv+='"'+(t.name||'').replace(/"/g,'""')+'",'+(t.date||'')+','+(t.nights||0)+',';
+    csv+=vals.map(v=>v||'').join(',');
+    csv+=','+total+'\n';
+  });
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download='旅行费用_'+todayStr()+'.csv'; a.click();
+  showToast('CSV 已导出 📥');
+}
+
+/* =========================================================
+   C阶段：自然语言快速记账
+   ========================================================= */
+const NL_CAT_MAP = {
+  '住宿':'stay','酒店':'stay','住':'stay','民宿':'stay','青旅':'stay','hostel':'stay','hotel':'stay',
+  '交通':'transport','打车':'transport','出租车':'transport','机票':'transport','车票':'transport','船票':'transport','高铁':'transport','地铁':'transport','公交':'transport','租车':'transport','油费':'transport','停车':'transport',
+  '餐饮':'food','吃饭':'food','吃':'food','餐':'food','美食':'food','早餐':'food','午餐':'food','晚餐':'food','夜宵':'food','零食':'food','咖啡':'food','奶茶':'food',
+  '门票':'play','景区':'play','景点':'play','潜水':'play','体验':'play','活动':'play','游玩':'play','演出':'play','展览':'play',
+  '购物':'shopping','买东西':'shopping','特产':'shopping','纪念品':'shopping','超市':'shopping','免税':'shopping','购物':'shopping',
+  '其他':'other','杂费':'other','保险':'other','签证':'other','小费':'other','电话卡':'other'
+};
+function parseNL(text){
+  text=text.trim(); if(!text) return null;
+  // 提取金额
+  const amtMatch=text.match(/(\d+(?:\.\d+)?)/);
+  const amt=amtMatch?parseFloat(amtMatch[1]):0;
+  if(!amt) return null;
+  // 匹配分类
+  let catKey='other';
+  for(const kw in NL_CAT_MAP){
+    if(text.indexOf(kw)>=0){ catKey=NL_CAT_MAP[kw]; break; }
+  }
+  const CAT_LABELS={stay:'住宿',transport:'交通',food:'餐饮',play:'门票',shopping:'购物',other:'其他'};
+  // 检测"两人AA"等分摊
+  const aaMatch=text.match(/(\d+)人/) || text.match(/AA/i) || text.match(/平分/);
+  const people=aaMatch?(parseInt(text.match(/(\d+)人/)?.[1]||'2')):0;
+  return { cat:catKey, catLabel:CAT_LABELS[catKey], amount:amt, people, raw:text };
+}
+function nlSubmit(){
+  const input=document.getElementById('nlInput');
+  const text=input.value.trim(); if(!text){ showToast('请输入内容'); return; }
+  const parsed=parseNL(text); if(!parsed){ showToast('无法识别，请输入如「住宿500」'); return; }
+  // 找最近的行程（按日期最新的 done 或 ongoing）
+  const trips=sortTripsByDateDesc(store.trips);
+  if(!trips.length){ showToast('请先添加一段行程'); return; }
+  const t=trips[0]; // 最近的行程
+  if(!t.cost) t.cost={stay:0,transport:0,food:0,play:0};
+  if(!t.cost.shopping) t.cost.shopping=0;
+  if(!t.cost.other) t.cost.other=0;
+  const actualAmt = parsed.people>0 ? Math.round(parsed.amount/parsed.people) : parsed.amount;
+  t.cost[parsed.cat] = (t.cost[parsed.cat]||0) + actualAmt;
+  saveStore(); renderAccounts();
+  // 显示预览
+  const preview=document.getElementById('nlPreview');
+  preview.innerHTML='✅ 已记入「'+(t.flag||'')+' '+t.name+'」→ '+parsed.catLabel+' ¥'+actualAmt.toLocaleString()+
+    (parsed.people>0?'（'+parsed.people+'人AA，人均）':'');
+  preview.classList.add('show');
+  setTimeout(()=>preview.classList.remove('show'),4000);
+  input.value='';
+  showToast('已记账 '+parsed.catLabel+' ¥'+actualAmt);
+}
+
+/* =========================================================
+   C阶段：英语情景对话
+   ========================================================= */
+const DIALOG_SCENES = {
+  '酒店入住':[
+    {side:'left', avatar:'🏨', zh:'您好，我有预订。名字是珊珊。', translations:{en:'Hello, I have a reservation. The name is Shan.',ja:'こんにちは、予約しています。名前はシャンです。',ko:'안녕하세요, 예약했습니다. 이름은 샨이에요.',th:'สวัสดีค่ะ มีการจองค่ะ ชื่อシャン',fr:'Bonjour, j\'ai une réservation. Le nom est Shan.'}},
+    {side:'right', avatar:'🧑‍💼', zh:'欢迎！请出示护照。您的房间号是 305。', translations:{en:'Welcome! May I see your passport? Your room number is 305.',ja:'ようこそ！パスポートを見せてください。お部屋は305号室です。',ko:'환영합니다! 여권을 보여주세요. 객실 번호는 305호입니다.',th:'ยินดีต้อนรับค่ะ ขอดูพาสปอร์ตด้วยค่ะ ห้อง 305',fr:'Bienvenue ! Puis-je voir votre passeport ? Votre chambre est la 305.'}},
+    {side:'left', avatar:'🏨', zh:'WiFi 密码是多少？可以延迟退房吗？', translations:{en:'What is the WiFi password? Can I have a late checkout?',ja:'WiFiのパスワードは？遅くチェックアウトできますか？',ko:'와이파이 비밀번호가 뭐예요? 늦게 체크아웃해도 돼요?',th:'รหัส Wi-Fi อะไรคะ? เช็คเอาท์สายได้ไหมคะ',fr:'Quel est le mot de passe WiFi ? Puis-je partir plus tard ?'}},
+    {side:'right', avatar:'🧑‍💼', zh:'密码是 hotel2024。可以延迟到下午1点。', translations:{en:'The password is hotel2024. You can check out until 1 PM.',ja:'パスワードはhotel2024です。午後1時まで大丈夫です。',ko:'비밀번호는 hotel2024입니다. 오후 1시까지 가능합니다.',th:'รหัสคือ hotel2024 ค่ะ เช็คเอาท์ได้ถึงบ่ายโมงค่ะ',fr:'Le mot de passe est hotel2024. Vous pouvez partir jusqu\'à 13h.'}}
+  ],
+  '餐厅点餐':[
+    {side:'left', avatar:'🍽️', zh:'请给我菜单。有什么推荐的？', translations:{en:'May I have the menu? What do you recommend?',ja:'メニューをください。おすすめは？',ko:'메뉴 주세요. 추천이 뭐예요?',th:'ขอเมนูหน่อยค่ะ แนะนำอะไรดีคะ',fr:'Puis-je avoir le menu ? Qu\'est-ce que vous recommandez ?'}},
+    {side:'right', avatar:'👨‍🍳', zh:'推荐烤鱼和海鲜炒饭。不要辣吗？', translations:{en:'I recommend grilled fish and seafood fried rice. No spicy?',ja:'焼き魚と海鮮チャーハンがおすすめです。辛くしないですか？',ko:'구운 생선과 해산물 볶음밥을 추천합니다. 맵지 않게요?',th:'แนะนำปลาย่างและข้าวผัดทะเลค่ะ ไม่เผ็ดใช่ไหมคะ',fr:'Je recommande le poisson grillé et le riz frit aux fruits de mer. Pas épicé ?'}},
+    {side:'left', avatar:'🍽️', zh:'不要辣。请买单，可以支付宝吗？', translations:{en:'No spicy, please. Can I have the bill? Do you accept Alipay?',ja:'辛くしないで。お会計お願いします。アリペイ使えますか？',ko:'맵지 않게 해 주세요. 계산서 주세요. 알리페이 돼요?',th:'ไม่เผ็ดค่ะ เช็คบิลด้วย รับอาลีเพย์ไหมคะ',fr:'Pas épicé, s\'il vous plaît. L\'addition ? Acceptez-vous Alipay ?'}},
+    {side:'right', avatar:'👨‍🍳', zh:'好的，一共 280 元。支持支付宝。', translations:{en:'Sure, total 280 yuan. We accept Alipay.',ja:'はい、合計280元です。アリペイ使えます。',ko:'네, 총 280위안입니다. 알리페이 가능합니다.',th:'ได้ค่ะ รวม 280 หยวน รับอาลีเพย์ค่ะ',fr:'Bien sûr, 280 yuans. Nous acceptons Alipay.'}}
+  ],
+  '购物砍价':[
+    {side:'left', avatar:'🛍️', zh:'这个多少钱？可以便宜点吗？', translations:{en:'How much is this? Can you give me a discount?',ja:'いくらですか？安くなりますか？',ko:'얼마예요? 깎아 주세요.',th:'ราคาเท่าไหร่คะ ลดได้ไหมคะ',fr:'Combien ça coûte ? Pouvez-vous me faire un prix ?'}},
+    {side:'right', avatar:'🧑‍🔧', zh:'原价 500，给你 400 怎么样？', translations:{en:'Original price 500, how about 400?',ja:'定価500ですが、400でどうですか？',ko:'원래 500인데 400에 어떠세요?',th:'ราคาเดิม 500 ลดเหลือ 400 ได้ไหมคะ',fr:'Prix original 500, je vous le fais à 400 ?'}},
+    {side:'left', avatar:'🛍️', zh:'300 我就买。两个一起呢？', translations:{en:'I\'ll take it at 300. How about two together?',ja:'300なら買います。2つ一緒だと？',ko:'300이면 살게요. 두 개 같이 하면요?',th:'300 จะซื้อค่ะ สองอันรวมเท่าไหร่คะ',fr:'Je le prends à 300. Et si j\'en prends deux ?'}},
+    {side:'right', avatar:'🧑‍🔧', zh:'两个 550 成交！支持支付宝。', translations:{en:'Two for 550, deal! We accept Alipay.',ja:'2つで550で決まり！アリペイOKです。',ko:'두 개 550에 드릴게요! 알리페이 가능합니다.',th:'สองอัน 550 ค่ะ รับอาลีเพย์ค่ะ',fr:'Deux pour 550, marché ! Nous acceptons Alipay.'}}
+  ],
+  '潜水咨询':[
+    {side:'left', avatar:'🤿', zh:'一潜多少钱？需要潜水证吗？', translations:{en:'How much for one dive? Do I need a diving license?',ja:'1ダイブいくらですか？ライセンスが必要ですか？',ko:'다이빙 한 번에 얼마예요? 라이선스 필요해요?',th:'ดำน้ำครั้งละเท่าไหร่คะ ต้องมีใบอนุญาตไหมคะ',fr:'Combien pour une plongée ? Ai-je besoin d\'un permis de plongée ?'}},
+    {side:'right', avatar:'🏊‍♂️', zh:'一潜 350，有证 280。含装备。', translations:{en:'350 per dive, 280 with license. Equipment included.',ja:'1ダイブ350、ライセンスありは280です。装備込みです。',ko:'1다이브 350, 라이선스 있으면 280이요. 장비 포함입니다.',th:'ดำครั้งละ 350 มีใบอนุญาต 280 รวมอุปกรณ์ค่ะ',fr:'350 par plongée, 280 avec permis. Équipement inclus.'}},
+    {side:'left', avatar:'🤿', zh:'明天早上能安排两潜吗？', translations:{en:'Can you arrange two dives tomorrow morning?',ja:'明日の朝に2ダイブお願いできますか？',ko:'내일 아침에 다이빙 두 번 가능해요?',th:'พรุ่งนี้เช้าดำสองครั้งได้ไหมคะ',fr:'Pouvez-vous organiser deux plongées demain matin ?'}},
+    {side:'right', avatar:'🏊‍♂️', zh:'可以！早上8点出发，看鲨鱼和海龟。', translations:{en:'Sure! Departure at 8 AM, we\'ll see sharks and turtles.',ja:'できます！朝8時出発で、サメとウミガメが見られます。',ko:'네! 아침 8시 출발이요. 상어와 거북이를 볼 수 있어요.',th:'ได้ค่ะ เช้า 8 โมงออกเรือ จะได้เห็นปลาฉลามและเต่าทะเลค่ะ',fr:'Bien sûr ! Départ à 8h, on verra des requins et des tortues.'}}
+  ]
+};
+let currentDialogScene='酒店入住';
+function renderDialogScenes(){
+  const btnEl=document.getElementById('dlgSceneBtns');
+  const bubEl=document.getElementById('dlgBubbles');
+  if(!btnEl||!bubEl) return;
+  btnEl.innerHTML=Object.keys(DIALOG_SCENES).map(k=>
+    '<button class="'+(k===currentDialogScene?'on':'')+'" onclick="switchDialogScene(\''+esc(k)+'\')">'+esc(k)+'</button>'
+  ).join('');
+  renderDialogBubbles();
+}
+function switchDialogScene(scene){ currentDialogScene=scene; renderDialogScenes(); }
+function renderDialogBubbles(){
+  const bubEl=document.getElementById('dlgBubbles');
+  const scene=DIALOG_SCENES[currentDialogScene]||[];
+  const lang=currentLang;
+  bubEl.innerHTML=scene.map((b,i)=>{
+    const translation=b.translations[lang]||b.translations.en||b.zh;
+    const playArg=JSON.stringify(translation);
+    return '<div class="dlg-bubble '+b.side+'">'+
+      '<div class="dlg-avatar">'+b.avatar+'</div>'+
+      '<div class="dlg-content">'+
+      '<div class="dlg-bubble-box">'+esc(b.zh)+'</div>'+
+      '<div class="dlg-translation">'+esc(translation)+'</div>'+
+      '<span class="dlg-play" onclick=\'playEnglish('+playArg+',"'+lang+'")\'>🔊 发音</span>'+
+      '</div></div>';
+  }).join('');
+}
+
+/* =========================================================
+   C阶段：预算同行人分摊
+   ========================================================= */
+function renderSplitSection(t){
+  const planned=(t.budgetItems||[]).reduce((s,it)=>s+budCNY(it),0);
+  let actual=0;
+  if(t.cost){ actual=(t.cost.stay||0)+(t.cost.transport||0)+(t.cost.food||0)+(t.cost.play||0)+(t.cost.shopping||0)+(t.cost.other||0); }
+  else { actual=moneyNum(t.budget); }
+  const total=actual||planned;
+  const companions=t.companions||[];
+  const defaultN=Math.max(2,companions.length+1);
+  let html='<div class="split-section">'+
+    '<h4>👥 费用分摊</h4>'+
+    '<div class="split-row"><span style="flex:1;">参与人数（含自己）</span>'+
+    '<input type="number" id="splitN" value="'+defaultN+'" min="1" max="20" onchange="calcSplit()">'+
+    '<span>人</span></div>';
+  if(companions.length){
+    html+='<div style="font-size:12px;color:#64748b;margin:4px 0;">同行人：'+companions.map(c=>esc(c)).join('、')+' + 自己</div>';
+  }
+  html+='<div id="splitResult"></div></div>';
+  setTimeout(calcSplit,0);
+  return html;
+}
+function calcSplit(){
+  const n=parseInt(document.getElementById('splitN')?.value)||1;
+  const t=store.trips.find(x=>x.id===tripCtxId);
+  if(!t) return;
+  const planned=(t.budgetItems||[]).reduce((s,it)=>s+budCNY(it),0);
+  let actual=0;
+  if(t.cost){ actual=(t.cost.stay||0)+(t.cost.transport||0)+(t.cost.food||0)+(t.cost.play||0)+(t.cost.shopping||0)+(t.cost.other||0); }
+  else { actual=moneyNum(t.budget); }
+  const total=actual||planned||0;
+  const perPerson=Math.round(total/n);
+  const el=document.getElementById('splitResult');
+  if(el) el.innerHTML='<div class="split-result">总费用 ¥'+total.toLocaleString()+' ÷ '+n+' 人 = 每人 <b style="font-size:18px;">¥'+perPerson.toLocaleString()+'</b></div>';
+}
+
+/* =========================================================
+   C阶段：AI 攻略生成（Pollinations.ai 免费文本 API）
+   ========================================================= */
+async function generateAIGuide(){
+  const dest=document.getElementById('aiDest').value.trim();
+  const days=document.getElementById('aiDays').value.trim()||'5';
+  const style=document.getElementById('aiStyle').value;
+  if(!dest){ showToast('请输入目的地'); return; }
+  const btn=document.getElementById('aiGenBtn');
+  const loading=document.getElementById('aiLoading');
+  const result=document.getElementById('aiResult');
+  btn.disabled=true; loading.classList.add('show'); result.classList.remove('show');
+  const prompt='你是一位专业旅行规划师。请为「'+dest+'」制定一份'+days+'天的「'+style+'」主题攻略。包括：\n1. 每日行程安排（含具体景点/活动）\n2. 必带物品清单\n3. 注意事项（安全/天气/当地禁忌）\n4. 预算参考（人均）\n5. 美食推荐\n请用简洁的中文，用 emoji 标注重点。';
+  try{
+    const url='https://text.pollinations.ai/'+encodeURIComponent(prompt)+'?model=openai';
+    const controller=new AbortController();
+    const timeout=setTimeout(()=>controller.abort(),30000);
+    const resp=await fetch(url,{signal:controller.signal});
+    clearTimeout(timeout);
+    if(!resp.ok) throw new Error('API error: '+resp.status);
+    const text=await resp.text();
+    loading.classList.remove('show');
+    result.innerHTML=esc(text).replace(/\n/g,'<br>')+
+      '<div style="margin-top:10px;display:flex;gap:8px;">'+
+      '<button class="quick-btn" style="flex:1;" onclick="aiApplyToTrip()">📋 应用到行程</button>'+
+      '<button class="quick-btn" style="flex:1;" onclick="aiCopyResult()">📋 复制</button>'+
+      '</div>';
+    result.classList.add('show');
+    result._aiText=text;
+  }catch(e){
+    loading.classList.remove('show');
+    // 降级：模板生成
+    const fallback=aiFallbackGuide(dest,days,style);
+    result.innerHTML=esc(fallback).replace(/\n/g,'<br>')+
+      '<div style="margin-top:8px;font-size:11px;color:#94a3b8;">⚠️ AI 接口暂不可用，已用模板生成。可点击「应用到行程」使用。</div>'+
+      '<div style="margin-top:10px;display:flex;gap:8px;">'+
+      '<button class="quick-btn" style="flex:1;" onclick="aiApplyToTrip()">📋 应用到行程</button>'+
+      '<button class="quick-btn" style="flex:1;" onclick="aiCopyResult()">📋 复制</button>'+
+      '</div>';
+    result.classList.add('show');
+    result._aiText=fallback;
+  }
+  btn.disabled=false;
+}
+function aiFallbackGuide(dest,days,style){
+  return '📍 '+dest+' · '+days+'天「'+style+'」攻略\n\n'+
+    '🗓️ 行程安排：\n'+
+    'Day 1: 抵达 '+dest+'，入住酒店，周边探索\n'+
+    'Day 2: 核心景点游览，下午体验当地特色活动\n'+
+    'Day 3: 深度体验日，可以安排一日游或出海\n'+
+    (parseInt(days)>3?'Day 4: 小众秘境探索 + 美食打卡\n':'')+
+    (parseInt(days)>4?'Day 5: 自由活动 + 采购纪念品，返程\n':'')+
+    '\n🎒 必带物品：\n'+
+    '· 护照/身份证 · 充电宝 · 防晒霜 · 常用药\n'+
+    '· 换洗衣物 · 拖鞋 · 雨伞 · 现金零钱\n\n'+
+    '⚠️ 注意事项：\n'+
+    '· 提前查天气，带好防晒/防雨装备\n'+
+    '· 贵重物品随身携带，注意安全\n'+
+    '· 尊重当地风俗习惯\n'+
+    '· 保持手机有电有流量\n\n'+
+    '💰 预算参考：人均 ¥5,000-8,000\n\n'+
+    '🍽️ 美食推荐：到当地后问本地人最靠谱！';
+}
+function aiApplyToTrip(){
+  const text=document.getElementById('aiResult')._aiText;
+  if(!text){ showToast('没有可应用的内容'); return; }
+  const trips=store.trips||[]; if(!trips.length){ showToast('还没有行程'); return; }
+  const ans=prompt('应用到哪趟行程？\n'+trips.map((t,i)=>(i+1)+'. '+t.name).join('\n')); if(!ans) return;
+  const idx=parseInt(ans,10)-1; if(isNaN(idx)||!trips[idx]){ showToast('选择无效'); return; }
+  const t=trips[idx]; const g=ensureGuide(t); g.text=text;
+  // 提取清单项（每行带 · 或 - 开头的）
+  const items=text.split('\n').filter(l=>/^[·\-\*\d+\.]/.test(l.trim())).map(l=>l.replace(/^[·\-\*\d+\.]\s*/,'').trim()).filter(Boolean).slice(0,15);
+  items.forEach(it=>{ if(!g.checklist.some(c=>c.t===it)) g.checklist.push({t:it,done:false}); });
+  saveStore(); renderAll();
+  showToast('已应用到「'+t.name+'」攻略 ✓');
+}
+function aiCopyResult(){
+  const text=document.getElementById('aiResult')._aiText;
+  if(!text){ showToast('没有可复制的内容'); return; }
+  try{ navigator.clipboard.writeText(text); showToast('已复制到剪贴板 📋'); }catch(e){ showToast('复制失败，请手动选择'); }
+}
+
+/* =========================================================
+   C阶段：攻略 PDF 导出（打印模式）
+   ========================================================= */
+function exportGuidePDF(id){
+  const t=store.trips.find(x=>x.id===id); if(!t) return;
+  const g=ensureGuide(t);
+  const items=(g.checklist||[]).map(it=>'<li style="'+(it.done?'text-decoration:line-through;color:#999;':'')+'">'+esc(it.t)+'</li>').join('');
+  const printArea=document.createElement('div');
+  printArea.id='printArea';
+  printArea.style.cssText='padding:30px;font-family:sans-serif;color:#1e293b;';
+  printArea.innerHTML=
+    '<h1 style="color:#1e3a8a;font-size:24px;border-bottom:3px solid #2563eb;padding-bottom:10px;">'+(t.flag||'')+' '+esc(t.name)+' · 攻略</h1>'+
+    '<div style="margin:10px 0;color:#64748b;font-size:14px;">'+esc(t.country||'')+' · '+esc(t.date||'')+' · '+(t.nights||0)+'晚 · '+STATUS_LABEL[t.status||'done']+'</div>'+
+    '<div style="margin:8px 0;font-size:14px;">路线：'+((t.route||[]).join(' → ')||'-')+'</div>'+
+    '<h2 style="color:#1e3a8a;font-size:18px;margin-top:20px;">📝 攻略正文</h2>'+
+    '<div style="white-space:pre-wrap;font-size:14px;line-height:1.8;color:#475569;">'+esc(g.text||'(空)')+'</div>'+
+    (items?'<h2 style="color:#1e3a8a;font-size:18px;margin-top:20px;">✅ 清单</h2><ul style="font-size:14px;line-height:2;">'+items+'</ul>':'')+
+    '<div style="margin-top:30px;padding-top:10px;border-top:1px solid #e2e8f0;font-size:12px;color:#94a3b8;text-align:center;">由「旅行」App 生成 · '+todayStr()+'</div>';
+  document.body.appendChild(printArea);
+  window.print();
+  setTimeout(()=>document.body.removeChild(printArea),500);
+}
+
+/* =========================================================
+   C阶段：行程分享（生成文字摘要）
+   ========================================================= */
+function shareTripSummary(){
+  const trips=sortTripsByDateDesc(store.trips||[]);
+  if(!trips.length){ showToast('暂无行程可分享'); return; }
+  const countries=new Set(trips.map(t=>t.country)).size;
+  const cities=trips.reduce((s,t)=>s+(t.route?t.route.length:0),0);
+  const nights=trips.reduce((s,t)=>s+(t.nights||0),0);
+  const total=trips.reduce((s,t)=>s+moneyNum(t.budget),0);
+  let text='🗺️ 珊珊的旅行世界\n'+
+    '🌍 '+countries+'个国家 · 🏙️ '+cities+'座城市 · 🌙 '+nights+'晚 · 💰 ¥'+(total/1000).toFixed(0)+'k\n\n'+
+    '📋 行程清单：\n';
+  trips.forEach((t,i)=>{
+    text+=(i+1)+'. '+(t.flag||'')+' '+t.name+' ('+t.date+') · '+STATUS_LABEL[t.status||'done']+'\n';
+  });
+  text+='\n由「旅行」App 记录 ✈️';
+  if(navigator.share){
+    navigator.share({title:'珊珊的旅行世界',text:text,url:location.href}).catch(()=>{});
+  } else {
+    try{ navigator.clipboard.writeText(text); showToast('已复制行程摘要 📋'); }catch(e){ showToast('请手动复制'); }
+  }
+}
 
 /* =========================================================
    启动
